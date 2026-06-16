@@ -405,7 +405,11 @@ a:hover {
 
 .barchartlgnd.zh .bc0,
 .barchartlgnd.zh .bc1,
-.barchartlgnd.zh .bc2 {
+.barchartlgnd.zh .bc2,
+.barchartlgnd.zh .bc3,
+.barchartlgnd.zh .bc4,
+.barchartlgnd.zh .bc5,
+.barchartlgnd.zh .bc6 {
   width: 1rem;
   height: 1rem;
   border-radius: 3px;
@@ -413,7 +417,11 @@ a:hover {
 
 .barchartlgnd.zh .bc0 { background: #8d9299; }
 .barchartlgnd.zh .bc1 { background: #4a8fd4; }
-.barchartlgnd.zh .bc2 { background: #d4a832; }
+.barchartlgnd.zh .bc2 { background: #f0c040; }
+.barchartlgnd.zh .bc3 { background: #5b8fd4; }
+.barchartlgnd.zh .bc4 { background: #6ab04a; }
+.barchartlgnd.zh .bc5 { background: #c47a5a; }
+.barchartlgnd.zh .bc6 { background: #9b7ed9; }
 
 .barchart.zh {
   display: grid;
@@ -448,7 +456,11 @@ a:hover {
 
 .barchart.zh .bc0 { background: #8d9299; }
 .barchart.zh .bc1 { background: #4a8fd4; }
-.barchart.zh .bc2 { background: #d4a832; color: #1f1f1f; }
+.barchart.zh .bc2 { background: #f0c040; color: #1f1f1f; }
+.barchart.zh .bc3 { background: #5b8fd4; }
+.barchart.zh .bc4 { background: #6ab04a; }
+.barchart.zh .bc5 { background: #c47a5a; }
+.barchart.zh .bc6 { background: #9b7ed9; }
 
 .barchartbtns {
   display: flex;

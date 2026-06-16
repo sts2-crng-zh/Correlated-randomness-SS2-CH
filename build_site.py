@@ -9,6 +9,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from visualize_tables import visualize_tables_in_markdown
+
 ROOT = Path(__file__).parent
 SOURCE = ROOT / "correlated-randomness-sts2-zh.md"
 DOCS = ROOT / "docs"
@@ -91,6 +93,7 @@ def main() -> None:
     ensure_markdown()
 
     text = SOURCE.read_text(encoding="utf-8")
+    text = visualize_tables_in_markdown(text)
     text = render_details_blocks(text)
     content_html = make_markdown().convert(text)
     content_html, toc_html = build_toc(content_html)

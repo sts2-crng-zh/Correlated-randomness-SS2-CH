@@ -10,7 +10,7 @@
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://sts2-crng-zh.github.io/Correlated-randomness-SS2-CH/">
   <link rel="stylesheet" href="fonts/fonts.css">
-  <link rel="stylesheet" href="style.css?v=1781619996647981500">
+  <link rel="stylesheet" href="style.css?v=1781621237152835300">
 </head>
 <body>
   <header class="site-header">
@@ -91,107 +91,53 @@ Rng TreasureRoomRelics = new Rng(seed + hash(&quot;treasure_room_relics&quot;));
 <p>下面是一大堆 CRNG 的后果，从「好笑但无关紧要」到「确实影响游戏体验」都有（其中一些甚至会影响完全不知道 CRNG 存在的休闲玩家！）。</p>
 <h2 id="涅奥的骨骰">涅奥的骨骰</h2>
 <p>先从开篇第一个例子说起。如果你在暗港选择<strong>涅奥的骨骰</strong>，你收到的「随机」诅咒实际上近似服从以下分布：</p>
-<table>
-<thead>
-<tr>
-<th>诅咒</th>
-<th>暗港</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>笨拙</td>
-<td>0.10%</td>
-</tr>
-<tr>
-<td><strong>债务</strong></td>
-<td><strong>54.25%</strong></td>
-</tr>
-<tr>
-<td>腐朽</td>
-<td>40.32%</td>
-</tr>
-<tr>
-<td>疑虑</td>
-<td>1.50%</td>
-</tr>
-<tr>
-<td>愧疚</td>
-<td>0%</td>
-</tr>
-<tr>
-<td>受伤</td>
-<td>0%</td>
-</tr>
-<tr>
-<td>凡庸</td>
-<td>0%</td>
-</tr>
-<tr>
-<td>悔恨</td>
-<td>0%</td>
-</tr>
-<tr>
-<td>羞耻</td>
-<td>0%</td>
-</tr>
-<tr>
-<td>苦恼</td>
-<td>3.82%</td>
-</tr>
-</tbody>
-</table>
+<div class="barchart zh">
+<div class="key">笨拙</div>
+<div class="bar"><div style="width:0.1843%" class="bc0"><span>0.1%</span></div></div>
+<div class="key">债务</div>
+<div class="bar"><div style="width:100.0000%" class="bc0"><span>54.25%</span></div></div>
+<div class="key">腐朽</div>
+<div class="bar"><div style="width:74.3226%" class="bc0"><span>40.32%</span></div></div>
+<div class="key">疑虑</div>
+<div class="bar"><div style="width:2.7650%" class="bc0"><span>1.5%</span></div></div>
+<div class="key">愧疚</div>
+<div class="bar"></div>
+<div class="key">受伤</div>
+<div class="bar"></div>
+<div class="key">凡庸</div>
+<div class="bar"></div>
+<div class="key">悔恨</div>
+<div class="bar"></div>
+<div class="key">羞耻</div>
+<div class="bar"></div>
+<div class="key">苦恼</div>
+<div class="bar"><div style="width:7.0415%" class="bc0"><span>3.82%</span></div></div>
+</div>
+
 <p>而在密林，诅咒分布则是：</p>
-<table>
-<thead>
-<tr>
-<th>诅咒</th>
-<th>密林</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>笨拙</td>
-<td>0.51%</td>
-</tr>
-<tr>
-<td>债务</td>
-<td>0%</td>
-</tr>
-<tr>
-<td>腐朽</td>
-<td>0%</td>
-</tr>
-<tr>
-<td>疑虑</td>
-<td>0%</td>
-</tr>
-<tr>
-<td>愧疚</td>
-<td>0.19%</td>
-</tr>
-<tr>
-<td>受伤</td>
-<td>5.53%</td>
-</tr>
-<tr>
-<td>凡庸</td>
-<td>1.18%</td>
-</tr>
-<tr>
-<td>悔恨</td>
-<td>0%</td>
-</tr>
-<tr>
-<td>羞耻</td>
-<td>18.85%</td>
-</tr>
-<tr>
-<td>苦恼</td>
-<td>73.74%</td>
-</tr>
-</tbody>
-</table>
+<div class="barchart zh">
+<div class="key">笨拙</div>
+<div class="bar"><div style="width:0.6916%" class="bc0"><span>0.51%</span></div></div>
+<div class="key">债务</div>
+<div class="bar"></div>
+<div class="key">腐朽</div>
+<div class="bar"></div>
+<div class="key">疑虑</div>
+<div class="bar"></div>
+<div class="key">愧疚</div>
+<div class="bar"><div style="width:0.2577%" class="bc0"><span>0.19%</span></div></div>
+<div class="key">受伤</div>
+<div class="bar"><div style="width:7.4993%" class="bc0"><span>5.53%</span></div></div>
+<div class="key">凡庸</div>
+<div class="bar"><div style="width:1.6002%" class="bc0"><span>1.18%</span></div></div>
+<div class="key">悔恨</div>
+<div class="bar"></div>
+<div class="key">羞耻</div>
+<div class="bar"><div style="width:25.5628%" class="bc0"><span>18.85%</span></div></div>
+<div class="key">苦恼</div>
+<div class="bar"><div style="width:100.0000%" class="bc0"><span>73.74%</span></div></div>
+</div>
+
 <p>这一点我觉得特别好笑——Reddit 和 Discord 上到处都有人哀叹自己运气太差，涅奥的骨骰老是roll出<strong>债务</strong>。<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup> 甚至在发现 CRNG 之前，我就看到过一些帖子坚称债务出现得比随机更频繁。我脑子里几乎是<strong>瞬间</strong>就把它们归类为教科书式的确认偏误。然而……</p>
 <p>要理解这一点，需要把三处随机性关联起来：</p>
 <ul>
@@ -210,91 +156,45 @@ Rng TreasureRoomRelics = new Rng(seed + hash(&quot;treasure_room_relics&quot;));
 <p>更具体地说：在密林，约 70% 是罕见、30% 是稀有；在暗港，约 37% 是罕见、63% 是稀有——但有一个前提：</p>
 <p>由于一切都彼此相关，巨大扭蛋在暗港整幕中大约只出现 <strong>1.65%</strong> 的时间。（似乎还没人注意到这一点；我当时刚开始调查这一切时，有人对此信息的反应非常好笑。）</p>
 <p>暗港涅奥「诅咒池」选项的具体分布：</p>
-<table>
-<thead>
-<tr>
-<th>遗物</th>
-<th>暗港</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>诅咒珍珠</td>
-<td>11.95%</td>
-</tr>
-<tr>
-<td>沉重石板</td>
-<td>1.32%</td>
-</tr>
-<tr>
-<td>巨大扭蛋</td>
-<td>1.65%</td>
-</tr>
-<tr>
-<td>树叶药膏</td>
-<td>12.72%</td>
-</tr>
-<tr>
-<td>涅奥的骨骰</td>
-<td>13.01%</td>
-</tr>
-<tr>
-<td>松动羊毛剪</td>
-<td>23.75%</td>
-</tr>
-<tr>
-<td>华美发束</td>
-<td>23.22%</td>
-</tr>
-<tr>
-<td>白银熔炉</td>
-<td>12.37%</td>
-</tr>
-</tbody>
-</table>
+<div class="barchart zh">
+<div class="key">诅咒珍珠</div>
+<div class="bar"><div style="width:50.3158%" class="bc0"><span>11.95%</span></div></div>
+<div class="key">沉重石板</div>
+<div class="bar"><div style="width:5.5579%" class="bc0"><span>1.32%</span></div></div>
+<div class="key">巨大扭蛋</div>
+<div class="bar"><div style="width:6.9474%" class="bc0"><span>1.65%</span></div></div>
+<div class="key">树叶药膏</div>
+<div class="bar"><div style="width:53.5579%" class="bc0"><span>12.72%</span></div></div>
+<div class="key">涅奥的骨骰</div>
+<div class="bar"><div style="width:54.7789%" class="bc0"><span>13.01%</span></div></div>
+<div class="key">松动羊毛剪</div>
+<div class="bar"><div style="width:100.0000%" class="bc0"><span>23.75%</span></div></div>
+<div class="key">华美发束</div>
+<div class="bar"><div style="width:97.7684%" class="bc0"><span>23.22%</span></div></div>
+<div class="key">白银熔炉</div>
+<div class="bar"><div style="width:52.0842%" class="bc0"><span>12.37%</span></div></div>
+</div>
+
 <p>密林：</p>
-<table>
-<thead>
-<tr>
-<th>遗物</th>
-<th>密林</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>诅咒珍珠</td>
-<td>12.99%</td>
-</tr>
-<tr>
-<td>沉重石板</td>
-<td>23.79%</td>
-</tr>
-<tr>
-<td>巨大扭蛋</td>
-<td>23.24%</td>
-</tr>
-<tr>
-<td>树叶药膏</td>
-<td>12.39%</td>
-</tr>
-<tr>
-<td>涅奥的骨骰</td>
-<td>11.90%</td>
-</tr>
-<tr>
-<td>松动羊毛剪</td>
-<td>1.35%</td>
-</tr>
-<tr>
-<td>华美发束</td>
-<td>1.65%</td>
-</tr>
-<tr>
-<td>白银熔炉</td>
-<td>12.70%</td>
-</tr>
-</tbody>
-</table>
+<div class="barchart zh">
+<div class="key">诅咒珍珠</div>
+<div class="bar"><div style="width:54.6028%" class="bc0"><span>12.99%</span></div></div>
+<div class="key">沉重石板</div>
+<div class="bar"><div style="width:100.0000%" class="bc0"><span>23.79%</span></div></div>
+<div class="key">巨大扭蛋</div>
+<div class="bar"><div style="width:97.6881%" class="bc0"><span>23.24%</span></div></div>
+<div class="key">树叶药膏</div>
+<div class="bar"><div style="width:52.0807%" class="bc0"><span>12.39%</span></div></div>
+<div class="key">涅奥的骨骰</div>
+<div class="bar"><div style="width:50.0210%" class="bc0"><span>11.9%</span></div></div>
+<div class="key">松动羊毛剪</div>
+<div class="bar"><div style="width:5.6747%" class="bc0"><span>1.35%</span></div></div>
+<div class="key">华美发束</div>
+<div class="bar"><div style="width:6.9357%" class="bc0"><span>1.65%</span></div></div>
+<div class="key">白银熔炉</div>
+<div class="bar"><div style="width:53.3838%" class="bc0"><span>12.7%</span></div></div>
+</div>
+
 <p>回到巨大扭蛋本身：和涅奥的骨骰类似，这种相关性对游戏平衡有实质影响。这件遗物平均来说比它「理应」的更强。</p>
 <p>那<strong>小型扭蛋</strong>呢？</p>
 <h2 id="小型扭蛋">小型扭蛋</h2>
@@ -457,332 +357,162 @@ Rng TreasureRoomRelics = new Rng(seed + hash(&quot;treasure_room_relics&quot;));
 <h2 id="闪电充能球与随机目标">闪电充能球与随机目标</h2>
 <p>暗港简单怪物池有两个多敌战斗：<strong>噬尸蛞蝓</strong>和<strong>蟾蜍蝌蚪</strong>。如果你是<strong>故障机器人</strong>，可能想知道第一个闪电充能球打向哪里，尤其当你第一回合抽到<strong>双重释放</strong>时。</p>
 <p>在暗港的第一场战斗中，<strong>你的第一个充能球有 75% 概率打向左侧敌人</strong>。（无论你打出双重释放激发它，还是不打出、靠被动触发，都适用。）如果你记得看到了哪件诅咒池遗物，可以预测得更准：</p>
-<table>
-<thead>
-<tr>
-<th>诅咒池遗物</th>
-<th>左侧</th>
-<th>右侧</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>诅咒珍珠</td>
-<td>11.91%</td>
-<td></td>
-</tr>
-<tr>
-<td>沉重石板</td>
-<td>1.34%</td>
-<td></td>
-</tr>
-<tr>
-<td>巨大扭蛋</td>
-<td>1.67%</td>
-<td></td>
-</tr>
-<tr>
-<td>树叶药膏</td>
-<td>12.63%</td>
-<td></td>
-</tr>
-<tr>
-<td>涅奥的骨骰</td>
-<td>12.58%</td>
-<td>0.52%</td>
-</tr>
-<tr>
-<td>松动羊毛剪</td>
-<td>8.42%</td>
-<td>15.25%</td>
-</tr>
-<tr>
-<td>华美发束</td>
-<td>11.02%</td>
-<td>12.26%</td>
-</tr>
-<tr>
-<td>白银熔炉</td>
-<td>12.40%</td>
-<td></td>
-</tr>
-</tbody>
-</table>
+<div class="barchartlgnd zh">
+  <div><div class="bc3"></div>左侧</div>
+  <div><div class="bc4"></div>右侧</div>
+</div>
+<div class="barchart zh">
+<div class="key">诅咒珍珠</div>
+<div class="bar"><div style="width:50.3158%" class="bc3"><span>11.91%</span></div></div>
+<div class="key">沉重石板</div>
+<div class="bar"><div style="width:5.5579%" class="bc3"><span>1.34%</span></div></div>
+<div class="key">巨大扭蛋</div>
+<div class="bar"><div style="width:6.9474%" class="bc3"><span>1.67%</span></div></div>
+<div class="key">树叶药膏</div>
+<div class="bar"><div style="width:53.5579%" class="bc3"><span>12.63%</span></div></div>
+<div class="key">涅奥的骨骰</div>
+<div class="bar"><div style="width:52.6045%" class="bc3"><span>12.58%</span></div><div style="width:2.1744%" class="bc4"><span>0.52%</span></div></div>
+<div class="key">松动羊毛剪</div>
+<div class="bar"><div style="width:35.5725%" class="bc3"><span>8.42%</span></div><div style="width:64.4275%" class="bc4"><span>15.25%</span></div></div>
+<div class="key">华美发束</div>
+<div class="bar"><div style="width:46.2804%" class="bc3"><span>11.02%</span></div><div style="width:51.4880%" class="bc4"><span>12.26%</span></div></div>
+<div class="key">白银熔炉</div>
+<div class="bar"><div style="width:52.0842%" class="bc3"><span>12.4%</span></div></div>
+</div>
+
 <p>在<strong>噬尸蛞蝓</strong>战斗中还能预测得更准——该战斗有随机起始攻击模式。原文作者未列出完整表格，但举个例子：如果你看到了松动羊毛剪，<strong>且</strong>右侧噬尸蛞蝓在施加减益，那么你的充能球实际上有超过 95% 概率打向右侧那只。</p>
 <p>（顺便说一句，第二层噬尸蛞蝓在第一回合双方都攻击的概率不到 3%。它们可真客气！）</p>
 <p>这适用于整局游戏第一次随机战斗目标——例如，你可以预测<strong>亡灵契约师</strong>第一次<strong>倒数计时</strong>触发，或任何人第一次<strong>招架盾</strong>触发。</p>
 <p>说到第一幕前期，终于来到开篇的另外两个例子。</p>
 <h2 id="垃圾堆">垃圾堆</h2>
 <p><strong>垃圾堆</strong>是暗港专属事件，因此有内在偏差。以下是垃圾堆 RNG 在幕别 RNG roll 出暗港时的输出：</p>
-<table>
-<thead>
-<tr>
-<th>卡牌</th>
-<th>概率</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>铁蒺藜</td>
-<td>10.14%</td>
-</tr>
-<tr>
-<td>交锋</td>
-<td>14.85%</td>
-</tr>
-<tr>
-<td>声东击西</td>
-<td>19.97%</td>
-</tr>
-<tr>
-<td>双持</td>
-<td>13.78%</td>
-</tr>
-<tr>
-<td>巩固</td>
-<td>9.84%</td>
-</tr>
-<tr>
-<td>你好世界</td>
-<td>9.89%</td>
-</tr>
-<tr>
-<td>抢占先机</td>
-<td>5.17%</td>
-</tr>
-<tr>
-<td>弹回</td>
-<td>0%</td>
-</tr>
-<tr>
-<td>狂乱撕扯</td>
-<td>6.19%</td>
-</tr>
-<tr>
-<td>堆栈</td>
-<td>10.17%</td>
-</tr>
-</tbody>
-</table>
+<div class="barchart zh">
+<div class="key">铁蒺藜</div>
+<div class="bar"><div style="width:50.7762%" class="bc0"><span>10.14%</span></div></div>
+<div class="key">交锋</div>
+<div class="bar"><div style="width:74.3615%" class="bc0"><span>14.85%</span></div></div>
+<div class="key">声东击西</div>
+<div class="bar"><div style="width:100.0000%" class="bc0"><span>19.97%</span></div></div>
+<div class="key">双持</div>
+<div class="bar"><div style="width:69.0035%" class="bc0"><span>13.78%</span></div></div>
+<div class="key">巩固</div>
+<div class="bar"><div style="width:49.2739%" class="bc0"><span>9.84%</span></div></div>
+<div class="key">你好世界</div>
+<div class="bar"><div style="width:49.5243%" class="bc0"><span>9.89%</span></div></div>
+<div class="key">抢占先机</div>
+<div class="bar"><div style="width:25.8888%" class="bc0"><span>5.17%</span></div></div>
+<div class="key">弹回</div>
+<div class="bar"></div>
+<div class="key">狂乱撕扯</div>
+<div class="bar"><div style="width:30.9965%" class="bc0"><span>6.19%</span></div></div>
+<div class="key">堆栈</div>
+<div class="bar"><div style="width:50.9264%" class="bc0"><span>10.17%</span></div></div>
+</div>
+
 <p>如你所见，在单人模式中<strong>根本不可能</strong>获得<strong>弹回</strong>这张牌。<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup></p>
 <p>如果你关心遗物预测：连续两张卡牌对应<strong>黑石护符</strong>、<strong>捕梦网</strong>、<strong>手钻</strong>、<strong>巨口储蓄罐</strong>和<strong>发条靴</strong>（例如，卡牌是巩固或你好世界时，遗物是手钻）。</p>
 <p>若你想更精确地预测垃圾堆，还可以进一步根据看到的诅咒池遗物条件化：<sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup></p>
-<table>
-<thead>
-<tr>
-<th>诅咒池遗物</th>
-<th>可能卡牌（概率）</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>诅咒珍珠</td>
-<td>你好世界 (66.63%)；抢占先机 (32.26%)；狂乱撕扯 (0.43%)；堆栈 (0.69%)</td>
-</tr>
-<tr>
-<td>沉重石板</td>
-<td>抢占先机 (98.82%)；狂乱撕扯 (1.18%)</td>
-</tr>
-<tr>
-<td>巨大扭蛋</td>
-<td>你好世界 (0.04%)；抢占先机 (0.26%)；狂乱撕扯 (99.70%)</td>
-</tr>
-<tr>
-<td>树叶药膏</td>
-<td>巩固 (0.08%)；你好世界 (0.26%)；狂乱撕扯 (35.29%)；堆栈 (64.36%)</td>
-</tr>
-<tr>
-<td>涅奥的骨骰</td>
-<td>铁蒺藜 (76.61%)；交锋 (8.24%)；双持 (0.14%)；巩固 (0.18%)；堆栈 (14.82%)</td>
-</tr>
-<tr>
-<td>松动羊毛剪</td>
-<td>交锋 (57.61%)；声东击西 (42.16%)；双持 (0.23%)</td>
-</tr>
-<tr>
-<td>华美发束</td>
-<td>交锋 (0.56%)；声东击西 (42.90%)；双持 (56.54%)</td>
-</tr>
-<tr>
-<td>白银熔炉</td>
-<td>铁蒺藜 (0.83%)；交锋 (0.03%)；双持 (4.40%)；巩固 (79.10%)；你好世界 (15.46%)；堆栈 (0.18%)</td>
-</tr>
-</tbody>
-</table>
+<div class="barchart zh">
+<div class="key">诅咒珍珠</div>
+<div class="bar"><div style="width:33.5221%" class="bc0"><span>你好世界 (66.63%)</span></div><div style="width:16.2303%" class="bc0"><span>抢占先机 (32.26%)</span></div><div style="width:0.2163%" class="bc0"><span>狂乱撕扯 (0.43%)</span></div><div style="width:0.3471%" class="bc0"><span>堆栈 (0.69%)</span></div></div>
+<div class="key">沉重石板</div>
+<div class="bar"><div style="width:5.4923%" class="bc0"><span>抢占先机 (98.82%)</span></div><div style="width:0.0656%" class="bc0"><span>狂乱撕扯 (1.18%)</span></div></div>
+<div class="key">巨大扭蛋</div>
+<div class="bar"><div style="width:0.0028%" class="bc0"><span>你好世界 (0.04%)</span></div><div style="width:0.0181%" class="bc0"><span>抢占先机 (0.26%)</span></div><div style="width:6.9265%" class="bc0"><span>狂乱撕扯 (99.7%)</span></div></div>
+<div class="key">树叶药膏</div>
+<div class="bar"><div style="width:0.0429%" class="bc0"><span>巩固 (0.08%)</span></div><div style="width:0.1393%" class="bc0"><span>你好世界 (0.26%)</span></div><div style="width:18.9025%" class="bc0"><span>狂乱撕扯 (35.29%)</span></div><div style="width:34.4733%" class="bc0"><span>堆栈 (64.36%)</span></div></div>
+<div class="key">涅奥的骨骰</div>
+<div class="bar"><div style="width:41.9703%" class="bc0"><span>铁蒺藜 (76.61%)</span></div><div style="width:4.5142%" class="bc0"><span>交锋 (8.24%)</span></div><div style="width:0.0767%" class="bc0"><span>双持 (0.14%)</span></div><div style="width:0.0986%" class="bc0"><span>巩固 (0.18%)</span></div><div style="width:8.1191%" class="bc0"><span>堆栈 (14.82%)</span></div></div>
+<div class="key">松动羊毛剪</div>
+<div class="bar"><div style="width:57.6100%" class="bc0"><span>交锋 (57.61%)</span></div><div style="width:42.1600%" class="bc0"><span>声东击西 (42.16%)</span></div><div style="width:0.2300%" class="bc0"><span>双持 (0.23%)</span></div></div>
+<div class="key">华美发束</div>
+<div class="bar"><div style="width:0.5475%" class="bc0"><span>交锋 (0.56%)</span></div><div style="width:41.9427%" class="bc0"><span>声东击西 (42.9%)</span></div><div style="width:55.2783%" class="bc0"><span>双持 (56.54%)</span></div></div>
+<div class="key">白银熔炉</div>
+<div class="bar"><div style="width:0.4323%" class="bc0"><span>铁蒺藜 (0.83%)</span></div><div style="width:0.0156%" class="bc0"><span>交锋 (0.03%)</span></div><div style="width:2.2917%" class="bc0"><span>双持 (4.4%)</span></div><div style="width:41.1986%" class="bc0"><span>巩固 (79.1%)</span></div><div style="width:8.0522%" class="bc0"><span>你好世界 (15.46%)</span></div><div style="width:0.0938%" class="bc0"><span>堆栈 (0.18%)</span></div></div>
+</div>
+
 <p>发现这一点后，我在网上搜索相关讨论，确实有人注意到似乎无法完成<strong>百科大全</strong>。我还发现 Discord 用户 @hoge 大约一个月前就精准描述了这个问题。向他们致敬！</p>
 <h2 id="药水掉落与房间战斗">药水掉落与？房间战斗</h2>
 <p>最后是开篇第三点——第一场战斗掉落药水的频率？套路你已经熟了：</p>
-<table>
-<thead>
-<tr>
-<th>诅咒池遗物</th>
-<th>暗港</th>
-<th>密林</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>诅咒珍珠</td>
-<td>16.85%</td>
-<td>0%</td>
-</tr>
-<tr>
-<td>沉重石板</td>
-<td>0%</td>
-<td>0%</td>
-</tr>
-<tr>
-<td>巨大扭蛋</td>
-<td>0%</td>
-<td>0%</td>
-</tr>
-<tr>
-<td>树叶药膏</td>
-<td>51.23%</td>
-<td>0%</td>
-</tr>
-<tr>
-<td>涅奥的骨骰</td>
-<td>96.02%</td>
-<td>13.08%</td>
-</tr>
-<tr>
-<td>松动羊毛剪</td>
-<td>97.21%</td>
-<td>72.90%</td>
-</tr>
-<tr>
-<td>华美发束</td>
-<td>84.30%</td>
-<td>37.08%</td>
-</tr>
-<tr>
-<td>白银熔炉</td>
-<td>99.49%</td>
-<td>6.61%</td>
-</tr>
-</tbody>
-</table>
+<div class="barchartlgnd zh">
+  <div><div class="bc3"></div>暗港</div>
+  <div><div class="bc4"></div>密林</div>
+</div>
+<div class="barchart zh">
+<div class="key">诅咒珍珠</div>
+<div class="bar"><div style="width:9.9054%" class="bc3"><span>16.85%</span></div></div>
+<div class="key">沉重石板</div>
+<div class="bar"></div>
+<div class="key">巨大扭蛋</div>
+<div class="bar"></div>
+<div class="key">树叶药膏</div>
+<div class="bar"><div style="width:30.1158%" class="bc3"><span>51.23%</span></div></div>
+<div class="key">涅奥的骨骰</div>
+<div class="bar"><div style="width:56.4458%" class="bc3"><span>96.02%</span></div><div style="width:7.6891%" class="bc4"><span>13.08%</span></div></div>
+<div class="key">松动羊毛剪</div>
+<div class="bar"><div style="width:57.1454%" class="bc3"><span>97.21%</span></div><div style="width:42.8546%" class="bc4"><span>72.9%</span></div></div>
+<div class="key">华美发束</div>
+<div class="bar"><div style="width:49.5562%" class="bc3"><span>84.3%</span></div><div style="width:21.7977%" class="bc4"><span>37.08%</span></div></div>
+<div class="key">白银熔炉</div>
+<div class="bar"><div style="width:58.4857%" class="bc3"><span>99.49%</span></div><div style="width:3.8857%" class="bc4"><span>6.61%</span></div></div>
+</div>
+
 <p>再次提醒：沉重石板和巨大扭蛋在暗港极为罕见，华美发束和松动羊毛剪在密林极为罕见。综合考量后，<strong>第一场战斗掉落药水的总概率在暗港是 76%，在密林仅 4%</strong>！</p>
 <p>但要注意：选择任何会生成卡牌奖励或随机遗物的涅奥选项都会破坏这种相关性，因为它会「偷走」奖励 RNG 的第一次调用。因此在糟糕的密林地图上，<strong>失物盒</strong>可能看起来比平均更有吸引力。</p>
 <p>额外福利：第一个？房间是战斗的概率分布也相当不均：</p>
-<table>
-<thead>
-<tr>
-<th>诅咒池遗物</th>
-<th>暗港</th>
-<th>密林</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>诅咒珍珠</td>
-<td>10.58%</td>
-<td>23.22%</td>
-</tr>
-<tr>
-<td>沉重石板</td>
-<td>0%</td>
-<td>16.09%</td>
-</tr>
-<tr>
-<td>巨大扭蛋</td>
-<td>0%</td>
-<td>15.24%</td>
-</tr>
-<tr>
-<td>树叶药膏</td>
-<td>5.72%</td>
-<td>0%</td>
-</tr>
-<tr>
-<td>涅奥的骨骰</td>
-<td>19.09%</td>
-<td>0%</td>
-</tr>
-<tr>
-<td>松动羊毛剪</td>
-<td>0%</td>
-<td>0%</td>
-</tr>
-<tr>
-<td>华美发束</td>
-<td>0%</td>
-<td>0%</td>
-</tr>
-<tr>
-<td>白银熔炉</td>
-<td>41.44%</td>
-<td>0%</td>
-</tr>
-</tbody>
-</table>
+<div class="barchartlgnd zh">
+  <div><div class="bc3"></div>暗港</div>
+  <div><div class="bc4"></div>密林</div>
+</div>
+<div class="barchart zh">
+<div class="key">诅咒珍珠</div>
+<div class="bar"><div style="width:25.5309%" class="bc3"><span>10.58%</span></div><div style="width:56.0328%" class="bc4"><span>23.22%</span></div></div>
+<div class="key">沉重石板</div>
+<div class="bar"><div style="width:38.8272%" class="bc4"><span>16.09%</span></div></div>
+<div class="key">巨大扭蛋</div>
+<div class="bar"><div style="width:36.7761%" class="bc4"><span>15.24%</span></div></div>
+<div class="key">树叶药膏</div>
+<div class="bar"><div style="width:13.8031%" class="bc3"><span>5.72%</span></div></div>
+<div class="key">涅奥的骨骰</div>
+<div class="bar"><div style="width:46.0666%" class="bc3"><span>19.09%</span></div></div>
+<div class="key">松动羊毛剪</div>
+<div class="bar"></div>
+<div class="key">华美发束</div>
+<div class="bar"></div>
+<div class="key">白银熔炉</div>
+<div class="bar"><div style="width:100.0000%" class="bc3"><span>41.44%</span></div></div>
+</div>
+
 <p>（按幕别平均后，暗港约 9.6%，密林约 10.4%，大体持平。）</p>
 <p>到目前为止，以上内容都只适用于第一幕。但——你猜对了——还能走得更远……</p>
 <h2 id="玩偶室">玩偶室</h2>
 <p><strong>玩偶室</strong>是第二幕的事件。和大多数事件一样，它使用自己的 RNG，因此可以与所有其他 RNG 的第一次调用相关联。</p>
 <p>到游戏这个阶段，你已经目睹了极大量「各 RNG 的第一次调用」，仅凭已有信息大概就能以很高精度预测玩偶室。但即便只用涅奥选项也已经相当不错：</p>
 <p>（下表为点击「一个玩偶」选项时获得的玩偶。）</p>
-<table>
-<thead>
-<tr>
-<th>诅咒池遗物</th>
-<th>风的女儿</th>
-<th>抱抱先生</th>
-<th>宾邦</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>诅咒珍珠</td>
-<td>60.77%</td>
-<td>7.66%</td>
-<td>31.57%</td>
-</tr>
-<tr>
-<td>沉重石板</td>
-<td>91.00%</td>
-<td>9.00%</td>
-<td></td>
-</tr>
-<tr>
-<td>巨大扭蛋</td>
-<td>55.07%</td>
-<td>44.35%</td>
-<td>0.58%</td>
-</tr>
-<tr>
-<td>树叶药膏</td>
-<td>23.14%</td>
-<td>70.81%</td>
-<td>6.05%</td>
-</tr>
-<tr>
-<td>涅奥的骨骰</td>
-<td>4.54%</td>
-<td>70.38%</td>
-<td>25.08%</td>
-</tr>
-<tr>
-<td>松动羊毛剪</td>
-<td>46.09%</td>
-<td>53.91%</td>
-<td></td>
-</tr>
-<tr>
-<td>华美发束</td>
-<td>8.50%</td>
-<td>91.50%</td>
-<td></td>
-</tr>
-<tr>
-<td>白银熔炉</td>
-<td>32.22%</td>
-<td>9.89%</td>
-<td>57.88%</td>
-</tr>
-</tbody>
-</table>
+<div class="barchartlgnd zh">
+  <div><div class="bc3"></div>风的女儿</div>
+  <div><div class="bc4"></div>抱抱先生</div>
+  <div><div class="bc5"></div>宾邦</div>
+</div>
+<div class="barchart zh">
+<div class="key">诅咒珍珠</div>
+<div class="bar"><div style="width:60.7700%" class="bc3"><span>60.77%</span></div><div style="width:7.6600%" class="bc4"><span>7.66%</span></div><div style="width:31.5700%" class="bc5"><span>31.57%</span></div></div>
+<div class="key">沉重石板</div>
+<div class="bar"><div style="width:91.0000%" class="bc3"><span>91%</span></div><div style="width:9.0000%" class="bc4"><span>9%</span></div></div>
+<div class="key">巨大扭蛋</div>
+<div class="bar"><div style="width:55.0700%" class="bc3"><span>55.07%</span></div><div style="width:44.3500%" class="bc4"><span>44.35%</span></div><div style="width:0.5800%" class="bc5"><span>0.58%</span></div></div>
+<div class="key">树叶药膏</div>
+<div class="bar"><div style="width:23.1400%" class="bc3"><span>23.14%</span></div><div style="width:70.8100%" class="bc4"><span>70.81%</span></div><div style="width:6.0500%" class="bc5"><span>6.05%</span></div></div>
+<div class="key">涅奥的骨骰</div>
+<div class="bar"><div style="width:4.5400%" class="bc3"><span>4.54%</span></div><div style="width:70.3800%" class="bc4"><span>70.38%</span></div><div style="width:25.0800%" class="bc5"><span>25.08%</span></div></div>
+<div class="key">松动羊毛剪</div>
+<div class="bar"><div style="width:46.0900%" class="bc3"><span>46.09%</span></div><div style="width:53.9100%" class="bc4"><span>53.91%</span></div></div>
+<div class="key">华美发束</div>
+<div class="bar"><div style="width:8.5000%" class="bc3"><span>8.5%</span></div><div style="width:91.5000%" class="bc4"><span>91.5%</span></div></div>
+<div class="key">白银熔炉</div>
+<div class="bar"><div style="width:32.2200%" class="bc3"><span>32.22%</span></div><div style="width:9.8900%" class="bc4"><span>9.89%</span></div><div style="width:57.8800%" class="bc5"><span>57.88%</span></div></div>
+</div>
+
 <p>「两个玩偶」选项可由「一个玩偶」结果推导：</p>
 <table>
 <thead>
@@ -830,242 +560,95 @@ Rng TreasureRoomRelics = new Rng(seed + hash(&quot;treasure_room_relics&quot;));
 <h2 id="先古之民奖励">先古之民奖励</h2>
 <p>能预测先古之民会极其强大。但不幸的是（或者说幸运的是——取决于你怎么看），战斗、精英、Boss 和先古之民都由 <code>RunState.Rng.UpFront</code> 负责roll，它会先大约调用 100 次来洗牌遗物列表。</p>
 <p>你能做的是预测：<strong>如果</strong>某位先古之民出现，你会得到什么选项。例如，<strong>佩尔第二选项</strong>与第一场战斗金币的关系：</p>
-<table>
-<thead>
-<tr>
-<th>金币</th>
-<th>佩尔之翼</th>
-<th>佩尔之爪</th>
-<th>佩尔之牙</th>
-<th>佩尔的增生组织</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>7</td>
-<td>47.17%</td>
-<td>50.23%</td>
-<td></td>
-<td>2.60%</td>
-</tr>
-<tr>
-<td>8</td>
-<td>75.03%</td>
-<td>16.04%</td>
-<td></td>
-<td>8.93%</td>
-</tr>
-<tr>
-<td>9</td>
-<td>3.63%</td>
-<td>12.60%</td>
-<td>46.84%</td>
-<td>36.93%</td>
-</tr>
-<tr>
-<td>10</td>
-<td>4.31%</td>
-<td>25.40%</td>
-<td>68.59%</td>
-<td>1.71%</td>
-</tr>
-<tr>
-<td>11</td>
-<td>33.98%</td>
-<td>52.76%</td>
-<td></td>
-<td>13.25%</td>
-</tr>
-<tr>
-<td>12</td>
-<td>56.83%</td>
-<td>40.97%</td>
-<td></td>
-<td>2.20%</td>
-</tr>
-<tr>
-<td>13</td>
-<td>33.39%</td>
-<td>9.47%</td>
-<td>16.47%</td>
-<td>40.68%</td>
-</tr>
-<tr>
-<td>14</td>
-<td>84.14%</td>
-<td>15.86%</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>15</td>
-<td>2.63%</td>
-<td>49.67%</td>
-<td>28.03%</td>
-<td>19.67%</td>
-</tr>
-</tbody>
-</table>
+<div class="barchartlgnd zh">
+  <div><div class="bc3"></div>佩尔之翼</div>
+  <div><div class="bc4"></div>佩尔之爪</div>
+  <div><div class="bc5"></div>佩尔之牙</div>
+  <div><div class="bc6"></div>佩尔的增生组织</div>
+</div>
+<div class="barchart zh">
+<div class="key">7</div>
+<div class="bar"><div style="width:47.1653%" class="bc3"><span>47.17%</span></div><div style="width:50.2250%" class="bc4"><span>50.23%</span></div><div style="width:2.5997%" class="bc6"><span>2.6%</span></div></div>
+<div class="key">8</div>
+<div class="bar"><div style="width:75.0225%" class="bc3"><span>75.03%</span></div><div style="width:16.0384%" class="bc4"><span>16.04%</span></div><div style="width:8.9291%" class="bc6"><span>8.93%</span></div></div>
+<div class="key">9</div>
+<div class="bar"><div style="width:3.6296%" class="bc3"><span>3.63%</span></div><div style="width:12.5987%" class="bc4"><span>12.6%</span></div><div style="width:46.8353%" class="bc5"><span>46.84%</span></div><div style="width:36.9263%" class="bc6"><span>36.93%</span></div></div>
+<div class="key">10</div>
+<div class="bar"><div style="width:4.3096%" class="bc3"><span>4.31%</span></div><div style="width:25.3975%" class="bc4"><span>25.4%</span></div><div style="width:68.5831%" class="bc5"><span>68.59%</span></div><div style="width:1.7098%" class="bc6"><span>1.71%</span></div></div>
+<div class="key">11</div>
+<div class="bar"><div style="width:33.9766%" class="bc3"><span>33.98%</span></div><div style="width:52.7547%" class="bc4"><span>52.76%</span></div><div style="width:13.2487%" class="bc6"><span>13.25%</span></div></div>
+<div class="key">12</div>
+<div class="bar"><div style="width:56.8243%" class="bc3"><span>56.83%</span></div><div style="width:40.9659%" class="bc4"><span>40.97%</span></div><div style="width:2.1998%" class="bc6"><span>2.2%</span></div></div>
+<div class="key">13</div>
+<div class="bar"><div style="width:33.3867%" class="bc3"><span>33.39%</span></div><div style="width:9.4691%" class="bc4"><span>9.47%</span></div><div style="width:16.4684%" class="bc5"><span>16.47%</span></div><div style="width:40.6759%" class="bc6"><span>40.68%</span></div></div>
+<div class="key">14</div>
+<div class="bar"><div style="width:84.1316%" class="bc3"><span>84.14%</span></div><div style="width:15.8584%" class="bc4"><span>15.86%</span></div></div>
+<div class="key">15</div>
+<div class="bar"><div style="width:2.6297%" class="bc3"><span>2.63%</span></div><div style="width:49.6650%" class="bc4"><span>49.67%</span></div><div style="width:28.0272%" class="bc5"><span>28.03%</span></div><div style="width:19.6680%" class="bc6"><span>19.67%</span></div></div>
+</div>
+
 <p>这些信息出乎意料地强，但很难立刻转化为行动，因为你不知道第二幕先古之民会不会是佩尔。但我想这意味着：如果你roll到 11 金币，就该立刻放弃<strong>克隆</strong>的梦想。（或者我想得太小了——13 金币意味着<strong>完美打击</strong>立刻进牌组……）</p>
 <p><strong>特兹卡塔拉</strong>第二选项也可以同样分析，但那些选项在第一幕大多不太能据此行动。另一方面，<strong>特兹卡塔拉第一选项</strong>包含<strong>营养汤</strong>，很可能影响你移除<strong>打击</strong>的优先级：</p>
-<table>
-<thead>
-<tr>
-<th>诅咒池遗物</th>
-<th>烫嘴可可</th>
-<th>美味饼干</th>
-<th>营养汤</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>诅咒珍珠 [U]</td>
-<td>19.37%</td>
-<td>67.89%</td>
-<td>12.74%</td>
-</tr>
-<tr>
-<td>沉重石板 [U]</td>
-<td>36.64%</td>
-<td>63.36%</td>
-<td></td>
-</tr>
-<tr>
-<td>巨大扭蛋 [U]</td>
-<td>69.33%</td>
-<td>30.67%</td>
-<td></td>
-</tr>
-<tr>
-<td>树叶药膏 [U]</td>
-<td>39.00%</td>
-<td>32.20%</td>
-<td>28.80%</td>
-</tr>
-<tr>
-<td>涅奥的骨骰 [U]</td>
-<td>29.19%</td>
-<td>70.81%</td>
-<td></td>
-</tr>
-<tr>
-<td>松动羊毛剪 [U]</td>
-<td>9.54%</td>
-<td>90.46%</td>
-<td></td>
-</tr>
-<tr>
-<td>华美发束 [U]</td>
-<td>33.77%</td>
-<td>66.23%</td>
-<td></td>
-</tr>
-<tr>
-<td>白银熔炉 [U]</td>
-<td>69.44%</td>
-<td>30.56%</td>
-<td></td>
-</tr>
-<tr>
-<td>诅咒珍珠 [O]</td>
-<td>36.78%</td>
-<td>63.22%</td>
-<td></td>
-</tr>
-<tr>
-<td>沉重石板 [O]</td>
-<td>90.85%</td>
-<td>9.15%</td>
-<td></td>
-</tr>
-<tr>
-<td>巨大扭蛋 [O]</td>
-<td>89.56%</td>
-<td>10.44%</td>
-<td></td>
-</tr>
-<tr>
-<td>树叶药膏 [O]</td>
-<td>71.42%</td>
-<td>28.58%</td>
-<td></td>
-</tr>
-<tr>
-<td>涅奥的骨骰 [O]</td>
-<td>1.34%</td>
-<td>32.13%</td>
-<td>66.52%</td>
-</tr>
-<tr>
-<td>松动羊毛剪 [O]</td>
-<td>36.29%</td>
-<td>63.71%</td>
-<td></td>
-</tr>
-<tr>
-<td>华美发束 [O]</td>
-<td>68.04%</td>
-<td>31.96%</td>
-<td></td>
-</tr>
-<tr>
-<td>白银熔炉 [O]</td>
-<td>12.98%</td>
-<td>67.89%</td>
-<td>19.13%</td>
-</tr>
-</tbody>
-</table>
+<div class="barchartlgnd zh">
+  <div><div class="bc3"></div>烫嘴可可</div>
+  <div><div class="bc4"></div>美味饼干</div>
+  <div><div class="bc5"></div>营养汤</div>
+</div>
+<div class="barchart zh">
+<div class="key">诅咒珍珠 [U]</div>
+<div class="bar"><div style="width:19.3700%" class="bc3"><span>19.37%</span></div><div style="width:67.8900%" class="bc4"><span>67.89%</span></div><div style="width:12.7400%" class="bc5"><span>12.74%</span></div></div>
+<div class="key">沉重石板 [U]</div>
+<div class="bar"><div style="width:36.6400%" class="bc3"><span>36.64%</span></div><div style="width:63.3600%" class="bc4"><span>63.36%</span></div></div>
+<div class="key">巨大扭蛋 [U]</div>
+<div class="bar"><div style="width:69.3300%" class="bc3"><span>69.33%</span></div><div style="width:30.6700%" class="bc4"><span>30.67%</span></div></div>
+<div class="key">树叶药膏 [U]</div>
+<div class="bar"><div style="width:39.0000%" class="bc3"><span>39%</span></div><div style="width:32.2000%" class="bc4"><span>32.2%</span></div><div style="width:28.8000%" class="bc5"><span>28.8%</span></div></div>
+<div class="key">涅奥的骨骰 [U]</div>
+<div class="bar"><div style="width:29.1900%" class="bc3"><span>29.19%</span></div><div style="width:70.8100%" class="bc4"><span>70.81%</span></div></div>
+<div class="key">松动羊毛剪 [U]</div>
+<div class="bar"><div style="width:9.5400%" class="bc3"><span>9.54%</span></div><div style="width:90.4600%" class="bc4"><span>90.46%</span></div></div>
+<div class="key">华美发束 [U]</div>
+<div class="bar"><div style="width:33.7700%" class="bc3"><span>33.77%</span></div><div style="width:66.2300%" class="bc4"><span>66.23%</span></div></div>
+<div class="key">白银熔炉 [U]</div>
+<div class="bar"><div style="width:69.4400%" class="bc3"><span>69.44%</span></div><div style="width:30.5600%" class="bc4"><span>30.56%</span></div></div>
+<div class="key">诅咒珍珠 [O]</div>
+<div class="bar"><div style="width:36.7800%" class="bc3"><span>36.78%</span></div><div style="width:63.2200%" class="bc4"><span>63.22%</span></div></div>
+<div class="key">沉重石板 [O]</div>
+<div class="bar"><div style="width:90.8500%" class="bc3"><span>90.85%</span></div><div style="width:9.1500%" class="bc4"><span>9.15%</span></div></div>
+<div class="key">巨大扭蛋 [O]</div>
+<div class="bar"><div style="width:89.5600%" class="bc3"><span>89.56%</span></div><div style="width:10.4400%" class="bc4"><span>10.44%</span></div></div>
+<div class="key">树叶药膏 [O]</div>
+<div class="bar"><div style="width:71.4200%" class="bc3"><span>71.42%</span></div><div style="width:28.5800%" class="bc4"><span>28.58%</span></div></div>
+<div class="key">涅奥的骨骰 [O]</div>
+<div class="bar"><div style="width:1.3400%" class="bc3"><span>1.34%</span></div><div style="width:32.1300%" class="bc4"><span>32.13%</span></div><div style="width:66.5200%" class="bc5"><span>66.52%</span></div></div>
+<div class="key">松动羊毛剪 [O]</div>
+<div class="bar"><div style="width:36.2900%" class="bc3"><span>36.29%</span></div><div style="width:63.7100%" class="bc4"><span>63.71%</span></div></div>
+<div class="key">华美发束 [O]</div>
+<div class="bar"><div style="width:68.0400%" class="bc3"><span>68.04%</span></div><div style="width:31.9600%" class="bc4"><span>31.96%</span></div></div>
+<div class="key">白银熔炉 [O]</div>
+<div class="bar"><div style="width:12.9800%" class="bc3"><span>12.98%</span></div><div style="width:67.8900%" class="bc4"><span>67.89%</span></div><div style="width:19.1300%" class="bc5"><span>19.13%</span></div></div>
+</div>
+
 <p>（若出现松动羊毛剪——你可能用它移除了两张打击——则特兹第一选项有 88.75% 是营养汤。这特别好笑：我往 Discord 狂倒 CRNG 发现时，两个人发了悲伤截图，说移除了 2+ 张打击却看到营养汤。你猜怎么着，遗物栏里都有松动羊毛剪。我打破幻想时只有一点点愧疚。）</p>
 <p><strong>欧洛巴斯</strong>呢？它会先为毒液玻璃roll颜色、再在棱彩宝石和毒液玻璃之间选择，然后才选第一选项，因此我们实际上需要某个 RNG 的<strong>第三次</strong> roll。最容易拿到的是<strong>第一场战斗奖励</strong>：</p>
-<table>
-<thead>
-<tr>
-<th>第一场战斗奖励</th>
-<th>放电异虾</th>
-<th>玻璃眼珠</th>
-<th>沙堡</th>
-<th>宝石或玻璃</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>普通药水</td>
-<td>15.65%</td>
-<td>23.77%</td>
-<td>37.93%</td>
-<td>22.65%</td>
-</tr>
-<tr>
-<td>罕见药水</td>
-<td>39.99%</td>
-<td>28.81%</td>
-<td>1.63%</td>
-<td>29.58%</td>
-</tr>
-<tr>
-<td>稀有药水</td>
-<td>46.57%</td>
-<td>23.14%</td>
-<td></td>
-<td>30.29%</td>
-</tr>
-<tr>
-<td>普通卡牌</td>
-<td>16.52%</td>
-<td>23.65%</td>
-<td>37.47%</td>
-<td>22.36%</td>
-</tr>
-<tr>
-<td>罕见卡牌</td>
-<td>42.19%</td>
-<td>27.85%</td>
-<td></td>
-<td>29.95%</td>
-</tr>
-</tbody>
-</table>
+<div class="barchartlgnd zh">
+  <div><div class="bc0"></div>普通</div>
+  <div><div class="bc1"></div>罕见</div>
+  <div><div class="bc2"></div>稀有</div>
+</div>
+<div class="barchart zh">
+<div class="key">普通药水</div>
+<div class="bar"><div style="width:15.6484%" class="bc0"><span>放电异虾 15.65%</span></div><div style="width:23.7676%" class="bc0"><span>玻璃眼珠 23.77%</span></div><div style="width:37.9262%" class="bc0"><span>沙堡 37.93%</span></div><div style="width:22.6477%" class="bc0"><span>宝石或玻璃 22.65%</span></div></div>
+<div class="key">罕见药水</div>
+<div class="bar"><div style="width:39.9860%" class="bc1"><span>放电异虾 39.99%</span></div><div style="width:28.8071%" class="bc1"><span>玻璃眼珠 28.81%</span></div><div style="width:1.6298%" class="bc1"><span>沙堡 1.63%</span></div><div style="width:29.5770%" class="bc1"><span>宝石或玻璃 29.58%</span></div></div>
+<div class="key">稀有药水</div>
+<div class="bar"><div style="width:46.5653%" class="bc2"><span>放电异虾 46.57%</span></div><div style="width:23.1377%" class="bc2"><span>玻璃眼珠 23.14%</span></div><div style="width:30.2870%" class="bc2"><span>宝石或玻璃 30.29%</span></div></div>
+<div class="key">普通卡牌</div>
+<div class="bar"><div style="width:16.5183%" class="bc0"><span>放电异虾 16.52%</span></div><div style="width:23.6476%" class="bc0"><span>玻璃眼珠 23.65%</span></div><div style="width:37.4663%" class="bc0"><span>沙堡 37.47%</span></div><div style="width:22.3578%" class="bc0"><span>宝石或玻璃 22.36%</span></div></div>
+<div class="key">罕见卡牌</div>
+<div class="bar"><div style="width:42.1858%" class="bc1"><span>放电异虾 42.19%</span></div><div style="width:27.8472%" class="bc1"><span>玻璃眼珠 27.85%</span></div><div style="width:29.9470%" class="bc1"><span>宝石或玻璃 29.95%</span></div></div>
+</div>
+
 <p>如果你拿到了药水，那是第三次 RNG roll；否则是第一张卡牌。还要注意：选择任何会给你卡牌或遗物的涅奥选项都会破坏这种相关性并引入新的相关性，此处不再展开。</p>
 <p>这里可操作的或许是<strong>放电异虾</strong>的不均匀分布，可能影响你是否想选一张好的<strong>注能</strong>牌。</p>
 <p>至于<strong>达弗</strong>和第三幕先古之民，它们都会洗较长的列表，调用 RNG 次数太多，难以干净地预测。</p>
