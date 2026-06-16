@@ -462,6 +462,47 @@ a:hover {
 .barchart.zh .bc5 { background: #c47a5a; }
 .barchart.zh .bc6 { background: #9b7ed9; }
 
+.barchartlgnd.zh.junk {
+  flex-wrap: wrap;
+}
+
+.barchartlgnd.zh.junk .bc0,
+.barchartlgnd.zh.junk .bc1,
+.barchartlgnd.zh.junk .bc2,
+.barchartlgnd.zh.junk .bc3,
+.barchartlgnd.zh.junk .bc4,
+.barchartlgnd.zh.junk .bc5,
+.barchartlgnd.zh.junk .bc6,
+.barchartlgnd.zh.junk .bc7,
+.barchartlgnd.zh.junk .bc8,
+.barchartlgnd.zh.junk .bc9 {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 3px;
+}
+
+.barchart.zh.junk .bc0 { background: #4e79a7; }
+.barchart.zh.junk .bc1 { background: #f28e2b; }
+.barchart.zh.junk .bc2 { background: #59a14f; }
+.barchart.zh.junk .bc3 { background: #e15759; }
+.barchart.zh.junk .bc4 { background: #b07aa1; }
+.barchart.zh.junk .bc5 { background: #9c755f; }
+.barchart.zh.junk .bc6 { background: #edc948; color: #1f1f1f; }
+.barchart.zh.junk .bc7 { background: #bab0ac; color: #1f1f1f; }
+.barchart.zh.junk .bc8 { background: #76b7b2; }
+.barchart.zh.junk .bc9 { background: #af7aa1; }
+
+.barchartlgnd.zh.junk .bc0 { background: #4e79a7; }
+.barchartlgnd.zh.junk .bc1 { background: #f28e2b; }
+.barchartlgnd.zh.junk .bc2 { background: #59a14f; }
+.barchartlgnd.zh.junk .bc3 { background: #e15759; }
+.barchartlgnd.zh.junk .bc4 { background: #b07aa1; }
+.barchartlgnd.zh.junk .bc5 { background: #9c755f; }
+.barchartlgnd.zh.junk .bc6 { background: #edc948; }
+.barchartlgnd.zh.junk .bc7 { background: #bab0ac; }
+.barchartlgnd.zh.junk .bc8 { background: #76b7b2; }
+.barchartlgnd.zh.junk .bc9 { background: #af7aa1; }
+
 .barchartbtns {
   display: flex;
   flex-wrap: wrap;

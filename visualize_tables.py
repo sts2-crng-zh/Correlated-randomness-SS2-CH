@@ -36,6 +36,21 @@ TABLE_RE = re.compile(
 
 SEGMENT_RE = re.compile(r"([^；]+?)\s*\(([\d.]+)%\)")
 
+JUNK_CARDS: list[tuple[str, str]] = [
+    ("铁蒺藜", "bc0"),
+    ("交锋", "bc1"),
+    ("声东击西", "bc2"),
+    ("双持", "bc3"),
+    ("巩固", "bc4"),
+    ("你好世界", "bc5"),
+    ("抢占先机", "bc6"),
+    ("弹回", "bc7"),
+    ("狂乱撕扯", "bc8"),
+    ("堆栈", "bc9"),
+]
+
+JUNK_CARD_CLASS = {name: cls for name, cls in JUNK_CARDS}
+
 
 def strip_md(text: str) -> str:
     text = re.sub(r"\*\*([^*]+)\*\*", r"\1", text)
@@ -82,8 +97,17 @@ def rarity_class(label: str) -> str:
     return "bc0"
 
 
-def render_legend(items: list[tuple[str, str]]) -> str:
-    parts = ['<div class="barchartlgnd zh">']
+def junk_card_class(card: str) -> str:
+    return JUNK_CARD_CLASS.get(card.strip(), "bc0")
+
+
+def junk_legend() -> str:
+    return render_legend([(cls, name) for name, cls in JUNK_CARDS], "junk")
+
+
+def render_legend(items: list[tuple[str, str]], chart_class: str = "") -> str:
+    extra = f" {chart_class}" if chart_class else ""
+    parts = [f'<div class="barchartlgnd zh{extra}">']
     for cls, name in items:
         parts.append(f'  <div><div class="{cls}"></div>{html.escape(name)}</div>')
     parts.append("</div>")
@@ -178,10 +202,26 @@ def convert_multi(
     return "\n".join(parts)
 
 
+def convert_junk_base(headers: list[str], rows: list[list[str]]) -> str:
+    legend = junk_legend()
+    values = [parse_pct(row[1]) for row in rows]
+    max_val = max((v for v in values if v is not None), default=1.0)
+    parts = [legend, '<div class="barchart zh junk">']
+    for row, value in zip(rows, values):
+        if value is None:
+            continue
+        card = row[0]
+        cls = junk_card_class(card)
+        row_scale = (value / max_val) * 100.0 / value if value > 0 else 0.0
+        parts.append(f'<div class="key">{html.escape(card)}</div>')
+        parts.append(render_bar([(value, f"{value:g}%", cls)], row_scale))
+    parts.append("</div>")
+    return "\n".join(parts)
+
+
 def convert_junk_conditioned(headers: list[str], rows: list[list[str]]) -> str:
-    max_rate = max(RELIC_RATES_UNDER.values())
-    chart_rows: list[tuple[str, list[tuple[float, str, str]]]] = []
-    weights: list[float] = []
+    legend = junk_legend()
+    parts = [legend, '<div class="barchart zh junk">']
 
     for row in rows:
         relic = row[0]
@@ -189,18 +229,12 @@ def convert_junk_conditioned(headers: list[str], rows: list[list[str]]) -> str:
         for match in SEGMENT_RE.finditer(row[1]):
             card = match.group(1).strip()
             value = float(match.group(2))
-            segments.append((value, f"{card} ({value:g}%)", "bc0"))
-        if not segments:
-            continue
-        chart_rows.append((relic, segments))
-        weights.append(RELIC_RATES_UNDER.get(relic, row_sum([s[0] for s in segments])))
-
-    parts = ['<div class="barchart zh">']
-    for (label, segments), weight in zip(chart_rows, weights):
+            segments.append((value, f"{card} ({value:g}%)", junk_card_class(card)))
         total = sum(v for v, _, _ in segments)
-        row_scale = (weight / max_rate) * 100.0 / total if total > 0 else 0.0
-        parts.append(f'<div class="key">{html.escape(label)}</div>')
+        row_scale = 100.0 / total if total > 0 else 0.0
+        parts.append(f'<div class="key">{html.escape(relic)}</div>')
         parts.append(render_bar(segments, row_scale))
+
     parts.append("</div>")
     return "\n".join(parts)
 
@@ -232,7 +266,7 @@ def classify_table(headers: list[str]) -> str:
     if headers[:2] == ["遗物", "暗港"] or headers[:2] == ["遗物", "密林"]:
         return "single"
     if headers[:2] == ["卡牌", "概率"]:
-        return "single"
+        return "junk_base"
     if headers[0] == "诅咒池遗物" and "可能卡牌" in joined:
         return "junk_conditioned"
     if headers[0] == "诅咒池遗物" and "左侧" in joined:
@@ -258,6 +292,8 @@ def convert_table(headers: list[str], rows: list[list[str]]) -> str | None:
         return None
     if kind == "single":
         return convert_single(headers, rows)
+    if kind == "junk_base":
+        return convert_junk_base(headers, rows)
     if kind == "junk_conditioned":
         return convert_junk_conditioned(headers, rows)
     if kind == "two_col_lr":

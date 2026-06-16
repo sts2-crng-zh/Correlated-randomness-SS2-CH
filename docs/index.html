@@ -10,7 +10,7 @@
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://sts2-crng-zh.github.io/Correlated-randomness-SS2-CH/">
   <link rel="stylesheet" href="fonts/fonts.css">
-  <link rel="stylesheet" href="style.css?v=1781621237152835300">
+  <link rel="stylesheet" href="style.css?v=1781621656385525800">
 </head>
 <body>
   <header class="site-header">
@@ -386,49 +386,73 @@ Rng TreasureRoomRelics = new Rng(seed + hash(&quot;treasure_room_relics&quot;));
 <p>说到第一幕前期，终于来到开篇的另外两个例子。</p>
 <h2 id="垃圾堆">垃圾堆</h2>
 <p><strong>垃圾堆</strong>是暗港专属事件，因此有内在偏差。以下是垃圾堆 RNG 在幕别 RNG roll 出暗港时的输出：</p>
-<div class="barchart zh">
+<div class="barchartlgnd zh junk">
+  <div><div class="bc0"></div>铁蒺藜</div>
+  <div><div class="bc1"></div>交锋</div>
+  <div><div class="bc2"></div>声东击西</div>
+  <div><div class="bc3"></div>双持</div>
+  <div><div class="bc4"></div>巩固</div>
+  <div><div class="bc5"></div>你好世界</div>
+  <div><div class="bc6"></div>抢占先机</div>
+  <div><div class="bc7"></div>弹回</div>
+  <div><div class="bc8"></div>狂乱撕扯</div>
+  <div><div class="bc9"></div>堆栈</div>
+</div>
+<div class="barchart zh junk">
 <div class="key">铁蒺藜</div>
 <div class="bar"><div style="width:50.7762%" class="bc0"><span>10.14%</span></div></div>
 <div class="key">交锋</div>
-<div class="bar"><div style="width:74.3615%" class="bc0"><span>14.85%</span></div></div>
+<div class="bar"><div style="width:74.3615%" class="bc1"><span>14.85%</span></div></div>
 <div class="key">声东击西</div>
-<div class="bar"><div style="width:100.0000%" class="bc0"><span>19.97%</span></div></div>
+<div class="bar"><div style="width:100.0000%" class="bc2"><span>19.97%</span></div></div>
 <div class="key">双持</div>
-<div class="bar"><div style="width:69.0035%" class="bc0"><span>13.78%</span></div></div>
+<div class="bar"><div style="width:69.0035%" class="bc3"><span>13.78%</span></div></div>
 <div class="key">巩固</div>
-<div class="bar"><div style="width:49.2739%" class="bc0"><span>9.84%</span></div></div>
+<div class="bar"><div style="width:49.2739%" class="bc4"><span>9.84%</span></div></div>
 <div class="key">你好世界</div>
-<div class="bar"><div style="width:49.5243%" class="bc0"><span>9.89%</span></div></div>
+<div class="bar"><div style="width:49.5243%" class="bc5"><span>9.89%</span></div></div>
 <div class="key">抢占先机</div>
-<div class="bar"><div style="width:25.8888%" class="bc0"><span>5.17%</span></div></div>
+<div class="bar"><div style="width:25.8888%" class="bc6"><span>5.17%</span></div></div>
 <div class="key">弹回</div>
 <div class="bar"></div>
 <div class="key">狂乱撕扯</div>
-<div class="bar"><div style="width:30.9965%" class="bc0"><span>6.19%</span></div></div>
+<div class="bar"><div style="width:30.9965%" class="bc8"><span>6.19%</span></div></div>
 <div class="key">堆栈</div>
-<div class="bar"><div style="width:50.9264%" class="bc0"><span>10.17%</span></div></div>
+<div class="bar"><div style="width:50.9264%" class="bc9"><span>10.17%</span></div></div>
 </div>
 
 <p>如你所见，在单人模式中<strong>根本不可能</strong>获得<strong>弹回</strong>这张牌。<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup></p>
 <p>如果你关心遗物预测：连续两张卡牌对应<strong>黑石护符</strong>、<strong>捕梦网</strong>、<strong>手钻</strong>、<strong>巨口储蓄罐</strong>和<strong>发条靴</strong>（例如，卡牌是巩固或你好世界时，遗物是手钻）。</p>
 <p>若你想更精确地预测垃圾堆，还可以进一步根据看到的诅咒池遗物条件化：<sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup></p>
-<div class="barchart zh">
+<div class="barchartlgnd zh junk">
+  <div><div class="bc0"></div>铁蒺藜</div>
+  <div><div class="bc1"></div>交锋</div>
+  <div><div class="bc2"></div>声东击西</div>
+  <div><div class="bc3"></div>双持</div>
+  <div><div class="bc4"></div>巩固</div>
+  <div><div class="bc5"></div>你好世界</div>
+  <div><div class="bc6"></div>抢占先机</div>
+  <div><div class="bc7"></div>弹回</div>
+  <div><div class="bc8"></div>狂乱撕扯</div>
+  <div><div class="bc9"></div>堆栈</div>
+</div>
+<div class="barchart zh junk">
 <div class="key">诅咒珍珠</div>
-<div class="bar"><div style="width:33.5221%" class="bc0"><span>你好世界 (66.63%)</span></div><div style="width:16.2303%" class="bc0"><span>抢占先机 (32.26%)</span></div><div style="width:0.2163%" class="bc0"><span>狂乱撕扯 (0.43%)</span></div><div style="width:0.3471%" class="bc0"><span>堆栈 (0.69%)</span></div></div>
+<div class="bar"><div style="width:66.6233%" class="bc5"><span>你好世界 (66.63%)</span></div><div style="width:32.2568%" class="bc6"><span>抢占先机 (32.26%)</span></div><div style="width:0.4300%" class="bc8"><span>狂乱撕扯 (0.43%)</span></div><div style="width:0.6899%" class="bc9"><span>堆栈 (0.69%)</span></div></div>
 <div class="key">沉重石板</div>
-<div class="bar"><div style="width:5.4923%" class="bc0"><span>抢占先机 (98.82%)</span></div><div style="width:0.0656%" class="bc0"><span>狂乱撕扯 (1.18%)</span></div></div>
+<div class="bar"><div style="width:98.8200%" class="bc6"><span>抢占先机 (98.82%)</span></div><div style="width:1.1800%" class="bc8"><span>狂乱撕扯 (1.18%)</span></div></div>
 <div class="key">巨大扭蛋</div>
-<div class="bar"><div style="width:0.0028%" class="bc0"><span>你好世界 (0.04%)</span></div><div style="width:0.0181%" class="bc0"><span>抢占先机 (0.26%)</span></div><div style="width:6.9265%" class="bc0"><span>狂乱撕扯 (99.7%)</span></div></div>
+<div class="bar"><div style="width:0.0400%" class="bc5"><span>你好世界 (0.04%)</span></div><div style="width:0.2600%" class="bc6"><span>抢占先机 (0.26%)</span></div><div style="width:99.7000%" class="bc8"><span>狂乱撕扯 (99.7%)</span></div></div>
 <div class="key">树叶药膏</div>
-<div class="bar"><div style="width:0.0429%" class="bc0"><span>巩固 (0.08%)</span></div><div style="width:0.1393%" class="bc0"><span>你好世界 (0.26%)</span></div><div style="width:18.9025%" class="bc0"><span>狂乱撕扯 (35.29%)</span></div><div style="width:34.4733%" class="bc0"><span>堆栈 (64.36%)</span></div></div>
+<div class="bar"><div style="width:0.0800%" class="bc4"><span>巩固 (0.08%)</span></div><div style="width:0.2600%" class="bc5"><span>你好世界 (0.26%)</span></div><div style="width:35.2935%" class="bc8"><span>狂乱撕扯 (35.29%)</span></div><div style="width:64.3664%" class="bc9"><span>堆栈 (64.36%)</span></div></div>
 <div class="key">涅奥的骨骰</div>
-<div class="bar"><div style="width:41.9703%" class="bc0"><span>铁蒺藜 (76.61%)</span></div><div style="width:4.5142%" class="bc0"><span>交锋 (8.24%)</span></div><div style="width:0.0767%" class="bc0"><span>双持 (0.14%)</span></div><div style="width:0.0986%" class="bc0"><span>巩固 (0.18%)</span></div><div style="width:8.1191%" class="bc0"><span>堆栈 (14.82%)</span></div></div>
+<div class="bar"><div style="width:76.6177%" class="bc0"><span>铁蒺藜 (76.61%)</span></div><div style="width:8.2408%" class="bc1"><span>交锋 (8.24%)</span></div><div style="width:0.1400%" class="bc3"><span>双持 (0.14%)</span></div><div style="width:0.1800%" class="bc4"><span>巩固 (0.18%)</span></div><div style="width:14.8215%" class="bc9"><span>堆栈 (14.82%)</span></div></div>
 <div class="key">松动羊毛剪</div>
-<div class="bar"><div style="width:57.6100%" class="bc0"><span>交锋 (57.61%)</span></div><div style="width:42.1600%" class="bc0"><span>声东击西 (42.16%)</span></div><div style="width:0.2300%" class="bc0"><span>双持 (0.23%)</span></div></div>
+<div class="bar"><div style="width:57.6100%" class="bc1"><span>交锋 (57.61%)</span></div><div style="width:42.1600%" class="bc2"><span>声东击西 (42.16%)</span></div><div style="width:0.2300%" class="bc3"><span>双持 (0.23%)</span></div></div>
 <div class="key">华美发束</div>
-<div class="bar"><div style="width:0.5475%" class="bc0"><span>交锋 (0.56%)</span></div><div style="width:41.9427%" class="bc0"><span>声东击西 (42.9%)</span></div><div style="width:55.2783%" class="bc0"><span>双持 (56.54%)</span></div></div>
+<div class="bar"><div style="width:0.5600%" class="bc1"><span>交锋 (0.56%)</span></div><div style="width:42.9000%" class="bc2"><span>声东击西 (42.9%)</span></div><div style="width:56.5400%" class="bc3"><span>双持 (56.54%)</span></div></div>
 <div class="key">白银熔炉</div>
-<div class="bar"><div style="width:0.4323%" class="bc0"><span>铁蒺藜 (0.83%)</span></div><div style="width:0.0156%" class="bc0"><span>交锋 (0.03%)</span></div><div style="width:2.2917%" class="bc0"><span>双持 (4.4%)</span></div><div style="width:41.1986%" class="bc0"><span>巩固 (79.1%)</span></div><div style="width:8.0522%" class="bc0"><span>你好世界 (15.46%)</span></div><div style="width:0.0938%" class="bc0"><span>堆栈 (0.18%)</span></div></div>
+<div class="bar"><div style="width:0.8300%" class="bc0"><span>铁蒺藜 (0.83%)</span></div><div style="width:0.0300%" class="bc1"><span>交锋 (0.03%)</span></div><div style="width:4.4000%" class="bc3"><span>双持 (4.4%)</span></div><div style="width:79.1000%" class="bc4"><span>巩固 (79.1%)</span></div><div style="width:15.4600%" class="bc5"><span>你好世界 (15.46%)</span></div><div style="width:0.1800%" class="bc9"><span>堆栈 (0.18%)</span></div></div>
 </div>
 
 <p>发现这一点后，我在网上搜索相关讨论，确实有人注意到似乎无法完成<strong>百科大全</strong>。我还发现 Discord 用户 @hoge 大约一个月前就精准描述了这个问题。向他们致敬！</p>
