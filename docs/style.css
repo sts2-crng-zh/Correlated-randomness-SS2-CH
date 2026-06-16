@@ -374,6 +374,21 @@ a:hover {
   padding: 0.75rem 1rem 1rem;
 }
 
+.chart-details h4 {
+  margin: 1.25rem 0 0.5rem;
+  font-size: 1.05rem;
+}
+
+.chart-details h5 {
+  margin: 1rem 0 0.35rem;
+  font-size: 0.98rem;
+  color: var(--muted);
+}
+
+.chart-details table {
+  margin: 0.35rem 0 0.75rem;
+}
+
 .barchartlgnd.zh {
   display: flex;
   gap: 0.9rem;

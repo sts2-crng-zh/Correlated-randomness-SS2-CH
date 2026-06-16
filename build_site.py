@@ -44,7 +44,7 @@ def build_toc(content_html: str) -> tuple[str, str]:
         headings.append((level, title, anchor))
         return f'<h{level} id="{anchor}">{match.group(2)}</h{level}>'
 
-    content_html = re.sub(r"<h([23])>(.*?)</h\1>", repl, content_html, flags=re.DOTALL)
+    content_html = re.sub(r"<h([2345])>(.*?)</h\1>", repl, content_html, flags=re.DOTALL)
 
     items: list[str] = []
     for level, title, anchor in headings:
@@ -54,21 +54,45 @@ def build_toc(content_html: str) -> tuple[str, str]:
     return content_html, toc
 
 
-def main() -> None:
-    ensure_markdown()
-    import markdown
+def markdown_extensions():
     from markdown.extensions.footnotes import FootnoteExtension
 
-    text = SOURCE.read_text(encoding="utf-8")
-    md = markdown.Markdown(
-        extensions=[
-            "tables",
-            "fenced_code",
-            "sane_lists",
-            "md_in_html",
-            FootnoteExtension(),
-        ]
+    return [
+        "tables",
+        "fenced_code",
+        "sane_lists",
+        "md_in_html",
+        FootnoteExtension(),
+    ]
+
+
+def make_markdown():
+    import markdown
+
+    return markdown.Markdown(extensions=markdown_extensions())
+
+
+def render_details_blocks(text: str) -> str:
+    """Markdown inside <details> is not parsed by default; render it first."""
+    pattern = re.compile(
+        r"(<details[^>]*>\s*<summary>.*?</summary>\s*)(.*?)(\s*</details>)",
+        re.DOTALL | re.IGNORECASE,
     )
+
+    def repl(match: re.Match[str]) -> str:
+        prefix, inner, suffix = match.groups()
+        inner_html = make_markdown().convert(inner.strip())
+        return f"{prefix}\n{inner_html}\n{suffix}"
+
+    return pattern.sub(repl, text)
+
+
+def main() -> None:
+    ensure_markdown()
+
+    text = SOURCE.read_text(encoding="utf-8")
+    text = render_details_blocks(text)
+    md = markdown.Markdown(extensions=markdown_extensions())
     content_html = md.convert(text)
     content_html, toc_html = build_toc(content_html)
 
