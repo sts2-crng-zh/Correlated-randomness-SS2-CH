@@ -51,6 +51,15 @@ JUNK_CARDS: list[tuple[str, str]] = [
 
 JUNK_CARD_CLASS = {name: cls for name, cls in JUNK_CARDS}
 
+OUROBOROS_OUTCOMES: list[tuple[str, str]] = [
+    ("放电异虾", "bc0"),
+    ("玻璃眼珠", "bc1"),
+    ("沙堡", "bc2"),
+    ("宝石或玻璃", "bc3"),
+]
+
+OUROBOROS_OUTCOME_CLASS = {name: cls for name, cls in OUROBOROS_OUTCOMES}
+
 
 def strip_md(text: str) -> str:
     text = re.sub(r"\*\*([^*]+)\*\*", r"\1", text)
@@ -103,6 +112,14 @@ def junk_card_class(card: str) -> str:
 
 def junk_legend() -> str:
     return render_legend([(cls, name) for name, cls in JUNK_CARDS], "junk")
+
+
+def ouroboros_outcome_class(outcome: str) -> str:
+    return OUROBOROS_OUTCOME_CLASS.get(outcome.strip(), "bc0")
+
+
+def ouroboros_legend() -> str:
+    return render_legend([(cls, name) for name, cls in OUROBOROS_OUTCOMES], "ouroboros")
 
 
 def render_legend(items: list[tuple[str, str]], chart_class: str = "") -> str:
@@ -251,23 +268,26 @@ def convert_junk_conditioned(headers: list[str], rows: list[list[str]]) -> str:
 
 
 def convert_ouroboros(headers: list[str], rows: list[list[str]]) -> str:
-    legend = render_legend(
-        [("bc0", "普通"), ("bc1", "罕见"), ("bc2", "稀有")]
-    )
-    chart_rows: list[tuple[str, list[tuple[float, str, str]]]] = []
+    legend = ouroboros_legend()
+    parts = [legend, '<div class="barchart zh ouroboros">']
 
     for row in rows:
         label = row[0]
-        cls = rarity_class(label)
         segments: list[tuple[float, str, str]] = []
         for value, outcome in zip([parse_pct(cell) for cell in row[1:]], headers[1:]):
             if value is None or value <= 0:
                 continue
+            cls = ouroboros_outcome_class(outcome)
             segments.append((value, f"{outcome} {value:g}%", cls))
-        if segments:
-            chart_rows.append((label, segments))
+        if not segments:
+            continue
+        total = sum(v for v, _, _ in segments)
+        row_scale = 100.0 / total if total > 0 else 0.0
+        parts.append(f'<div class="key">{html.escape(label)}</div>')
+        parts.append(render_bar(segments, row_scale))
 
-    return legend + "\n" + render_barchart(chart_rows)
+    parts.append("</div>")
+    return "\n".join(parts)
 
 
 def classify_table(headers: list[str]) -> str:

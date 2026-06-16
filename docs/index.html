@@ -10,7 +10,7 @@
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://sts2-crng-zh.github.io/Correlated-randomness-SS2-CH/">
   <link rel="stylesheet" href="fonts/fonts.css">
-  <link rel="stylesheet" href="style.css?v=1781622204682351400">
+  <link rel="stylesheet" href="style.css?v=1781622616744190800">
 </head>
 <body>
   <header class="site-header">
@@ -655,22 +655,23 @@ Rng TreasureRoomRelics = new Rng(seed + hash(&quot;treasure_room_relics&quot;));
 
 <p>（若出现松动羊毛剪——你可能用它移除了两张打击——则特兹第一选项有 88.75% 是营养汤。这特别好笑：我往 Discord 狂倒 CRNG 发现时，两个人发了悲伤截图，说移除了 2+ 张打击却看到营养汤。你猜怎么着，遗物栏里都有松动羊毛剪。我打破幻想时只有一点点愧疚。）</p>
 <p><strong>欧洛巴斯</strong>呢？它会先为毒液玻璃roll颜色、再在棱彩宝石和毒液玻璃之间选择，然后才选第一选项，因此我们实际上需要某个 RNG 的<strong>第三次</strong> roll。最容易拿到的是<strong>第一场战斗奖励</strong>：</p>
-<div class="barchartlgnd zh">
-  <div><div class="bc0"></div>普通</div>
-  <div><div class="bc1"></div>罕见</div>
-  <div><div class="bc2"></div>稀有</div>
+<div class="barchartlgnd zh ouroboros">
+  <div><div class="bc0"></div>放电异虾</div>
+  <div><div class="bc1"></div>玻璃眼珠</div>
+  <div><div class="bc2"></div>沙堡</div>
+  <div><div class="bc3"></div>宝石或玻璃</div>
 </div>
-<div class="barchart zh">
+<div class="barchart zh ouroboros">
 <div class="key">普通药水</div>
-<div class="bar"><div style="width:15.6484%" class="bc0"><span>放电异虾 15.65%</span></div><div style="width:23.7676%" class="bc0"><span>玻璃眼珠 23.77%</span></div><div style="width:37.9262%" class="bc0"><span>沙堡 37.93%</span></div><div style="width:22.6477%" class="bc0"><span>宝石或玻璃 22.65%</span></div></div>
+<div class="bar"><div style="width:15.6500%" class="bc0"><span>放电异虾 15.65%</span></div><div style="width:23.7700%" class="bc1"><span>玻璃眼珠 23.77%</span></div><div style="width:37.9300%" class="bc2"><span>沙堡 37.93%</span></div><div style="width:22.6500%" class="bc3"><span>宝石或玻璃 22.65%</span></div></div>
 <div class="key">罕见药水</div>
-<div class="bar"><div style="width:39.9860%" class="bc1"><span>放电异虾 39.99%</span></div><div style="width:28.8071%" class="bc1"><span>玻璃眼珠 28.81%</span></div><div style="width:1.6298%" class="bc1"><span>沙堡 1.63%</span></div><div style="width:29.5770%" class="bc1"><span>宝石或玻璃 29.58%</span></div></div>
+<div class="bar"><div style="width:39.9860%" class="bc0"><span>放电异虾 39.99%</span></div><div style="width:28.8071%" class="bc1"><span>玻璃眼珠 28.81%</span></div><div style="width:1.6298%" class="bc2"><span>沙堡 1.63%</span></div><div style="width:29.5770%" class="bc3"><span>宝石或玻璃 29.58%</span></div></div>
 <div class="key">稀有药水</div>
-<div class="bar"><div style="width:46.5653%" class="bc2"><span>放电异虾 46.57%</span></div><div style="width:23.1377%" class="bc2"><span>玻璃眼珠 23.14%</span></div><div style="width:30.2870%" class="bc2"><span>宝石或玻璃 30.29%</span></div></div>
+<div class="bar"><div style="width:46.5700%" class="bc0"><span>放电异虾 46.57%</span></div><div style="width:23.1400%" class="bc1"><span>玻璃眼珠 23.14%</span></div><div style="width:30.2900%" class="bc3"><span>宝石或玻璃 30.29%</span></div></div>
 <div class="key">普通卡牌</div>
-<div class="bar"><div style="width:16.5183%" class="bc0"><span>放电异虾 16.52%</span></div><div style="width:23.6476%" class="bc0"><span>玻璃眼珠 23.65%</span></div><div style="width:37.4663%" class="bc0"><span>沙堡 37.47%</span></div><div style="width:22.3578%" class="bc0"><span>宝石或玻璃 22.36%</span></div></div>
+<div class="bar"><div style="width:16.5200%" class="bc0"><span>放电异虾 16.52%</span></div><div style="width:23.6500%" class="bc1"><span>玻璃眼珠 23.65%</span></div><div style="width:37.4700%" class="bc2"><span>沙堡 37.47%</span></div><div style="width:22.3600%" class="bc3"><span>宝石或玻璃 22.36%</span></div></div>
 <div class="key">罕见卡牌</div>
-<div class="bar"><div style="width:42.1858%" class="bc1"><span>放电异虾 42.19%</span></div><div style="width:27.8472%" class="bc1"><span>玻璃眼珠 27.85%</span></div><div style="width:29.9470%" class="bc1"><span>宝石或玻璃 29.95%</span></div></div>
+<div class="bar"><div style="width:42.1942%" class="bc0"><span>放电异虾 42.19%</span></div><div style="width:27.8528%" class="bc1"><span>玻璃眼珠 27.85%</span></div><div style="width:29.9530%" class="bc3"><span>宝石或玻璃 29.95%</span></div></div>
 </div>
 
 <p>如果你拿到了药水，那是第三次 RNG roll；否则是第一张卡牌。还要注意：选择任何会给你卡牌或遗物的涅奥选项都会破坏这种相关性并引入新的相关性，此处不再展开。</p>
