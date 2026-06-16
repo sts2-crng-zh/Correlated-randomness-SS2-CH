@@ -445,3 +445,71 @@ a:hover {
 .barchart.zh .bc0 { background: #7d79cb; }
 .barchart.zh .bc1 { background: #3fb950; }
 .barchart.zh .bc2 { background: #f1416c; }
+
+.barchartbtns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.5rem 0 0.75rem;
+}
+
+.barchartbtns button {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.35rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.92rem;
+}
+
+.barchartbtns button:hover {
+  border-color: var(--accent);
+}
+
+.barchartbtns button.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  font-weight: 700;
+}
+
+.chart-details .barchart {
+  display: grid;
+  grid-template-columns: minmax(150px, 240px) 1fr;
+  gap: 0.4rem 0.75rem;
+  align-items: center;
+  margin: 0.25rem 0 1.25rem;
+}
+
+.chart-details .barchart .key {
+  font-size: 0.96rem;
+}
+
+.chart-details .barchart .key.phantom {
+  display: none;
+}
+
+.chart-details .barchart .bar {
+  min-height: 1.5rem;
+  display: flex;
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.chart-details .barchart .bar > div {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 0.45rem;
+  min-width: 2.5rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.chart-details .barchart .bc0 {
+  background: #7d79cb;
+}

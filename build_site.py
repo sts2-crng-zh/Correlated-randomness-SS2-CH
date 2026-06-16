@@ -155,6 +155,7 @@ def main() -> None:
     window.addEventListener('scroll', onScroll, {{ passive: true }});
     onScroll();
   </script>
+  <script src="barcharts.js"></script>
 </body>
 </html>
 """

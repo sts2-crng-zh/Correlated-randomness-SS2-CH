@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Extract Leafy Poultice / Hefty Tablet tables from original blog HTML."""
+"""Extract Leafy Poultice / Hefty Tablet charts from original blog HTML."""
 
 from __future__ import annotations
 
+import html
 import json
 import re
 import urllib.request
@@ -24,11 +25,12 @@ CHARS = [
     ("necro", "亡灵契约师"),
     ("defect", "故障机器人"),
 ]
-CHAR_INDEX = {c[0]: i for i, c in enumerate(CHARS)}
 
 
 def cn(card_id: str) -> str:
     card_id = card_id.strip()
+    if not card_id:
+        return ""
     if card_id in MANUAL:
         return MANUAL[card_id]
     if card_id in MAP:
@@ -50,12 +52,24 @@ def fetch_html() -> str:
 def parse_barchart(section_html: str) -> list[dict]:
     rows = []
     pattern = re.compile(
-        r"<div class='key'[^>]*data-keys='([^']*)'[^>]*>([^<]+)</div>"
-        r"<div class='bar'><div[^>]*><span>([^<]+)</span>",
+        r"<div class='key(?: phantom)?'([^>]*)>([^<]*)</div>"
+        r"<div class='bar'><div[^>]*style='width:([^']+)'[^>]*><span>([^<]+)</span>",
         re.IGNORECASE,
     )
-    for keys, _label, pct in pattern.findall(section_html):
-        rows.append({"pct": pct.strip(), "cards": keys.split("|")})
+    for attrs, _label, width, pct in pattern.findall(section_html):
+        phantom = "phantom" in attrs
+        keys_m = re.search(r"data-keys='([^']*)'", attrs)
+        btn_m = re.search(r"data-btn='([^']*)'", attrs)
+        cards = keys_m.group(1).split("|") if keys_m else []
+        rows.append(
+            {
+                "phantom": phantom,
+                "btn": btn_m.group(1) if btn_m else "",
+                "cards": cards,
+                "width": width.strip(),
+                "pct": pct.strip(),
+            }
+        )
     return rows
 
 
@@ -80,20 +94,33 @@ def split_acts(block: str) -> tuple[str, str]:
     return under, over
 
 
-def table_md(rows: list[dict], char_key: str) -> str:
-    idx = CHAR_INDEX[char_key]
-    lines = ["| 卡牌 | 概率 |", "|------|------|"]
+def render_act_barchart(rows: list[dict], btn_id: str, act_label: str) -> str:
+    out = [f'<p><strong>{act_label}：</strong></p>', '<div class="barchartbtns">']
+    for i, (key, name) in enumerate(CHARS):
+        active = " active" if i == 0 else ""
+        out.append(
+            f'<button type="button" class="{key}{active}" data-btn="{btn_id}" data-idx="{i}">{name}</button>'
+        )
+    out.append("</div>")
+    out.append('<div class="barchart">')
     for row in rows:
-        if idx >= len(row["cards"]):
-            continue
-        lines.append(f"| {cn(row['cards'][idx])} | {row['pct']} |")
-    return "\n".join(lines)
+        cn_names = [cn(card) for card in row["cards"]]
+        label = cn_names[0] if cn_names else ""
+        keys_attr = html.escape("|".join(cn_names), quote=True)
+        phantom = " phantom" if row["phantom"] else ""
+        attrs = f" data-btn='{btn_id}' data-keys='{keys_attr}'" if cn_names else ""
+        out.append(
+            f"<div class='key{phantom}'{attrs}>{html.escape(label)}</div>"
+            f"<div class='bar'><div style='width:{row['width']}' class='bc0'><span>{row['pct']}</span></div></div>"
+        )
+    out.append("</div>")
+    return "\n".join(out)
 
 
-def render_leafy_hefty_section(html: str | None = None) -> str:
-    html = html or fetch_html()
-    leafy = extract_details(html, "Leafy Poultice")
-    hefty_block = html.split("Similarly,")[1].split("## New Leaf")[0] if "Similarly," in html else ""
+def render_leafy_hefty_section(source_html: str | None = None) -> str:
+    source_html = source_html or fetch_html()
+    leafy = extract_details(source_html, "Leafy Poultice")
+    hefty_block = source_html.split("Similarly,")[1].split("## New Leaf")[0] if "Similarly," in source_html else ""
     leafy_under, leafy_over = split_acts(leafy)
     hefty_under, hefty_over = split_acts(hefty_block)
 
@@ -106,41 +133,28 @@ def render_leafy_hefty_section(html: str | None = None) -> str:
         "",
         "结果是：**树叶药膏的第一次变化只有 22 种可能**（每个角色 80 张牌池中的子集），其中一些明显更常见。",
         "",
-        "（原文将这些图表做成可折叠区块；以下按角色列出完整数据。）",
+        "以下图表按原文做成可折叠区块，可点击角色按钮切换查看。",
         "",
-        "### 树叶药膏",
+        '<details class="chart-details" open>',
+        "<summary>树叶药膏</summary>",
         "",
+        render_act_barchart(parse_barchart(leafy_under), "leafy-u", "暗港"),
+        "",
+        render_act_barchart(parse_barchart(leafy_over), "leafy-o", "密林"),
+        "",
+        "</details>",
+        "",
+        "类似地，**沉重石板在密林的第一次选项只有 11 种可能，在暗港只有 3 种**！正如上文所示，沉重石板在暗港本身大约只出现 1.3%，因此看到它本身就是极强的信息。",
+        "",
+        '<details class="chart-details">',
+        "<summary>沉重石板</summary>",
+        "",
+        render_act_barchart(parse_barchart(hefty_under), "tablet-u", "暗港"),
+        "",
+        render_act_barchart(parse_barchart(hefty_over), "tablet-o", "密林"),
+        "",
+        "</details>",
     ]
-
-    for act_html, act_label in [(leafy_under, "暗港"), (leafy_over, "密林")]:
-        rows = parse_barchart(act_html)
-        lines.append(f"#### {act_label}")
-        lines.append("")
-        for char_key, char_cn in CHARS:
-            lines.append(f"##### {char_cn}")
-            lines.append("")
-            lines.append(table_md(rows, char_key))
-            lines.append("")
-
-    lines.extend(
-        [
-            "类似地，**沉重石板在密林的第一次选项只有 11 种可能，在暗港只有 3 种**！正如上文所示，沉重石板在暗港本身大约只出现 1.3%，因此看到它本身就是极强的信息。",
-            "",
-            "### 沉重石板",
-            "",
-        ]
-    )
-
-    for act_html, act_label in [(hefty_under, "暗港"), (hefty_over, "密林")]:
-        rows = parse_barchart(act_html)
-        lines.append(f"#### {act_label}")
-        lines.append("")
-        for char_key, char_cn in CHARS:
-            lines.append(f"##### {char_cn}")
-            lines.append("")
-            lines.append(table_md(rows, char_key))
-            lines.append("")
-
     return "\n".join(lines).rstrip() + "\n"
 
 

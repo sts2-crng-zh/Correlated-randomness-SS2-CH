@@ -191,415 +191,215 @@ Rng TreasureRoomRelics = new Rng(seed + hash("treasure_room_relics"));
 
 结果是：**树叶药膏的第一次变化只有 22 种可能**（每个角色 80 张牌池中的子集），其中一些明显更常见。
 
-以下图表按原文做成可折叠区块。
+以下图表按原文做成可折叠区块，可点击角色按钮切换查看。
 
 <details class="chart-details" open>
 <summary>树叶药膏</summary>
 
-#### 暗港
+<p><strong>暗港：</strong></p>
+<div class="barchartbtns">
+<button type="button" class="clad active" data-btn="leafy-u" data-idx="0">铁甲战士</button>
+<button type="button" class="silent" data-btn="leafy-u" data-idx="1">静默猎手</button>
+<button type="button" class="regent" data-btn="leafy-u" data-idx="2">储君</button>
+<button type="button" class="necro" data-btn="leafy-u" data-idx="3">亡灵契约师</button>
+<button type="button" class="defect" data-btn="leafy-u" data-idx="4">故障机器人</button>
+</div>
+<div class="barchart">
+<div class='key' data-btn='leafy-u' data-keys='好勇斗狠|磨蚀|星位序列|来生|适应打击'>好勇斗狠</div><div class='bar'><div style='width:48.16539298547497%' class='bc0'><span>3.78%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='愤怒|触媒|武器库|女妖之嚎|万物一心'>愤怒</div><div class='bar'><div style='width:99.84310946910269%' class='bc0'><span>7.84%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='武装|精准|星界脉冲|荒疫打击|球状闪电'>武装</div><div class='bar'><div style='width:99.66597499873475%' class='bc0'><span>7.82%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='灰烬打击|杂技|锻打成型|碎骨|弹幕齐射'>灰烬打击</div><div class='bar'><div style='width:99.65332253656561%' class='bc0'><span>7.82%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='壁垒|肾上腺素|下去！|预借时间|光束射线'>壁垒</div><div class='bar'><div style='width:99.87600587074245%' class='bc0'><span>7.84%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='战斗专注|余像|大爆炸|埋葬|高速脱离'>战斗专注</div><div class='bar'><div style='width:99.62548711979352%' class='bc0'><span>7.82%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='血墙|预判|黑洞|钙化|启动流程'>血墙</div><div class='bar'><div style='width:99.69127992307303%' class='bc0'><span>7.83%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='放血|刺杀|轰击|虚空之唤|缓冲'>放血</div><div class='bar'><div style='width:99.59259071815376%' class='bc0'><span>7.82%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='重锤|后空翻|铸墙|捕捉灵魂|暴涨'>重锤</div><div class='bar'><div style='width:99.73682878688193%' class='bc0'><span>7.83%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='全身撞击|背刺|新生之喜|洁净|扩容'>全身撞击</div><div class='bar'><div style='width:100.0%' class='bc0'><span>7.85%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='烙印|墨之刃|天穹之力|倒数计时|混沌'>烙印</div><div class='bar'><div style='width:51.217166860671085%' class='bc0'><span>4.02%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='恶魔之焰|独门技术|创世纪|取回|超越光速'>恶魔之焰</div><div class='bar'><div style='width:20.254061440356292%' class='bc0'><span>1.59%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='与我一战！|暴露|微光|重压|聚变'>与我一战！</div><div class='bar'><div style='width:27.4001720734855%' class='bc0'><span>2.15%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='火焰屏障|刀扇|流光溢彩|友谊|遗传算法'>火焰屏障</div><div class='bar'><div style='width:27.66840427147123%' class='bc0'><span>2.17%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='被遗忘的仪式|终结技|辉光|守墓人|冰川'>被遗忘的仪式</div><div class='bar'><div style='width:27.65322131686826%' class='bc0'><span>2.17%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='破灭|飞镖|护驾！！！|坟冢爆射|玻璃工艺'>破灭</div><div class='bar'><div style='width:27.6380383622653%' class='bc0'><span>2.17%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='头槌|翻越撑击|引导之星|吊杀|眼部攻击'>头槌</div><div class='bar'><div style='width:27.673465256338883%' class='bc0'><span>2.17%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='地狱狂徒|跟进|天际钻头|纠缠|污秽攻击'>地狱狂徒</div><div class='bar'><div style='width:27.69623968824333%' class='bc0'><span>2.17%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='御血术|灵动步法|霸权|击掌|冰雹风暴'>御血术</div><div class='bar'><div style='width:27.76203249152285%' class='bc0'><span>2.18%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='彼岸咆哮|华丽收场|传承之锤|唤起|螺旋钻击'>彼岸咆哮</div><div class='bar'><div style='width:27.67599574877271%' class='bc0'><span>2.17%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='岿然不动|手上技法|隐秘藏品|致死性|全息影像'>岿然不动</div><div class='bar'><div style='width:27.678526241206537%' class='bc0'><span>2.17%</span></div></div>
+<div class='key' data-btn='leafy-u' data-keys='地狱之刃|迷雾|所向无敌|忧郁|热修复'>地狱之刃</div><div class='bar'><div style='width:7.601599271218179%' class='bc0'><span>0.60%</span></div></div>
+</div>
 
-##### 铁甲战士
-
-| 卡牌 | 概率 |
-|------|------|
-| 好勇斗狠 | 3.78% |
-| 愤怒 | 7.84% |
-| 武装 | 7.82% |
-| 灰烬打击 | 7.82% |
-| 壁垒 | 7.84% |
-| 战斗专注 | 7.82% |
-| 血墙 | 7.83% |
-| 放血 | 7.82% |
-| 重锤 | 7.83% |
-| 全身撞击 | 7.85% |
-| 烙印 | 4.02% |
-| 恶魔之焰 | 1.59% |
-| 与我一战！ | 2.15% |
-| 火焰屏障 | 2.17% |
-| 被遗忘的仪式 | 2.17% |
-| 破灭 | 2.17% |
-| 头槌 | 2.17% |
-| 地狱狂徒 | 2.17% |
-| 御血术 | 2.18% |
-| 彼岸咆哮 | 2.17% |
-| 岿然不动 | 2.17% |
-| 地狱之刃 | 0.60% |
-
-##### 静默猎手
-
-| 卡牌 | 概率 |
-|------|------|
-| 磨蚀 | 3.78% |
-| 触媒 | 7.84% |
-| 精准 | 7.82% |
-| 杂技 | 7.82% |
-| 肾上腺素 | 7.84% |
-| 余像 | 7.82% |
-| 预判 | 7.83% |
-| 刺杀 | 7.82% |
-| 后空翻 | 7.83% |
-| 背刺 | 7.85% |
-| 墨之刃 | 4.02% |
-| 独门技术 | 1.59% |
-| 暴露 | 2.15% |
-| 刀扇 | 2.17% |
-| 终结技 | 2.17% |
-| 飞镖 | 2.17% |
-| 翻越撑击 | 2.17% |
-| 跟进 | 2.17% |
-| 灵动步法 | 2.18% |
-| 华丽收场 | 2.17% |
-| 手上技法 | 2.17% |
-| 迷雾 | 0.60% |
-
-##### 储君
-
-| 卡牌 | 概率 |
-|------|------|
-| 星位序列 | 3.78% |
-| 武器库 | 7.84% |
-| 星界脉冲 | 7.82% |
-| 锻打成型 | 7.82% |
-| 下去！ | 7.84% |
-| 大爆炸 | 7.82% |
-| 黑洞 | 7.83% |
-| 轰击 | 7.82% |
-| 铸墙 | 7.83% |
-| 新生之喜 | 7.85% |
-| 天穹之力 | 4.02% |
-| 创世纪 | 1.59% |
-| 微光 | 2.15% |
-| 流光溢彩 | 2.17% |
-| 辉光 | 2.17% |
-| 护驾！！！ | 2.17% |
-| 引导之星 | 2.17% |
-| 天际钻头 | 2.17% |
-| 霸权 | 2.18% |
-| 传承之锤 | 2.17% |
-| 隐秘藏品 | 2.17% |
-| 所向无敌 | 0.60% |
-
-##### 亡灵契约师
-
-| 卡牌 | 概率 |
-|------|------|
-| 来生 | 3.78% |
-| 女妖之嚎 | 7.84% |
-| 荒疫打击 | 7.82% |
-| 碎骨 | 7.82% |
-| 预借时间 | 7.84% |
-| 埋葬 | 7.82% |
-| 钙化 | 7.83% |
-| 虚空之唤 | 7.82% |
-| 捕捉灵魂 | 7.83% |
-| 洁净 | 7.85% |
-| 倒数计时 | 4.02% |
-| 取回 | 1.59% |
-| 重压 | 2.15% |
-| 友谊 | 2.17% |
-| 守墓人 | 2.17% |
-| 坟冢爆射 | 2.17% |
-| 吊杀 | 2.17% |
-| 纠缠 | 2.17% |
-| 击掌 | 2.18% |
-| 唤起 | 2.17% |
-| 致死性 | 2.17% |
-| 忧郁 | 0.60% |
-
-##### 故障机器人
-
-| 卡牌 | 概率 |
-|------|------|
-| 适应打击 | 3.78% |
-| 万物一心 | 7.84% |
-| 球状闪电 | 7.82% |
-| 弹幕齐射 | 7.82% |
-| 光束射线 | 7.84% |
-| 高速脱离 | 7.82% |
-| 启动流程 | 7.83% |
-| 缓冲 | 7.82% |
-| 暴涨 | 7.83% |
-| 扩容 | 7.85% |
-| 混沌 | 4.02% |
-| 超越光速 | 1.59% |
-| 聚变 | 2.15% |
-| 遗传算法 | 2.17% |
-| 冰川 | 2.17% |
-| 玻璃工艺 | 2.17% |
-| 眼部攻击 | 2.17% |
-| 污秽攻击 | 2.17% |
-| 冰雹风暴 | 2.18% |
-| 螺旋钻击 | 2.17% |
-| 全息影像 | 2.17% |
-| 热修复 | 0.60% |
-
-#### 密林
-
-##### 铁甲战士
-
-| 卡牌 | 概率 |
-|------|------|
-| 熔融之拳 | 0.64% |
-| 时候未到 | 2.20% |
-| 祭品 | 2.20% |
-| 连环拳 | 2.20% |
-| 契约终结 | 2.21% |
-| 完美打击 | 2.21% |
-| 劫掠 | 2.21% |
-| 剑柄打击 | 2.21% |
-| 原始力量 | 2.21% |
-| 薪火之源 | 2.20% |
-| 狂怒 | 1.58% |
-| 重振精神 | 3.99% |
-| 预备打击 | 7.79% |
-| 耸肩无视 | 7.81% |
-| 怨恨 | 7.80% |
-| 惊逃 | 7.80% |
-| 添柴 | 7.78% |
-| 踩踏 | 7.78% |
-| 岩石铠甲 | 7.83% |
-| 飞剑回旋镖 | 7.76% |
-| 挑衅 | 7.79% |
-| 扯碎 | 3.78% |
-
-##### 静默猎手
-
-| 卡牌 | 概率 |
-|------|------|
-| 谋划专家 | 0.64% |
-| 铭记死亡 | 2.20% |
-| 蜃景 | 2.20% |
-| 谋杀 | 2.20% |
-| 夜魇 | 2.21% |
-| 毒雾 | 2.21% |
-| 毒性爆发 | 2.21% |
-| 幻影之刃 | 2.21% |
-| 尖啸 | 2.21% |
-| 精密瞄准 | 2.20% |
-| 带毒刺击 | 1.58% |
-| 猎杀者 | 3.99% |
-| 早有准备 | 7.79% |
-| 本能反应 | 7.81% |
-| 连续反弹 | 7.80% |
-| 群蛇形态 | 7.80% |
-| 暗影步 | 7.78% |
-| 融入暗影 | 7.78% |
-| 串刺 | 7.83% |
-| 切割 | 7.76% |
-| 蛇咬 | 7.79% |
-| 速行者 | 3.78% |
-
-##### 储君
-
-| 卡牌 | 概率 |
-|------|------|
-| 君权自授 | 0.64% |
-| 王之凝视 | 2.20% |
-| 独白 | 2.20% |
-| 中子护盾 | 2.20% |
-| 环绕轨道 | 2.21% |
-| 暗淡蓝点 | 2.21% |
-| 招架 | 2.21% |
-| 粒子墙 | 2.21% |
-| 星星点点 | 2.21% |
-| 光子切割 | 2.20% |
-| 创世之柱 | 1.58% |
-| 辐射 | 3.99% |
-| 淬炼刀刃 | 7.79% |
-| 倒映 | 7.81% |
-| 共鸣 | 7.80% |
-| 胜券在王 | 7.80% |
-| 王国资产 | 7.78% |
-| 追踪之刃 | 7.78% |
-| 七星 | 7.83% |
-| 明耀打击 | 7.76% |
-| 太阳打击 | 7.79% |
-| 光谱偏移 | 3.78% |
-
-##### 亡灵契约师
-
-| 卡牌 | 概率 |
-|------|------|
-| 书页风暴 | 0.64% |
-| 领会 | 2.20% |
-| 戳击 | 2.20% |
-| 吸引仇恨 | 2.20% |
-| 亡魂牵引 | 2.21% |
-| 腐败 | 2.21% |
-| 猛晃 | 2.21% |
-| 死者苏生 | 2.21% |
-| 收割 | 2.21% |
-| 死神形态 | 2.20% |
-| 剥夺 | 1.58% |
-| 鞭打 | 3.99% |
-| 雕琢打击 | 7.79% |
-| 降灵 | 7.81% |
-| 哨卫模式 | 7.80% |
-| 切断 | 7.80% |
-| 命运同担 | 7.78% |
-| 厄运之衣 | 7.78% |
-| 紧追不放 | 7.83% |
-| 血肉戏法 | 7.76% |
-| 响指 | 7.79% |
-| 灵魂风暴 | 3.78% |
-
-##### 故障机器人
-
-| 卡牌 | 概率 |
-|------|------|
-| 机器学习 | 0.64% |
-| 陨石打击 | 2.20% |
-| 模组改造 | 2.20% |
-| 趁势打击 | 2.20% |
-| 多重释放 | 2.21% |
-| 空值 | 2.21% |
-| 超频 | 2.21% |
-| 彩虹 | 2.21% |
-| 重启 | 2.21% |
-| 折射 | 2.20% |
-| 火箭飞拳 | 1.58% |
-| 暗影之盾 | 3.99% |
-| 打碎 | 7.79% |
-| 信号增强 | 7.81% |
-| 快速检索 | 7.80% |
-| 烟囱 | 7.80% |
-| 旋转工艺 | 7.78% |
-| 雷暴 | 7.78% |
-| 子程序 | 7.83% |
-| 分离 | 7.76% |
-| 超临界态 | 7.79% |
-| 扫荡射线 | 3.78% |
-
-类似地，**沉重石板在密林的第一次选项只有 11 种可能，在暗港只有 3 种**！正如上文所示，沉重石板在暗港本身大约只出现 1.3%，因此看到它本身就是极强的信息。
+<p><strong>密林：</strong></p>
+<div class="barchartbtns">
+<button type="button" class="clad active" data-btn="leafy-o" data-idx="0">铁甲战士</button>
+<button type="button" class="silent" data-btn="leafy-o" data-idx="1">静默猎手</button>
+<button type="button" class="regent" data-btn="leafy-o" data-idx="2">储君</button>
+<button type="button" class="necro" data-btn="leafy-o" data-idx="3">亡灵契约师</button>
+<button type="button" class="defect" data-btn="leafy-o" data-idx="4">故障机器人</button>
+</div>
+<div class="barchart">
+<div class='key' data-btn='leafy-o' data-keys='熔融之拳|谋划专家|君权自授|书页风暴|机器学习'>熔融之拳</div><div class='bar'><div style='width:8.114362112408083%' class='bc0'><span>0.64%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='时候未到|铭记死亡|王之凝视|领会|陨石打击'>时候未到</div><div class='bar'><div style='width:28.13287396513601%' class='bc0'><span>2.20%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='祭品|蜃景|独白|戳击|模组改造'>祭品</div><div class='bar'><div style='width:28.14058723710598%' class='bc0'><span>2.20%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='连环拳|谋杀|中子护盾|吸引仇恨|趁势打击'>连环拳</div><div class='bar'><div style='width:28.09687869594282%' class='bc0'><span>2.20%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='契约终结|夜魇|环绕轨道|亡魂牵引|多重释放'>契约终结</div><div class='bar'><div style='width:28.256286316655526%' class='bc0'><span>2.21%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='完美打击|毒雾|暗淡蓝点|腐败|空值'>完美打击</div><div class='bar'><div style='width:28.197151231552425%' class='bc0'><span>2.21%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='劫掠|毒性爆发|招架|猛晃|超频'>劫掠</div><div class='bar'><div style='width:28.16115596235923%' class='bc0'><span>2.21%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='剑柄打击|幻影之刃|粒子墙|死者苏生|彩虹'>剑柄打击</div><div class='bar'><div style='width:28.19200905023911%' class='bc0'><span>2.21%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='原始力量|尖啸|星星点点|收割|重启'>原始力量</div><div class='bar'><div style='width:28.179153596955828%' class='bc0'><span>2.21%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='薪火之源|精密瞄准|光子切割|死神形态|折射'>薪火之源</div><div class='bar'><div style='width:28.143158327762638%' class='bc0'><span>2.20%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='狂怒|带毒刺击|创世之柱|剥夺|火箭飞拳'>狂怒</div><div class='bar'><div style='width:20.21648583329048%' class='bc0'><span>1.58%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='重振精神|猎杀者|辐射|鞭打|暗影之盾'>重振精神</div><div class='bar'><div style='width:50.951303542962926%' class='bc0'><span>3.99%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='预备打击|早有准备|淬炼刀刃|雕琢打击|打碎'>预备打击</div><div class='bar'><div style='width:99.4677842340721%' class='bc0'><span>7.79%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='耸肩无视|本能反应|倒映|降灵|信号增强'>耸肩无视</div><div class='bar'><div style='width:99.75574638761763%' class='bc0'><span>7.81%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='怨恨|连续反弹|共鸣|哨卫模式|快速检索'>怨恨</div><div class='bar'><div style='width:99.5680567696817%' class='bc0'><span>7.80%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='惊逃|群蛇形态|胜券在王|切断|烟囱'>惊逃</div><div class='bar'><div style='width:99.65804494266467%' class='bc0'><span>7.80%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='添柴|暗影步|王国资产|命运同担|旋转工艺'>添柴</div><div class='bar'><div style='width:99.39322260502905%' class='bc0'><span>7.78%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='踩踏|融入暗影|追踪之刃|厄运之衣|雷暴'>踩踏</div><div class='bar'><div style='width:99.34437188255258%' class='bc0'><span>7.78%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='岩石铠甲|串刺|七星|紧追不放|子程序'>岩石铠甲</div><div class='bar'><div style='width:100.0%' class='bc0'><span>7.83%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='飞剑回旋镖|切割|明耀打击|血肉戏法|分离'>飞剑回旋镖</div><div class='bar'><div style='width:99.11554481411015%' class='bc0'><span>7.76%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='挑衅|蛇咬|太阳打击|响指|超临界态'>挑衅</div><div class='bar'><div style='width:99.49349514063866%' class='bc0'><span>7.79%</span></div></div>
+<div class='key' data-btn='leafy-o' data-keys='扯碎|速行者|光谱偏移|灵魂风暴|扫荡射线'>扯碎</div><div class='bar'><div style='width:48.30822234791999%' class='bc0'><span>3.78%</span></div></div>
+</div>
 
 </details>
+
+类似地，**沉重石板在密林的第一次选项只有 11 种可能，在暗港只有 3 种**！正如上文所示，沉重石板在暗港本身大约只出现 1.3%，因此看到它本身就是极强的信息。
 
 <details class="chart-details">
 <summary>沉重石板</summary>
 
-#### 暗港
+<p><strong>暗港：</strong></p>
+<div class="barchartbtns">
+<button type="button" class="clad active" data-btn="tablet-u" data-idx="0">铁甲战士</button>
+<button type="button" class="silent" data-btn="tablet-u" data-idx="1">静默猎手</button>
+<button type="button" class="regent" data-btn="tablet-u" data-idx="2">储君</button>
+<button type="button" class="necro" data-btn="tablet-u" data-idx="3">亡灵契约师</button>
+<button type="button" class="defect" data-btn="tablet-u" data-idx="4">故障机器人</button>
+</div>
+<div class="barchart">
+<div class='key' data-btn='tablet-u' data-keys='势不可当|刀刃陷阱|传承之锤|死神形态|机器学习'>势不可当</div><div class='bar'><div style='width:100.0%' class='bc0'><span>72.52%</span></div></div>
+<div class='key' data-btn='tablet-u' data-keys='扯碎|狩猎|铸剑者|大限已至|超临界态'>扯碎</div><div class='bar'><div style='width:23.126201153106983%' class='bc0'><span>16.77%</span></div></div>
+<div class='key' data-btn='tablet-u' data-keys='痛殴|必备工具|暴政|重构|化废为宝'>痛殴</div><div class='bar'><div style='width:14.772581678411274%' class='bc0'><span>10.71%</span></div></div>
+</div>
 
-##### 铁甲战士
-
-| 卡牌 | 概率 |
-|------|------|
-| 势不可当 | 72.52% |
-| 扯碎 | 16.77% |
-| 痛殴 | 10.71% |
-
-##### 静默猎手
-
-| 卡牌 | 概率 |
-|------|------|
-| 刀刃陷阱 | 72.52% |
-| 狩猎 | 16.77% |
-| 必备工具 | 10.71% |
-
-##### 储君
-
-| 卡牌 | 概率 |
-|------|------|
-| 传承之锤 | 72.52% |
-| 铸剑者 | 16.77% |
-| 暴政 | 10.71% |
-
-##### 亡灵契约师
-
-| 卡牌 | 概率 |
-|------|------|
-| 死神形态 | 72.52% |
-| 大限已至 | 16.77% |
-| 重构 | 10.71% |
-
-##### 故障机器人
-
-| 卡牌 | 概率 |
-|------|------|
-| 机器学习 | 72.52% |
-| 超临界态 | 16.77% |
-| 化废为宝 | 10.71% |
-
-#### 密林
-
-##### 铁甲战士
-
-| 卡牌 | 概率 |
-|------|------|
-| 势不可当 | 4.52% |
-| 凌虐 | 10.17% |
-| 时候未到 | 10.17% |
-| 祭品 | 7.65% |
-| 连环拳 | 6.12% |
-| 契约终结 | 15.99% |
-| 原始力量 | 12.99% |
-| 薪火之源 | 17.29% |
-| 添柴 | 9.04% |
-| 扯碎 | 5.61% |
-| 痛殴 | 0.45% |
-
-##### 静默猎手
-
-| 卡牌 | 概率 |
-|------|------|
-| 刀刃陷阱 | 4.52% |
-| 萎靡 | 10.17% |
-| 谋划专家 | 10.17% |
-| 谋杀 | 7.65% |
-| 夜魇 | 6.12% |
-| 群蛇形态 | 15.99% |
-| 暗影步 | 12.99% |
-| 融入暗影 | 17.29% |
-| 钢铁风暴 | 9.04% |
-| 狩猎 | 5.61% |
-| 必备工具 | 0.45% |
-
-##### 储君
-
-| 卡牌 | 概率 |
-|------|------|
-| 传承之锤 | 4.52% |
-| 所向无敌 | 10.17% |
-| 如此甚好 | 10.17% |
-| 王之凝视 | 7.65% |
-| 中子护盾 | 6.12% |
-| 王国资产 | 15.99% |
-| 追踪之刃 | 12.99% |
-| 七星 | 17.29% |
-| 剑圣 | 9.04% |
-| 铸剑者 | 5.61% |
-| 暴政 | 0.45% |
-
-##### 亡灵契约师
-
-| 卡牌 | 概率 |
-|------|------|
-| 死神形态 | 4.52% |
-| 献祭 | 10.17% |
-| 降灵 | 10.17% |
-| 哨卫模式 | 7.65% |
-| 命运同担 | 6.12% |
-| 灵魂风暴 | 15.99% |
-| 灰烬之灵 | 12.99% |
-| 榨取 | 17.29% |
-| 巨镰 | 9.04% |
-| 大限已至 | 5.61% |
-| 重构 | 0.45% |
-
-##### 故障机器人
-
-| 卡牌 | 概率 |
-|------|------|
-| 机器学习 | 4.52% |
-| 陨石打击 | 10.17% |
-| 模组改造 | 10.17% |
-| 多重释放 | 7.65% |
-| 彩虹 | 6.12% |
-| 重启 | 15.99% |
-| 打碎 | 12.99% |
-| 信号增强 | 17.29% |
-| 旋转工艺 | 9.04% |
-| 超临界态 | 5.61% |
-| 化废为宝 | 0.45% |
+<p><strong>密林：</strong></p>
+<div class="barchartbtns">
+<button type="button" class="clad active" data-btn="tablet-o" data-idx="0">铁甲战士</button>
+<button type="button" class="silent" data-btn="tablet-o" data-idx="1">静默猎手</button>
+<button type="button" class="regent" data-btn="tablet-o" data-idx="2">储君</button>
+<button type="button" class="necro" data-btn="tablet-o" data-idx="3">亡灵契约师</button>
+<button type="button" class="defect" data-btn="tablet-o" data-idx="4">故障机器人</button>
+</div>
+<div class="barchart">
+<div class='key' data-btn='tablet-o' data-keys='势不可当|刀刃陷阱|传承之锤|死神形态|机器学习'>势不可当</div><div class='bar'><div style='width:26.14622814525003%' class='bc0'><span>4.52%</span></div></div>
+<div class='key' data-btn='tablet-o' data-keys='凌虐|萎靡|所向无敌|献祭|陨石打击'>凌虐</div><div class='bar'><div style='width:58.818315197456904%' class='bc0'><span>10.17%</span></div></div>
+<div class='key' data-btn='tablet-o' data-keys='时候未到|谋划专家|如此甚好|降灵|模组改造'>时候未到</div><div class='bar'><div style='width:58.848881281330236%' class='bc0'><span>10.17%</span></div></div>
+<div class='key' data-btn='tablet-o' data-keys='祭品|谋杀|王之凝视|哨卫模式|多重释放'>祭品</div><div class='bar'><div style='width:44.238293189876515%' class='bc0'><span>7.65%</span></div></div>
+<div class='key' data-btn='tablet-o' data-keys='连环拳|夜魇|中子护盾|命运同担|彩虹'>连环拳</div><div class='bar'><div style='width:35.40316664628928%' class='bc0'><span>6.12%</span></div></div>
+<div class='key' data-btn='tablet-o' data-keys='契约终结|群蛇形态|王国资产|灵魂风暴|重启'>契约终结</div><div class='bar'><div style='width:92.4853282797408%' class='bc0'><span>15.99%</span></div></div>
+<div class='key' data-btn='tablet-o' data-keys='原始力量|暗影步|追踪之刃|灰烬之灵|打碎'>原始力量</div><div class='bar'><div style='width:75.13907568162367%' class='bc0'><span>12.99%</span></div></div>
+<div class='key' data-btn='tablet-o' data-keys='薪火之源|融入暗影|七星|榨取|信号增强'>薪火之源</div><div class='bar'><div style='width:100.0%' class='bc0'><span>17.29%</span></div></div>
+<div class='key' data-btn='tablet-o' data-keys='添柴|钢铁风暴|剑圣|巨镰|旋转工艺'>添柴</div><div class='bar'><div style='width:52.280229856950726%' class='bc0'><span>9.04%</span></div></div>
+<div class='key' data-btn='tablet-o' data-keys='扯碎|狩猎|铸剑者|大限已至|超临界态'>扯碎</div><div class='bar'><div style='width:32.4734075070302%' class='bc0'><span>5.61%</span></div></div>
+<div class='key' data-btn='tablet-o' data-keys='痛殴|必备工具|暴政|重构|化废为宝'>痛殴</div><div class='bar'><div style='width:2.590475608265069%' class='bc0'><span>0.45%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:50.322327176870175%' class='bc0'><span>11.91%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:5.666706095067507%' class='bc0'><span>1.34%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:7.073032663613782%' class='bc0'><span>1.67%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:53.33817739400801%' class='bc0'><span>12.63%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:53.145119045607395%' class='bc0'><span>12.58%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:35.59075009716285%' class='bc0'><span>8.42%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:46.53551090758546%' class='bc0'><span>11.02%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:52.37584278206796%' class='bc0'><span>12.40%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:50.76823686134677%' class='bc0'><span>10.14%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:74.37173849898336%' class='bc0'><span>14.85%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:100.0%' class='bc0'><span>19.97%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:69.00710143330762%' class='bc0'><span>13.78%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:49.28935586293933%' class='bc0'><span>9.84%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:49.515720309698615%' class='bc0'><span>9.89%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:25.903204158695498%' class='bc0'><span>5.17%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:31.009925980829134%' class='bc0'><span>6.19%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:50.94101503420507%' class='bc0'><span>10.17%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:66.62888995223345%' class='bc0'><span>HelloWorld (66.63%)</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:98.82212613687193%' class='bc0'><span>Outmaneuver (98.82%)</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.035835871707579285%' class='bc0'><span>HelloWorld (0.04%)</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.08395374623792175%' class='bc0'><span>Entrench (0.08%)</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:76.61197346017882%' class='bc0'><span>Caltrops (76.61%)</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:57.60700586356647%' class='bc0'><span>Clash (57.61%)</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.5614478222955355%' class='bc0'><span>Clash (0.56%)</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.8323788937103773%' class='bc0'><span>Caltrops (0.83%)</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:16.93695266868976%' class='bc0'><span>16.85%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:51.487403231380355%' class='bc0'><span>51.23%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:96.51294763243519%' class='bc0'><span>96.02%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:97.70613975208082%' class='bc0'><span>97.21%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:84.72409532667795%' class='bc0'><span>84.30%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:100.0%' class='bc0'><span>99.49%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:13.15077174648483%' class='bc0'><span>13.08%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:73.27095404511932%' class='bc0'><span>72.90%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:37.27241273999929%' class='bc0'><span>37.08%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:6.644627784853899%' class='bc0'><span>6.61%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:25.52846840454035%' class='bc0'><span>10.58%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:13.811663257823296%' class='bc0'><span>5.72%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:46.077341987306234%' class='bc0'><span>19.09%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:100.0%' class='bc0'><span>41.44%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:56.02459705982269%' class='bc0'><span>23.22%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:38.82157288072348%' class='bc0'><span>16.09%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:36.775155648876726%' class='bc0'><span>15.24%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:0.0%' class='bc0'><span>0%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:60.770476399912035%' class='bc0'><span>60.77%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:90.99784809117718%' class='bc0'><span>91.00%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:55.067696319326046%' class='bc0'><span>55.07%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:23.139968492631663%' class='bc0'><span>23.14%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:4.5375427645399435%' class='bc0'><span>4.54%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:46.09254550187213%' class='bc0'><span>46.09%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:8.503346827528157%' class='bc0'><span>8.50%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:32.222555789052336%' class='bc0'><span>32.22%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:47.16743902000934%' class='bc0'><span>47.17%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:75.02786967779056%' class='bc0'><span>75.03%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:3.627849905717405%' class='bc0'><span>3.63%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:4.306172839506173%' class='bc0'><span>4.31%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:33.98451931481298%' class='bc0'><span>33.98%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:56.829202343397924%' class='bc0'><span>56.83%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:33.38835264989773%' class='bc0'><span>33.39%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:84.14430665163472%' class='bc0'><span>84.14%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:2.631389164337871%' class='bc0'><span>2.63%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:19.36590262673582%' class='bc0'><span>19.37%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:36.635457565690125%' class='bc0'><span>36.64%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:69.32701652089408%' class='bc0'><span>69.33%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:39.00023579344494%' class='bc0'><span>39.00%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:29.190942491276076%' class='bc0'><span>29.19%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:9.54181438472097%' class='bc0'><span>9.54%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:33.77296887518199%' class='bc0'><span>33.77%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:69.43555426243817%' class='bc0'><span>69.44%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:36.77564408580624%' class='bc0'><span>36.78%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:90.85422235671895%' class='bc0'><span>90.85%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:89.55841608012528%' class='bc0'><span>89.56%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:71.41657651257044%' class='bc0'><span>71.42%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:1.3423608077685563%' class='bc0'><span>1.34%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:36.286606213765424%' class='bc0'><span>36.29%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:68.04374240583232%' class='bc0'><span>68.04%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:12.9794439631409%' class='bc0'><span>12.98%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:15.651453720735383%' class='bc0'><span>15.65%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:39.992032467694145%' class='bc0'><span>39.99%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:46.56958131944008%' class='bc0'><span>46.57%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:16.522729548412936%' class='bc0'><span>16.52%</span></div></div>
+<div class='key'></div><div class='bar'><div style='width:42.19390360875469%' class='bc0'><span>42.19%</span></div></div>
+</div>
 
 </details>
 
