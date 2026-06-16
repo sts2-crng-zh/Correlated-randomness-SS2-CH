@@ -1,0 +1,348 @@
+:root {
+  color-scheme: light dark;
+  --bg: #f7f4ef;
+  --surface: #ffffff;
+  --text: #1f1a17;
+  --muted: #6b625c;
+  --accent: #8b3a2f;
+  --accent-soft: #f0e2de;
+  --border: #e4ddd4;
+  --code-bg: #2b2b2b;
+  --code-text: #f4f1ec;
+  --shadow: 0 12px 40px rgba(31, 26, 23, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #141210;
+    --surface: #1d1a18;
+    --text: #f2ebe4;
+    --muted: #b0a59c;
+    --accent: #e08a7d;
+    --accent-soft: #3a2622;
+    --border: #342f2b;
+    --code-bg: #0f0e0d;
+    --code-text: #f2ebe4;
+    --shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  font-size: 17px;
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(10px);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.9rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.site-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.site-meta {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.toc {
+  position: sticky;
+  top: 4.5rem;
+  max-height: calc(100vh - 5.5rem);
+  overflow: auto;
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+.toc h2 {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc li {
+  margin: 0.35rem 0;
+}
+
+.toc a {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.92rem;
+  display: block;
+  padding: 0.15rem 0;
+}
+
+.toc a:hover,
+.toc a.active {
+  color: var(--accent);
+}
+
+.toc .toc-h3 {
+  padding-left: 0.9rem;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+.article {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 2.5rem 2.75rem;
+}
+
+.article h1 {
+  font-size: 2rem;
+  line-height: 1.25;
+  margin: 0 0 1rem;
+}
+
+.article h2 {
+  margin: 2.5rem 0 1rem;
+  padding-top: 0.5rem;
+  font-size: 1.45rem;
+  border-top: 1px solid var(--border);
+}
+
+.article h2:first-of-type {
+  border-top: none;
+  margin-top: 1.5rem;
+}
+
+.article h3 {
+  margin: 1.75rem 0 0.75rem;
+  font-size: 1.15rem;
+}
+
+.article p,
+.article li,
+.article dd {
+  margin: 0.9rem 0;
+}
+
+.article blockquote {
+  margin: 1.25rem 0;
+  padding: 0.9rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: 0 10px 10px 0;
+  color: var(--muted);
+}
+
+.article ul,
+.article ol {
+  padding-left: 1.4rem;
+}
+
+.article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.95rem;
+  display: block;
+  overflow-x: auto;
+}
+
+.article th,
+.article td {
+  border: 1px solid var(--border);
+  padding: 0.55rem 0.7rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.article th {
+  background: var(--accent-soft);
+}
+
+.article pre {
+  margin: 1.25rem 0;
+  padding: 1rem 1.1rem;
+  overflow-x: auto;
+  border-radius: 12px;
+  background: var(--code-bg);
+  color: var(--code-text);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.article code {
+  font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.9em;
+}
+
+.article :not(pre) > code {
+  background: var(--accent-soft);
+  color: var(--text);
+  padding: 0.12rem 0.35rem;
+  border-radius: 6px;
+}
+
+.article hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+.footnotes {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.footnotes ol {
+  padding-left: 1.2rem;
+}
+
+.site-footer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.25rem 3rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.article img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: 1fr;
+    padding-top: 1.25rem;
+  }
+
+  .toc {
+    position: static;
+    max-height: none;
+  }
+
+  .article {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .article h1 {
+    font-size: 1.65rem;
+  }
+}
+
+.divination-widget {
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.divination-widget label {
+  font-weight: 600;
+}
+
+.divination-widget input[type="number"] {
+  margin-left: 0.5rem;
+  width: 4rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+.divination-note {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+#divination-grid {
+  margin-top: 1rem;
+  position: relative;
+}
+
+.divination-box {
+  display: none;
+  background: color-mix(in srgb, var(--accent) 35%, var(--surface));
+  border: 2px solid var(--accent);
+  border-radius: 4px;
+  opacity: 0.85;
+  z-index: 1;
+}
+
+.divination-label {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 9pt;
+  font-weight: 700;
+  color: var(--text);
+  text-shadow: 0 0 1px var(--surface), 0 0 2px var(--surface);
+  z-index: 2;
+  pointer-events: none;
+}

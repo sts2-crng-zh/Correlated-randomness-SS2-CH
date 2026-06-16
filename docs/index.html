@@ -1,0 +1,2624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>杀戮尖塔2中的相关随机数</title>
+  <meta name="description" content="《杀戮尖塔2》CRNG（相关随机数）机制中文译文，基于 Andy Tockman 原文翻译。">
+  <meta property="og:title" content="杀戮尖塔2中的相关随机数">
+  <meta property="og:description" content="《杀戮尖塔2》CRNG（相关随机数）机制中文译文，基于 Andy Tockman 原文翻译。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://sts2-crng-zh.github.io/Correlated-randomness-SS2-CH/">
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="style.css?v=1781611186241408100">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a class="site-title" href="./">杀戮尖塔2中的相关随机数</a>
+      <div class="site-meta">中文译文 · 术语对照 v1.3</div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="toc" aria-label="目录">
+      <h2>目录</h2>
+      <ul>
+        <li class=""><a href="#杀戮尖塔2的随机数生成器">杀戮尖塔2的随机数生成器</a></li>
+<li class=""><a href="#涅奥的骨骰">涅奥的骨骰</a></li>
+<li class=""><a href="#巨大扭蛋">巨大扭蛋</a></li>
+<li class=""><a href="#小型扭蛋">小型扭蛋</a></li>
+<li class=""><a href="#树叶药膏与沉重石板">树叶药膏与沉重石板</a></li>
+<li class="toc-h3"><a href="#树叶药膏">树叶药膏</a></li>
+<li class="toc-h3"><a href="#沉重石板">沉重石板</a></li>
+<li class=""><a href="#新叶与奥术卷轴">新叶与奥术卷轴</a></li>
+<li class=""><a href="#闪电充能球与随机目标">闪电充能球与随机目标</a></li>
+<li class=""><a href="#垃圾堆">垃圾堆</a></li>
+<li class=""><a href="#药水掉落与房间战斗">药水掉落与？房间战斗</a></li>
+<li class=""><a href="#玩偶室">玩偶室</a></li>
+<li class=""><a href="#占卜">占卜</a></li>
+<li class=""><a href="#先古之民奖励">先古之民奖励</a></li>
+<li class=""><a href="#还有更多">还有更多……</a></li>
+<li class=""><a href="#致开发者">致开发者</a></li>
+<li class=""><a href="#附录怎么发现的">附录：怎么发现的？</a></li>
+<li class=""><a href="#附录为什么">附录：为什么？</a></li>
+<li class=""><a href="#附录怎么修">附录：怎么修？</a></li>
+      </ul>
+    </nav>
+
+    <main class="article">
+      <h1>杀戮尖塔2中的相关随机数（Correlated Randomness）</h1>
+<blockquote>
+<p>原文：<a href="https://tck.mn/blog/correlated-randomness-sts2/">Correlated randomness in Slay the Spire 2</a><br />
+作者：Andy Tockman<br />
+日期：2026-06-13<br />
+译者注：游戏术语参照《杀戮尖塔2》中英对照表 v1.3（测试版 105）。原文基于 v0.107.0。</p>
+</blockquote>
+<hr />
+<p>关于《杀戮尖塔2》单人模式，以下三句话都是真的：</p>
+<ol>
+<li>如果你在<strong>暗港</strong>选了<strong>涅奥的骨骰</strong>，随机诅咒有约 <strong>54%</strong> 的概率是<strong>债务</strong>。*</li>
+<li>你不可能从<strong>垃圾堆</strong>事件中获得<strong>弹回</strong>。</li>
+<li>在暗港，你第一场战斗掉落药水的概率是 <strong>76%</strong>；在密林则是 <strong>4%</strong>。**</li>
+</ol>
+<p>（* 假设涅奥的骨骰给出的两件遗物都不是<strong>新叶</strong>或<strong>万花筒</strong>）<br />
+（** 假设你的涅奥遗物不会给出卡牌或其他遗物）<br />
+（*** 以下数据均基于当前测试版补丁 v0.107.0）</p>
+<p>什么？！</p>
+<p>为什么？罪魁祸首是不同随机数生成器之间出人意料的<strong>相关性</strong>——只要你知道其中一个 RNG 的第一次输出，就能推断出所有其他 RNG 第一次输出的大致范围。</p>
+<h2 id="杀戮尖塔2的随机数生成器">杀戮尖塔2的随机数生成器</h2>
+<p>下面先给出一个极度简化的解释。若你想了解细节，请跳到文末附录；若你不关心原理，可以直接跳过本节，去看后面那些有趣的例子。</p>
+<p>「相关 RNG」（CRNG）现象在杀戮尖塔社区里并不陌生，因为一代也有类似问题，<a href="https://tck.mn/blog/correlated-randomness-sts/">Forgotten Arbiter 的博客</a>对此有详尽分析。<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></p>
+<p>简要来说，在一代中，游戏使用了多个独立的伪随机数生成器，以免战斗内的随机性影响未来的卡牌奖励。但它们初始化时使用了相同的起始状态，因此会产出相同的数字序列。精明的玩家因此可以通过观察过去的随机结果，推断未来的随机事件。</p>
+<p>为了避免同样的问题，二代将各个伪随机数生成器初始化到<strong>不同</strong>的状态。代码大致如下（为教学目的做了高度简化）：</p>
+<pre><code>Rng UpFront = new Rng(seed + hash(&quot;up_front&quot;));
+Rng Shuffle = new Rng(seed + hash(&quot;shuffle&quot;));
+Rng UnknownMapPoint = new Rng(seed + hash(&quot;unknown_map_point&quot;));
+Rng CombatCardGeneration = new Rng(seed + hash(&quot;combat_card_generation&quot;));
+Rng CombatPotionGeneration = new Rng(seed + hash(&quot;combat_potion_generation&quot;));
+Rng CombatCardSelection = new Rng(seed + hash(&quot;combat_card_selection&quot;));
+Rng CombatEnergyCosts = new Rng(seed + hash(&quot;combat_energy_costs&quot;));
+Rng CombatTargets = new Rng(seed + hash(&quot;combat_targets&quot;));
+Rng MonsterAi = new Rng(seed + hash(&quot;monster_ai&quot;));
+Rng Niche = new Rng(seed + hash(&quot;niche&quot;));
+Rng CombatOrbGeneration = new Rng(seed + hash(&quot;combat_orbs&quot;));
+Rng TreasureRoomRelics = new Rng(seed + hash(&quot;treasure_room_relics&quot;));
+// ...
+</code></pre>
+<p>游戏中还有更多 RNG，此处为简洁省略；值得注意的是，<strong>每个事件都有自己独立的 RNG</strong>。</p>
+<p><code>hash</code> 函数本质上把输入字符串映射成一个「看起来随机」的数字，但对相同输入永远返回相同结果。因此思路是：打乱各 RNG 的初始状态，但相同种子仍然保证整局游戏完全一致。</p>
+<p>问题出在：这些种子被传给了 C# 内置的 <code>System.Random</code> 类。不幸的是，C# 所用的伪随机算法，其输出与起始种子之间几乎是<strong>完全线性</strong>的关系。</p>
+<p>这意味着什么，说起来有点复杂——我稍后在附录里会细讲。但后果是：两个种子相差一个已知固定量的 RNG，其输出也会相差一个模糊、但仍可利用的固定量。</p>
+<p>可利用到什么程度？嗯……</p>
+<p>下面是一大堆 CRNG 的后果，从「好笑但无关紧要」到「确实影响游戏体验」都有（其中一些甚至会影响完全不知道 CRNG 存在的休闲玩家！）。</p>
+<h2 id="涅奥的骨骰">涅奥的骨骰</h2>
+<p>先从开篇第一个例子说起。如果你在暗港选择<strong>涅奥的骨骰</strong>，你收到的「随机」诅咒实际上近似服从以下分布：</p>
+<table>
+<thead>
+<tr>
+<th>诅咒</th>
+<th>暗港</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>笨拙</td>
+<td>0.10%</td>
+</tr>
+<tr>
+<td><strong>债务</strong></td>
+<td><strong>54.25%</strong></td>
+</tr>
+<tr>
+<td>腐朽</td>
+<td>40.32%</td>
+</tr>
+<tr>
+<td>疑虑</td>
+<td>1.50%</td>
+</tr>
+<tr>
+<td>愧疚</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>受伤</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>凡庸</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>悔恨</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>羞耻</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>苦恼</td>
+<td>3.82%</td>
+</tr>
+</tbody>
+</table>
+<p>而在密林，诅咒分布则是：</p>
+<table>
+<thead>
+<tr>
+<th>诅咒</th>
+<th>密林</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>笨拙</td>
+<td>0.51%</td>
+</tr>
+<tr>
+<td>债务</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>腐朽</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>疑虑</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>愧疚</td>
+<td>0.19%</td>
+</tr>
+<tr>
+<td>受伤</td>
+<td>5.53%</td>
+</tr>
+<tr>
+<td>凡庸</td>
+<td>1.18%</td>
+</tr>
+<tr>
+<td>悔恨</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>羞耻</td>
+<td>18.85%</td>
+</tr>
+<tr>
+<td>苦恼</td>
+<td>73.74%</td>
+</tr>
+</tbody>
+</table>
+<p>这一点我觉得特别好笑——Reddit 和 Discord 上到处都有人哀叹自己运气太差，涅奥的骨骰老是roll出<strong>债务</strong>。<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup> 甚至在发现 CRNG 之前，我就看到过一些帖子坚称债务出现得比随机更频繁。我脑子里几乎是<strong>瞬间</strong>就把它们归类为教科书式的确认偏误。然而……</p>
+<p>要理解这一点，需要把三处随机性关联起来：</p>
+<ul>
+<li><strong>涅奥提供的「诅咒遗物」</strong>来自涅奥事件专用 RNG，种子为 <code>seed + 1 + hash("NEOW")</code>。<br />
+  涅奥选项中永远恰好有一件来自「诅咒池」的遗物（<a href="https://slaythespire2.wiki.gg/wiki/Neow">wiki 有说明</a>）。从 8 件诅咒遗物中选出哪一件，是涅奥 RNG 的第一次调用。</li>
+<li><strong>涅奥的骨骰给出的随机诅咒</strong>来自 <code>RunState.Rng.Niche</code> 的调用，种子为 <code>seed + hash("niche")</code>。<br />
+  由于<strong>新叶</strong>和<strong>万花筒</strong>也会调用 <code>Niche</code> 来随机，如果从涅奥的骨骰中roll到这两件遗物之一，相关性就会被破坏。否则，这通常是 <code>Niche</code> 的第一次调用。</li>
+<li><strong>第一幕变体</strong>（暗港或密林）来自 <code>StartRunLobby#BeginRunLocally</code> 中创建的一个未命名 RNG，种子为基础种子。</li>
+</ul>
+<p>涅奥的骨骰来自涅奥的「诅咒池」，因此你只有在涅奥 RNG 第一次调用roll到特定区间时才会看到它，这对 <code>Niche</code> 第一次调用的可能区间施加了强约束（再结合你所在的第一幕变体，约束更强）。</p>
+<p>显然，这种相关性对游戏体验影响很大，即便玩家浑然不觉。它让涅奥的骨骰变成了一件差得多的遗物：像笨拙、愧疚、受伤这类较轻的诅咒极少出现，而像债务这样更致命的诅咒却频繁得多。</p>
+<p>此时你可能会想：「等等，那岂不是意味着我们能预测<strong>所有</strong>涅奥遗物的随机性？」确实可以！再来看几个。</p>
+<h2 id="巨大扭蛋">巨大扭蛋</h2>
+<p><strong>巨大扭蛋</strong>给出的第一件遗物<strong>永远不会是普通</strong>。</p>
+<p>什么加强！</p>
+<p>更具体地说：在密林，约 70% 是罕见、30% 是稀有；在暗港，约 37% 是罕见、63% 是稀有——但有一个前提：</p>
+<p>由于一切都彼此相关，巨大扭蛋在暗港整幕中大约只出现 <strong>1.65%</strong> 的时间。（似乎还没人注意到这一点；我当时刚开始调查这一切时，有人对此信息的反应非常好笑。）</p>
+<p>暗港涅奥「诅咒池」选项的具体分布：</p>
+<table>
+<thead>
+<tr>
+<th>遗物</th>
+<th>暗港</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>诅咒珍珠</td>
+<td>11.95%</td>
+</tr>
+<tr>
+<td>沉重石板</td>
+<td>1.32%</td>
+</tr>
+<tr>
+<td>巨大扭蛋</td>
+<td>1.65%</td>
+</tr>
+<tr>
+<td>树叶药膏</td>
+<td>12.72%</td>
+</tr>
+<tr>
+<td>涅奥的骨骰</td>
+<td>13.01%</td>
+</tr>
+<tr>
+<td>松动羊毛剪</td>
+<td>23.75%</td>
+</tr>
+<tr>
+<td>华美发束</td>
+<td>23.22%</td>
+</tr>
+<tr>
+<td>白银熔炉</td>
+<td>12.37%</td>
+</tr>
+</tbody>
+</table>
+<p>密林：</p>
+<table>
+<thead>
+<tr>
+<th>遗物</th>
+<th>密林</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>诅咒珍珠</td>
+<td>12.99%</td>
+</tr>
+<tr>
+<td>沉重石板</td>
+<td>23.79%</td>
+</tr>
+<tr>
+<td>巨大扭蛋</td>
+<td>23.24%</td>
+</tr>
+<tr>
+<td>树叶药膏</td>
+<td>12.39%</td>
+</tr>
+<tr>
+<td>涅奥的骨骰</td>
+<td>11.90%</td>
+</tr>
+<tr>
+<td>松动羊毛剪</td>
+<td>1.35%</td>
+</tr>
+<tr>
+<td>华美发束</td>
+<td>1.65%</td>
+</tr>
+<tr>
+<td>白银熔炉</td>
+<td>12.70%</td>
+</tr>
+</tbody>
+</table>
+<p>回到巨大扭蛋本身：和涅奥的骨骰类似，这种相关性对游戏平衡有实质影响。这件遗物平均来说比它「理应」的更强。</p>
+<p>那<strong>小型扭蛋</strong>呢？</p>
+<h2 id="小型扭蛋">小型扭蛋</h2>
+<p>小型扭蛋不是诅咒池遗物，因此不像涅奥的骨骰和巨大扭蛋那样有内在偏差。</p>
+<p>但这也意味着：我们可以根据是否出现了另一件诅咒池遗物，来预测小型扭蛋遗物的稀有度：</p>
+<p>（[U] = 暗港，[O] = 密林。巨大扭蛋不会出现，因为有硬编码限制：两种扭蛋不能同时出现。）</p>
+<table>
+<thead>
+<tr>
+<th>诅咒池遗物</th>
+<th>普通</th>
+<th>罕见</th>
+<th>稀有</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>诅咒珍珠 [U]</td>
+<td>4.58%</td>
+<td>0.92%</td>
+<td>1.33%</td>
+</tr>
+<tr>
+<td>沉重石板 [U]</td>
+<td>0.56%</td>
+<td></td>
+<td>0.20%</td>
+</tr>
+<tr>
+<td>树叶药膏 [U]</td>
+<td>5.81%</td>
+<td>0.48%</td>
+<td>0.95%</td>
+</tr>
+<tr>
+<td>涅奥的骨骰 [U]</td>
+<td>7.42%</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>松动羊毛剪 [U]</td>
+<td></td>
+<td>13.56%</td>
+<td></td>
+</tr>
+<tr>
+<td>华美发束 [U]</td>
+<td></td>
+<td>13.28%</td>
+<td></td>
+</tr>
+<tr>
+<td>白银熔炉 [U]</td>
+<td>7.08%</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>诅咒珍珠 [O]</td>
+<td>5.70%</td>
+<td>1.72%</td>
+<td></td>
+</tr>
+<tr>
+<td>沉重石板 [O]</td>
+<td>10.96%</td>
+<td></td>
+<td>2.62%</td>
+</tr>
+<tr>
+<td>树叶药膏 [O]</td>
+<td>4.61%</td>
+<td>2.48%</td>
+<td></td>
+</tr>
+<tr>
+<td>涅奥的骨骰 [O]</td>
+<td>2.23%</td>
+<td>1.14%</td>
+<td>3.45%</td>
+</tr>
+<tr>
+<td>松动羊毛剪 [O]</td>
+<td>0.77%</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>华美发束 [O]</td>
+<td>0.94%</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>白银熔炉 [O]</td>
+<td>1.42%</td>
+<td>3.65%</td>
+<td>2.14%</td>
+</tr>
+</tbody>
+</table>
+<p>（条形图比例与上一节两张图相同——每行总宽度与该诅咒池遗物在本幕中的实际出现频率成正比。）</p>
+<p>这展示了一个简洁的经验法则：<strong>小型扭蛋在暗港通常会给出普通遗物，在密林通常会给出罕见或稀有遗物</strong>。</p>
+<p>涅奥带随机性的选项还有很多，这里加快节奏过几个，然后换点别的内容。</p>
+<h2 id="树叶药膏与沉重石板">树叶药膏与沉重石板</h2>
+<p>（分别是「变化 2 张」和「选择一张稀有牌」。）</p>
+<p>两者都是诅咒池遗物，因此有内在偏差。但它们都会生成多张牌，我们只能预测第一张。</p>
+<p>结果是：<strong>树叶药膏的第一次变化只有 22 种可能</strong>（每个角色 80 张牌池中的子集），其中一些明显更常见。</p>
+<p>（原文将这些图表做成可折叠区块；以下按角色列出完整数据。）</p>
+<h3 id="树叶药膏">树叶药膏</h3>
+<h4>暗港</h4>
+<h5>铁甲战士</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>好勇斗狠</td>
+<td>3.78%</td>
+</tr>
+<tr>
+<td>愤怒</td>
+<td>7.84%</td>
+</tr>
+<tr>
+<td>武装</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>灰烬打击</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>壁垒</td>
+<td>7.84%</td>
+</tr>
+<tr>
+<td>战斗专注</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>血墙</td>
+<td>7.83%</td>
+</tr>
+<tr>
+<td>放血</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>重锤</td>
+<td>7.83%</td>
+</tr>
+<tr>
+<td>全身撞击</td>
+<td>7.85%</td>
+</tr>
+<tr>
+<td>烙印</td>
+<td>4.02%</td>
+</tr>
+<tr>
+<td>恶魔之焰</td>
+<td>1.59%</td>
+</tr>
+<tr>
+<td>与我一战！</td>
+<td>2.15%</td>
+</tr>
+<tr>
+<td>火焰屏障</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>被遗忘的仪式</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>破灭</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>头槌</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>地狱狂徒</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>御血术</td>
+<td>2.18%</td>
+</tr>
+<tr>
+<td>彼岸咆哮</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>岿然不动</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>地狱之刃</td>
+<td>0.60%</td>
+</tr>
+</tbody>
+</table>
+<h5>静默猎手</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>磨蚀</td>
+<td>3.78%</td>
+</tr>
+<tr>
+<td>触媒</td>
+<td>7.84%</td>
+</tr>
+<tr>
+<td>精准</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>杂技</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>肾上腺素</td>
+<td>7.84%</td>
+</tr>
+<tr>
+<td>余像</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>预判</td>
+<td>7.83%</td>
+</tr>
+<tr>
+<td>刺杀</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>后空翻</td>
+<td>7.83%</td>
+</tr>
+<tr>
+<td>背刺</td>
+<td>7.85%</td>
+</tr>
+<tr>
+<td>墨之刃</td>
+<td>4.02%</td>
+</tr>
+<tr>
+<td>独门技术</td>
+<td>1.59%</td>
+</tr>
+<tr>
+<td>暴露</td>
+<td>2.15%</td>
+</tr>
+<tr>
+<td>刀扇</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>终结技</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>飞镖</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>翻越撑击</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>跟进</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>灵动步法</td>
+<td>2.18%</td>
+</tr>
+<tr>
+<td>华丽收场</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>手上技法</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>迷雾</td>
+<td>0.60%</td>
+</tr>
+</tbody>
+</table>
+<h5>储君</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>星位序列</td>
+<td>3.78%</td>
+</tr>
+<tr>
+<td>武器库</td>
+<td>7.84%</td>
+</tr>
+<tr>
+<td>星界脉冲</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>锻打成型</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>下去！</td>
+<td>7.84%</td>
+</tr>
+<tr>
+<td>大爆炸</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>黑洞</td>
+<td>7.83%</td>
+</tr>
+<tr>
+<td>轰击</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>铸墙</td>
+<td>7.83%</td>
+</tr>
+<tr>
+<td>新生之喜</td>
+<td>7.85%</td>
+</tr>
+<tr>
+<td>天穹之力</td>
+<td>4.02%</td>
+</tr>
+<tr>
+<td>创世纪</td>
+<td>1.59%</td>
+</tr>
+<tr>
+<td>微光</td>
+<td>2.15%</td>
+</tr>
+<tr>
+<td>流光溢彩</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>辉光</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>护驾！！！</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>引导之星</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>天际钻头</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>霸权</td>
+<td>2.18%</td>
+</tr>
+<tr>
+<td>传承之锤</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>隐秘藏品</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>所向无敌</td>
+<td>0.60%</td>
+</tr>
+</tbody>
+</table>
+<h5>亡灵契约师</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>来生</td>
+<td>3.78%</td>
+</tr>
+<tr>
+<td>女妖之嚎</td>
+<td>7.84%</td>
+</tr>
+<tr>
+<td>荒疫打击</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>碎骨</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>预借时间</td>
+<td>7.84%</td>
+</tr>
+<tr>
+<td>埋葬</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>钙化</td>
+<td>7.83%</td>
+</tr>
+<tr>
+<td>虚空之唤</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>捕捉灵魂</td>
+<td>7.83%</td>
+</tr>
+<tr>
+<td>洁净</td>
+<td>7.85%</td>
+</tr>
+<tr>
+<td>倒数计时</td>
+<td>4.02%</td>
+</tr>
+<tr>
+<td>取回</td>
+<td>1.59%</td>
+</tr>
+<tr>
+<td>重压</td>
+<td>2.15%</td>
+</tr>
+<tr>
+<td>友谊</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>守墓人</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>坟冢爆射</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>吊杀</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>纠缠</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>击掌</td>
+<td>2.18%</td>
+</tr>
+<tr>
+<td>唤起</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>致死性</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>忧郁</td>
+<td>0.60%</td>
+</tr>
+</tbody>
+</table>
+<h5>故障机器人</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>适应打击</td>
+<td>3.78%</td>
+</tr>
+<tr>
+<td>万物一心</td>
+<td>7.84%</td>
+</tr>
+<tr>
+<td>球状闪电</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>弹幕齐射</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>光束射线</td>
+<td>7.84%</td>
+</tr>
+<tr>
+<td>高速脱离</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>启动流程</td>
+<td>7.83%</td>
+</tr>
+<tr>
+<td>缓冲</td>
+<td>7.82%</td>
+</tr>
+<tr>
+<td>暴涨</td>
+<td>7.83%</td>
+</tr>
+<tr>
+<td>扩容</td>
+<td>7.85%</td>
+</tr>
+<tr>
+<td>混沌</td>
+<td>4.02%</td>
+</tr>
+<tr>
+<td>超越光速</td>
+<td>1.59%</td>
+</tr>
+<tr>
+<td>聚变</td>
+<td>2.15%</td>
+</tr>
+<tr>
+<td>遗传算法</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>冰川</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>玻璃工艺</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>眼部攻击</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>污秽攻击</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>冰雹风暴</td>
+<td>2.18%</td>
+</tr>
+<tr>
+<td>螺旋钻击</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>全息影像</td>
+<td>2.17%</td>
+</tr>
+<tr>
+<td>热修复</td>
+<td>0.60%</td>
+</tr>
+</tbody>
+</table>
+<h4>密林</h4>
+<h5>铁甲战士</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>熔融之拳</td>
+<td>0.64%</td>
+</tr>
+<tr>
+<td>时候未到</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>祭品</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>连环拳</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>契约终结</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>完美打击</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>劫掠</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>剑柄打击</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>原始力量</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>薪火之源</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>狂怒</td>
+<td>1.58%</td>
+</tr>
+<tr>
+<td>重振精神</td>
+<td>3.99%</td>
+</tr>
+<tr>
+<td>预备打击</td>
+<td>7.79%</td>
+</tr>
+<tr>
+<td>耸肩无视</td>
+<td>7.81%</td>
+</tr>
+<tr>
+<td>怨恨</td>
+<td>7.80%</td>
+</tr>
+<tr>
+<td>惊逃</td>
+<td>7.80%</td>
+</tr>
+<tr>
+<td>添柴</td>
+<td>7.78%</td>
+</tr>
+<tr>
+<td>踩踏</td>
+<td>7.78%</td>
+</tr>
+<tr>
+<td>岩石铠甲</td>
+<td>7.83%</td>
+</tr>
+<tr>
+<td>飞剑回旋镖</td>
+<td>7.76%</td>
+</tr>
+<tr>
+<td>挑衅</td>
+<td>7.79%</td>
+</tr>
+<tr>
+<td>扯碎</td>
+<td>3.78%</td>
+</tr>
+</tbody>
+</table>
+<h5>静默猎手</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>谋划专家</td>
+<td>0.64%</td>
+</tr>
+<tr>
+<td>铭记死亡</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>蜃景</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>谋杀</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>夜魇</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>毒雾</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>毒性爆发</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>幻影之刃</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>尖啸</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>精密瞄准</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>带毒刺击</td>
+<td>1.58%</td>
+</tr>
+<tr>
+<td>猎杀者</td>
+<td>3.99%</td>
+</tr>
+<tr>
+<td>早有准备</td>
+<td>7.79%</td>
+</tr>
+<tr>
+<td>本能反应</td>
+<td>7.81%</td>
+</tr>
+<tr>
+<td>连续反弹</td>
+<td>7.80%</td>
+</tr>
+<tr>
+<td>群蛇形态</td>
+<td>7.80%</td>
+</tr>
+<tr>
+<td>暗影步</td>
+<td>7.78%</td>
+</tr>
+<tr>
+<td>融入暗影</td>
+<td>7.78%</td>
+</tr>
+<tr>
+<td>串刺</td>
+<td>7.83%</td>
+</tr>
+<tr>
+<td>切割</td>
+<td>7.76%</td>
+</tr>
+<tr>
+<td>蛇咬</td>
+<td>7.79%</td>
+</tr>
+<tr>
+<td>速行者</td>
+<td>3.78%</td>
+</tr>
+</tbody>
+</table>
+<h5>储君</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>君权自授</td>
+<td>0.64%</td>
+</tr>
+<tr>
+<td>王之凝视</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>独白</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>中子护盾</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>环绕轨道</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>暗淡蓝点</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>招架</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>粒子墙</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>星星点点</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>光子切割</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>创世之柱</td>
+<td>1.58%</td>
+</tr>
+<tr>
+<td>辐射</td>
+<td>3.99%</td>
+</tr>
+<tr>
+<td>淬炼刀刃</td>
+<td>7.79%</td>
+</tr>
+<tr>
+<td>倒映</td>
+<td>7.81%</td>
+</tr>
+<tr>
+<td>共鸣</td>
+<td>7.80%</td>
+</tr>
+<tr>
+<td>胜券在王</td>
+<td>7.80%</td>
+</tr>
+<tr>
+<td>王国资产</td>
+<td>7.78%</td>
+</tr>
+<tr>
+<td>追踪之刃</td>
+<td>7.78%</td>
+</tr>
+<tr>
+<td>七星</td>
+<td>7.83%</td>
+</tr>
+<tr>
+<td>明耀打击</td>
+<td>7.76%</td>
+</tr>
+<tr>
+<td>太阳打击</td>
+<td>7.79%</td>
+</tr>
+<tr>
+<td>光谱偏移</td>
+<td>3.78%</td>
+</tr>
+</tbody>
+</table>
+<h5>亡灵契约师</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>书页风暴</td>
+<td>0.64%</td>
+</tr>
+<tr>
+<td>领会</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>戳击</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>吸引仇恨</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>亡魂牵引</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>腐败</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>猛晃</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>死者苏生</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>收割</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>死神形态</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>剥夺</td>
+<td>1.58%</td>
+</tr>
+<tr>
+<td>鞭打</td>
+<td>3.99%</td>
+</tr>
+<tr>
+<td>雕琢打击</td>
+<td>7.79%</td>
+</tr>
+<tr>
+<td>降灵</td>
+<td>7.81%</td>
+</tr>
+<tr>
+<td>哨卫模式</td>
+<td>7.80%</td>
+</tr>
+<tr>
+<td>切断</td>
+<td>7.80%</td>
+</tr>
+<tr>
+<td>命运同担</td>
+<td>7.78%</td>
+</tr>
+<tr>
+<td>厄运之衣</td>
+<td>7.78%</td>
+</tr>
+<tr>
+<td>紧追不放</td>
+<td>7.83%</td>
+</tr>
+<tr>
+<td>血肉戏法</td>
+<td>7.76%</td>
+</tr>
+<tr>
+<td>响指</td>
+<td>7.79%</td>
+</tr>
+<tr>
+<td>灵魂风暴</td>
+<td>3.78%</td>
+</tr>
+</tbody>
+</table>
+<h5>故障机器人</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>机器学习</td>
+<td>0.64%</td>
+</tr>
+<tr>
+<td>陨石打击</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>模组改造</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>趁势打击</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>多重释放</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>空值</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>超频</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>彩虹</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>重启</td>
+<td>2.21%</td>
+</tr>
+<tr>
+<td>折射</td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>火箭飞拳</td>
+<td>1.58%</td>
+</tr>
+<tr>
+<td>暗影之盾</td>
+<td>3.99%</td>
+</tr>
+<tr>
+<td>打碎</td>
+<td>7.79%</td>
+</tr>
+<tr>
+<td>信号增强</td>
+<td>7.81%</td>
+</tr>
+<tr>
+<td>快速检索</td>
+<td>7.80%</td>
+</tr>
+<tr>
+<td>烟囱</td>
+<td>7.80%</td>
+</tr>
+<tr>
+<td>旋转工艺</td>
+<td>7.78%</td>
+</tr>
+<tr>
+<td>雷暴</td>
+<td>7.78%</td>
+</tr>
+<tr>
+<td>子程序</td>
+<td>7.83%</td>
+</tr>
+<tr>
+<td>分离</td>
+<td>7.76%</td>
+</tr>
+<tr>
+<td>超临界态</td>
+<td>7.79%</td>
+</tr>
+<tr>
+<td>扫荡射线</td>
+<td>3.78%</td>
+</tr>
+</tbody>
+</table>
+<p>类似地，<strong>沉重石板在密林的第一次选项只有 11 种可能，在暗港只有 3 种</strong>！正如上文所示，沉重石板在暗港本身大约只出现 1.3%，因此看到它本身就是极强的信息。</p>
+<h3 id="沉重石板">沉重石板</h3>
+<h4>暗港</h4>
+<h5>铁甲战士</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>势不可当</td>
+<td>72.52%</td>
+</tr>
+<tr>
+<td>扯碎</td>
+<td>16.77%</td>
+</tr>
+<tr>
+<td>痛殴</td>
+<td>10.71%</td>
+</tr>
+</tbody>
+</table>
+<h5>静默猎手</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>刀刃陷阱</td>
+<td>72.52%</td>
+</tr>
+<tr>
+<td>狩猎</td>
+<td>16.77%</td>
+</tr>
+<tr>
+<td>必备工具</td>
+<td>10.71%</td>
+</tr>
+</tbody>
+</table>
+<h5>储君</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>传承之锤</td>
+<td>72.52%</td>
+</tr>
+<tr>
+<td>铸剑者</td>
+<td>16.77%</td>
+</tr>
+<tr>
+<td>暴政</td>
+<td>10.71%</td>
+</tr>
+</tbody>
+</table>
+<h5>亡灵契约师</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>死神形态</td>
+<td>72.52%</td>
+</tr>
+<tr>
+<td>大限已至</td>
+<td>16.77%</td>
+</tr>
+<tr>
+<td>重构</td>
+<td>10.71%</td>
+</tr>
+</tbody>
+</table>
+<h5>故障机器人</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>机器学习</td>
+<td>72.52%</td>
+</tr>
+<tr>
+<td>超临界态</td>
+<td>16.77%</td>
+</tr>
+<tr>
+<td>化废为宝</td>
+<td>10.71%</td>
+</tr>
+</tbody>
+</table>
+<h4>密林</h4>
+<h5>铁甲战士</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>势不可当</td>
+<td>4.52%</td>
+</tr>
+<tr>
+<td>凌虐</td>
+<td>10.17%</td>
+</tr>
+<tr>
+<td>时候未到</td>
+<td>10.17%</td>
+</tr>
+<tr>
+<td>祭品</td>
+<td>7.65%</td>
+</tr>
+<tr>
+<td>连环拳</td>
+<td>6.12%</td>
+</tr>
+<tr>
+<td>契约终结</td>
+<td>15.99%</td>
+</tr>
+<tr>
+<td>原始力量</td>
+<td>12.99%</td>
+</tr>
+<tr>
+<td>薪火之源</td>
+<td>17.29%</td>
+</tr>
+<tr>
+<td>添柴</td>
+<td>9.04%</td>
+</tr>
+<tr>
+<td>扯碎</td>
+<td>5.61%</td>
+</tr>
+<tr>
+<td>痛殴</td>
+<td>0.45%</td>
+</tr>
+</tbody>
+</table>
+<h5>静默猎手</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>刀刃陷阱</td>
+<td>4.52%</td>
+</tr>
+<tr>
+<td>萎靡</td>
+<td>10.17%</td>
+</tr>
+<tr>
+<td>谋划专家</td>
+<td>10.17%</td>
+</tr>
+<tr>
+<td>谋杀</td>
+<td>7.65%</td>
+</tr>
+<tr>
+<td>夜魇</td>
+<td>6.12%</td>
+</tr>
+<tr>
+<td>群蛇形态</td>
+<td>15.99%</td>
+</tr>
+<tr>
+<td>暗影步</td>
+<td>12.99%</td>
+</tr>
+<tr>
+<td>融入暗影</td>
+<td>17.29%</td>
+</tr>
+<tr>
+<td>钢铁风暴</td>
+<td>9.04%</td>
+</tr>
+<tr>
+<td>狩猎</td>
+<td>5.61%</td>
+</tr>
+<tr>
+<td>必备工具</td>
+<td>0.45%</td>
+</tr>
+</tbody>
+</table>
+<h5>储君</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>传承之锤</td>
+<td>4.52%</td>
+</tr>
+<tr>
+<td>所向无敌</td>
+<td>10.17%</td>
+</tr>
+<tr>
+<td>如此甚好</td>
+<td>10.17%</td>
+</tr>
+<tr>
+<td>王之凝视</td>
+<td>7.65%</td>
+</tr>
+<tr>
+<td>中子护盾</td>
+<td>6.12%</td>
+</tr>
+<tr>
+<td>王国资产</td>
+<td>15.99%</td>
+</tr>
+<tr>
+<td>追踪之刃</td>
+<td>12.99%</td>
+</tr>
+<tr>
+<td>七星</td>
+<td>17.29%</td>
+</tr>
+<tr>
+<td>剑圣</td>
+<td>9.04%</td>
+</tr>
+<tr>
+<td>铸剑者</td>
+<td>5.61%</td>
+</tr>
+<tr>
+<td>暴政</td>
+<td>0.45%</td>
+</tr>
+</tbody>
+</table>
+<h5>亡灵契约师</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>死神形态</td>
+<td>4.52%</td>
+</tr>
+<tr>
+<td>献祭</td>
+<td>10.17%</td>
+</tr>
+<tr>
+<td>降灵</td>
+<td>10.17%</td>
+</tr>
+<tr>
+<td>哨卫模式</td>
+<td>7.65%</td>
+</tr>
+<tr>
+<td>命运同担</td>
+<td>6.12%</td>
+</tr>
+<tr>
+<td>灵魂风暴</td>
+<td>15.99%</td>
+</tr>
+<tr>
+<td>灰烬之灵</td>
+<td>12.99%</td>
+</tr>
+<tr>
+<td>榨取</td>
+<td>17.29%</td>
+</tr>
+<tr>
+<td>巨镰</td>
+<td>9.04%</td>
+</tr>
+<tr>
+<td>大限已至</td>
+<td>5.61%</td>
+</tr>
+<tr>
+<td>重构</td>
+<td>0.45%</td>
+</tr>
+</tbody>
+</table>
+<h5>故障机器人</h5>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>机器学习</td>
+<td>4.52%</td>
+</tr>
+<tr>
+<td>陨石打击</td>
+<td>10.17%</td>
+</tr>
+<tr>
+<td>模组改造</td>
+<td>10.17%</td>
+</tr>
+<tr>
+<td>多重释放</td>
+<td>7.65%</td>
+</tr>
+<tr>
+<td>彩虹</td>
+<td>6.12%</td>
+</tr>
+<tr>
+<td>重启</td>
+<td>15.99%</td>
+</tr>
+<tr>
+<td>打碎</td>
+<td>12.99%</td>
+</tr>
+<tr>
+<td>信号增强</td>
+<td>17.29%</td>
+</tr>
+<tr>
+<td>旋转工艺</td>
+<td>9.04%</td>
+</tr>
+<tr>
+<td>超临界态</td>
+<td>5.61%</td>
+</tr>
+<tr>
+<td>化废为宝</td>
+<td>0.45%</td>
+</tr>
+</tbody>
+</table>
+<h2 id="新叶与奥术卷轴">新叶与奥术卷轴</h2>
+<p>（分别是「变化 1 张」和「随机稀有牌」。）</p>
+<p>与小型扭蛋类似，幕别和诅咒池选项都会影响这两件遗物。</p>
+<p>完整列出 14 种「幕别 × 诅咒池遗物」组合的卡牌表会占太多篇幅，概括来说：根据你的幕别和涅奥选项，<strong>新叶</strong>的可能变化可以缩小到 <strong>4～39 种</strong>（共 80 种），<strong>奥术卷轴</strong>的可能卡牌可以缩小到 <strong>3～12 种</strong>（共 25 种）。</p>
+<p>有一个有趣的小细节：如果你在密林看到<strong>松动羊毛剪</strong>（相当罕见），那么<strong>新叶</strong>约有 70% 概率给出你角色按字母排序的第一张牌，<strong>奥术卷轴</strong>约有 65% 概率给出你角色按字母排序的第一张稀有牌。</p>
+<p>好了，说实话，到这一步，大部分内容其实不会改变你的打法。来点更能影响决策的吧？</p>
+<h2 id="闪电充能球与随机目标">闪电充能球与随机目标</h2>
+<p>暗港简单怪物池有两个多敌战斗：<strong>噬尸蛞蝓</strong>和<strong>蟾蜍蝌蚪</strong>。如果你是<strong>故障机器人</strong>，可能想知道第一个闪电充能球打向哪里，尤其当你第一回合抽到<strong>双重释放</strong>时。</p>
+<p>在暗港的第一场战斗中，<strong>你的第一个充能球有 75% 概率打向左侧敌人</strong>。（无论你打出双重释放激发它，还是不打出、靠被动触发，都适用。）如果你记得看到了哪件诅咒池遗物，可以预测得更准：</p>
+<table>
+<thead>
+<tr>
+<th>诅咒池遗物</th>
+<th>左侧</th>
+<th>右侧</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>诅咒珍珠</td>
+<td>11.91%</td>
+<td></td>
+</tr>
+<tr>
+<td>沉重石板</td>
+<td>1.34%</td>
+<td></td>
+</tr>
+<tr>
+<td>巨大扭蛋</td>
+<td>1.67%</td>
+<td></td>
+</tr>
+<tr>
+<td>树叶药膏</td>
+<td>12.63%</td>
+<td></td>
+</tr>
+<tr>
+<td>涅奥的骨骰</td>
+<td>12.58%</td>
+<td>0.52%</td>
+</tr>
+<tr>
+<td>松动羊毛剪</td>
+<td>8.42%</td>
+<td>15.25%</td>
+</tr>
+<tr>
+<td>华美发束</td>
+<td>11.02%</td>
+<td>12.26%</td>
+</tr>
+<tr>
+<td>白银熔炉</td>
+<td>12.40%</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>在<strong>噬尸蛞蝓</strong>战斗中还能预测得更准——该战斗有随机起始攻击模式。原文作者未列出完整表格，但举个例子：如果你看到了松动羊毛剪，<strong>且</strong>右侧噬尸蛞蝓在施加减益，那么你的充能球实际上有超过 95% 概率打向右侧那只。</p>
+<p>（顺便说一句，第二层噬尸蛞蝓在第一回合双方都攻击的概率不到 3%。它们可真客气！）</p>
+<p>这适用于整局游戏第一次随机战斗目标——例如，你可以预测<strong>亡灵契约师</strong>第一次<strong>倒数计时</strong>触发，或任何人第一次<strong>招架盾</strong>触发。</p>
+<p>说到第一幕前期，终于来到开篇的另外两个例子。</p>
+<h2 id="垃圾堆">垃圾堆</h2>
+<p><strong>垃圾堆</strong>是暗港专属事件，因此有内在偏差。以下是垃圾堆 RNG 在幕别 RNG roll 出暗港时的输出：</p>
+<table>
+<thead>
+<tr>
+<th>卡牌</th>
+<th>概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>铁蒺藜</td>
+<td>10.14%</td>
+</tr>
+<tr>
+<td>交锋</td>
+<td>14.85%</td>
+</tr>
+<tr>
+<td>声东击西</td>
+<td>19.97%</td>
+</tr>
+<tr>
+<td>双持</td>
+<td>13.78%</td>
+</tr>
+<tr>
+<td>巩固</td>
+<td>9.84%</td>
+</tr>
+<tr>
+<td>你好世界</td>
+<td>9.89%</td>
+</tr>
+<tr>
+<td>抢占先机</td>
+<td>5.17%</td>
+</tr>
+<tr>
+<td>弹回</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>狂乱撕扯</td>
+<td>6.19%</td>
+</tr>
+<tr>
+<td>堆栈</td>
+<td>10.17%</td>
+</tr>
+</tbody>
+</table>
+<p>如你所见，在单人模式中<strong>根本不可能</strong>获得<strong>弹回</strong>这张牌。<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup></p>
+<p>如果你关心遗物预测：连续两张卡牌对应<strong>黑石护符</strong>、<strong>捕梦网</strong>、<strong>手钻</strong>、<strong>巨口储蓄罐</strong>和<strong>发条靴</strong>（例如，卡牌是巩固或你好世界时，遗物是手钻）。</p>
+<p>若你想更精确地预测垃圾堆，还可以进一步根据看到的诅咒池遗物条件化：<sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup></p>
+<table>
+<thead>
+<tr>
+<th>诅咒池遗物</th>
+<th>可能卡牌（概率）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>诅咒珍珠</td>
+<td>你好世界 (66.63%)；抢占先机 (32.26%)；狂乱撕扯 (0.43%)；堆栈 (0.69%)</td>
+</tr>
+<tr>
+<td>沉重石板</td>
+<td>抢占先机 (98.82%)；狂乱撕扯 (1.18%)</td>
+</tr>
+<tr>
+<td>巨大扭蛋</td>
+<td>你好世界 (0.04%)；抢占先机 (0.26%)；狂乱撕扯 (99.70%)</td>
+</tr>
+<tr>
+<td>树叶药膏</td>
+<td>巩固 (0.08%)；你好世界 (0.26%)；狂乱撕扯 (35.29%)；堆栈 (64.36%)</td>
+</tr>
+<tr>
+<td>涅奥的骨骰</td>
+<td>铁蒺藜 (76.61%)；交锋 (8.24%)；双持 (0.14%)；巩固 (0.18%)；堆栈 (14.82%)</td>
+</tr>
+<tr>
+<td>松动羊毛剪</td>
+<td>交锋 (57.61%)；声东击西 (42.16%)；双持 (0.23%)</td>
+</tr>
+<tr>
+<td>华美发束</td>
+<td>交锋 (0.56%)；声东击西 (42.90%)；双持 (56.54%)</td>
+</tr>
+<tr>
+<td>白银熔炉</td>
+<td>铁蒺藜 (0.83%)；交锋 (0.03%)；双持 (4.40%)；巩固 (79.10%)；你好世界 (15.46%)；堆栈 (0.18%)</td>
+</tr>
+</tbody>
+</table>
+<p>发现这一点后，我在网上搜索相关讨论，确实有人注意到似乎无法完成<strong>百科大全</strong>。我还发现 Discord 用户 @hoge 大约一个月前就精准描述了这个问题。向他们致敬！</p>
+<h2 id="药水掉落与房间战斗">药水掉落与？房间战斗</h2>
+<p>最后是开篇第三点——第一场战斗掉落药水的频率？套路你已经熟了：</p>
+<table>
+<thead>
+<tr>
+<th>诅咒池遗物</th>
+<th>暗港</th>
+<th>密林</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>诅咒珍珠</td>
+<td>16.85%</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>沉重石板</td>
+<td>0%</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>巨大扭蛋</td>
+<td>0%</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>树叶药膏</td>
+<td>51.23%</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>涅奥的骨骰</td>
+<td>96.02%</td>
+<td>13.08%</td>
+</tr>
+<tr>
+<td>松动羊毛剪</td>
+<td>97.21%</td>
+<td>72.90%</td>
+</tr>
+<tr>
+<td>华美发束</td>
+<td>84.30%</td>
+<td>37.08%</td>
+</tr>
+<tr>
+<td>白银熔炉</td>
+<td>99.49%</td>
+<td>6.61%</td>
+</tr>
+</tbody>
+</table>
+<p>再次提醒：沉重石板和巨大扭蛋在暗港极为罕见，华美发束和松动羊毛剪在密林极为罕见。综合考量后，<strong>第一场战斗掉落药水的总概率在暗港是 76%，在密林仅 4%</strong>！</p>
+<p>但要注意：选择任何会生成卡牌奖励或随机遗物的涅奥选项都会破坏这种相关性，因为它会「偷走」奖励 RNG 的第一次调用。因此在糟糕的密林地图上，<strong>失物盒</strong>可能看起来比平均更有吸引力。</p>
+<p>额外福利：第一个？房间是战斗的概率分布也相当不均：</p>
+<table>
+<thead>
+<tr>
+<th>诅咒池遗物</th>
+<th>暗港</th>
+<th>密林</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>诅咒珍珠</td>
+<td>10.58%</td>
+<td>23.22%</td>
+</tr>
+<tr>
+<td>沉重石板</td>
+<td>0%</td>
+<td>16.09%</td>
+</tr>
+<tr>
+<td>巨大扭蛋</td>
+<td>0%</td>
+<td>15.24%</td>
+</tr>
+<tr>
+<td>树叶药膏</td>
+<td>5.72%</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>涅奥的骨骰</td>
+<td>19.09%</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>松动羊毛剪</td>
+<td>0%</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>华美发束</td>
+<td>0%</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>白银熔炉</td>
+<td>41.44%</td>
+<td>0%</td>
+</tr>
+</tbody>
+</table>
+<p>（按幕别平均后，暗港约 9.6%，密林约 10.4%，大体持平。）</p>
+<p>到目前为止，以上内容都只适用于第一幕。但——你猜对了——还能走得更远……</p>
+<h2 id="玩偶室">玩偶室</h2>
+<p><strong>玩偶室</strong>是第二幕的事件。和大多数事件一样，它使用自己的 RNG，因此可以与所有其他 RNG 的第一次调用相关联。</p>
+<p>到游戏这个阶段，你已经目睹了极大量「各 RNG 的第一次调用」，仅凭已有信息大概就能以很高精度预测玩偶室。但即便只用涅奥选项也已经相当不错：</p>
+<p>（下表为点击「一个玩偶」选项时获得的玩偶。）</p>
+<table>
+<thead>
+<tr>
+<th>诅咒池遗物</th>
+<th>风的女儿</th>
+<th>抱抱先生</th>
+<th>宾邦</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>诅咒珍珠</td>
+<td>60.77%</td>
+<td>7.66%</td>
+<td>31.57%</td>
+</tr>
+<tr>
+<td>沉重石板</td>
+<td>91.00%</td>
+<td>9.00%</td>
+<td></td>
+</tr>
+<tr>
+<td>巨大扭蛋</td>
+<td>55.07%</td>
+<td>44.35%</td>
+<td>0.58%</td>
+</tr>
+<tr>
+<td>树叶药膏</td>
+<td>23.14%</td>
+<td>70.81%</td>
+<td>6.05%</td>
+</tr>
+<tr>
+<td>涅奥的骨骰</td>
+<td>4.54%</td>
+<td>70.38%</td>
+<td>25.08%</td>
+</tr>
+<tr>
+<td>松动羊毛剪</td>
+<td>46.09%</td>
+<td>53.91%</td>
+<td></td>
+</tr>
+<tr>
+<td>华美发束</td>
+<td>8.50%</td>
+<td>91.50%</td>
+<td></td>
+</tr>
+<tr>
+<td>白银熔炉</td>
+<td>32.22%</td>
+<td>9.89%</td>
+<td>57.88%</td>
+</tr>
+</tbody>
+</table>
+<p>「两个玩偶」选项可由「一个玩偶」结果推导：</p>
+<table>
+<thead>
+<tr>
+<th>一个玩偶</th>
+<th>→</th>
+<th>两个玩偶</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>风的女儿</td>
+<td>→</td>
+<td>风的女儿 + 抱抱先生</td>
+</tr>
+<tr>
+<td>抱抱先生</td>
+<td>→</td>
+<td>抱抱先生 + 宾邦</td>
+</tr>
+<tr>
+<td>宾邦</td>
+<td>→</td>
+<td>宾邦 + 风的女儿</td>
+</tr>
+</tbody>
+</table>
+<p>因此，如果你roll到了沉重石板且想保证拿到抱抱先生，或者roll到了松动羊毛剪/华美发束且想保证拿到宾邦，只需支付 5 点生命，它<strong>永远</strong>会是可选项之一。</p>
+<p>你可能注意到玩偶分布与暗港/密林分布颇为相似。事实上有一条更简单的规则：暗港局中，「一个玩偶」按钮约有 62% 是宾邦、4% 是风的女儿；密林则相反。</p>
+<h2 id="占卜">占卜</h2>
+<p><strong>水晶球</strong>同样只出现在第二或第三幕。</p>
+<p>它也有自己的 RNG，但这次第一个有趣的 RNG 调用是<strong>第二次</strong>，决定遗物箱放在哪里。<sup id="fnref:5"><a class="footnote-ref" href="#fn:5">5</a></sup></p>
+<p>最容易关联的第二次 roll 是什么？有些信号非常强（例如第一家商店左上角那张牌），但追踪起来有点烦，因为它取决于第一次roll出的稀有度。</p>
+<p>结果是：<strong>你第一场战斗掉落的金币数量</strong>是「奖励」RNG 的第二次 roll（第一次是是否掉落药水，见上文）。</p>
+<p>下面是可以按金币数量查看分布的交互小部件（假设进阶 3+）：</p>
+<div class="divination-widget">
+  <p><label>第一场战斗金币（进阶 3+）：<input id="divgold" type="number" min="7" max="15" value="7"></label></p>
+  <p class="divination-note">下表为水晶球遗物箱落在各格子的概率（共 41 格，布局与原文一致）。</p>
+  <div id="divination-grid"></div>
+  <div id="divination-table-wrap"></div>
+</div>
+<script src="divination-widget.js"></script>
+
+<p>但这打开了一个全新的世界。还能通过关联第二次 roll 做什么？</p>
+<h2 id="先古之民奖励">先古之民奖励</h2>
+<p>能预测先古之民会极其强大。但不幸的是（或者说幸运的是——取决于你怎么看），战斗、精英、Boss 和先古之民都由 <code>RunState.Rng.UpFront</code> 负责roll，它会先大约调用 100 次来洗牌遗物列表。</p>
+<p>你能做的是预测：<strong>如果</strong>某位先古之民出现，你会得到什么选项。例如，<strong>佩尔第二选项</strong>与第一场战斗金币的关系：</p>
+<table>
+<thead>
+<tr>
+<th>金币</th>
+<th>佩尔之翼</th>
+<th>佩尔之爪</th>
+<th>佩尔之牙</th>
+<th>佩尔的增生组织</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7</td>
+<td>47.17%</td>
+<td>50.23%</td>
+<td></td>
+<td>2.60%</td>
+</tr>
+<tr>
+<td>8</td>
+<td>75.03%</td>
+<td>16.04%</td>
+<td></td>
+<td>8.93%</td>
+</tr>
+<tr>
+<td>9</td>
+<td>3.63%</td>
+<td>12.60%</td>
+<td>46.84%</td>
+<td>36.93%</td>
+</tr>
+<tr>
+<td>10</td>
+<td>4.31%</td>
+<td>25.40%</td>
+<td>68.59%</td>
+<td>1.71%</td>
+</tr>
+<tr>
+<td>11</td>
+<td>33.98%</td>
+<td>52.76%</td>
+<td></td>
+<td>13.25%</td>
+</tr>
+<tr>
+<td>12</td>
+<td>56.83%</td>
+<td>40.97%</td>
+<td></td>
+<td>2.20%</td>
+</tr>
+<tr>
+<td>13</td>
+<td>33.39%</td>
+<td>9.47%</td>
+<td>16.47%</td>
+<td>40.68%</td>
+</tr>
+<tr>
+<td>14</td>
+<td>84.14%</td>
+<td>15.86%</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>15</td>
+<td>2.63%</td>
+<td>49.67%</td>
+<td>28.03%</td>
+<td>19.67%</td>
+</tr>
+</tbody>
+</table>
+<p>这些信息出乎意料地强，但很难立刻转化为行动，因为你不知道第二幕先古之民会不会是佩尔。但我想这意味着：如果你roll到 11 金币，就该立刻放弃<strong>克隆</strong>的梦想。（或者我想得太小了——13 金币意味着<strong>完美打击</strong>立刻进牌组……）</p>
+<p><strong>特兹卡塔拉</strong>第二选项也可以同样分析，但那些选项在第一幕大多不太能据此行动。另一方面，<strong>特兹卡塔拉第一选项</strong>包含<strong>营养汤</strong>，很可能影响你移除<strong>打击</strong>的优先级：</p>
+<table>
+<thead>
+<tr>
+<th>诅咒池遗物</th>
+<th>烫嘴可可</th>
+<th>美味饼干</th>
+<th>营养汤</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>诅咒珍珠 [U]</td>
+<td>19.37%</td>
+<td>67.89%</td>
+<td>12.74%</td>
+</tr>
+<tr>
+<td>沉重石板 [U]</td>
+<td>36.64%</td>
+<td>63.36%</td>
+<td></td>
+</tr>
+<tr>
+<td>巨大扭蛋 [U]</td>
+<td>69.33%</td>
+<td>30.67%</td>
+<td></td>
+</tr>
+<tr>
+<td>树叶药膏 [U]</td>
+<td>39.00%</td>
+<td>32.20%</td>
+<td>28.80%</td>
+</tr>
+<tr>
+<td>涅奥的骨骰 [U]</td>
+<td>29.19%</td>
+<td>70.81%</td>
+<td></td>
+</tr>
+<tr>
+<td>松动羊毛剪 [U]</td>
+<td>9.54%</td>
+<td>90.46%</td>
+<td></td>
+</tr>
+<tr>
+<td>华美发束 [U]</td>
+<td>33.77%</td>
+<td>66.23%</td>
+<td></td>
+</tr>
+<tr>
+<td>白银熔炉 [U]</td>
+<td>69.44%</td>
+<td>30.56%</td>
+<td></td>
+</tr>
+<tr>
+<td>诅咒珍珠 [O]</td>
+<td>36.78%</td>
+<td>63.22%</td>
+<td></td>
+</tr>
+<tr>
+<td>沉重石板 [O]</td>
+<td>90.85%</td>
+<td>9.15%</td>
+<td></td>
+</tr>
+<tr>
+<td>巨大扭蛋 [O]</td>
+<td>89.56%</td>
+<td>10.44%</td>
+<td></td>
+</tr>
+<tr>
+<td>树叶药膏 [O]</td>
+<td>71.42%</td>
+<td>28.58%</td>
+<td></td>
+</tr>
+<tr>
+<td>涅奥的骨骰 [O]</td>
+<td>1.34%</td>
+<td>32.13%</td>
+<td>66.52%</td>
+</tr>
+<tr>
+<td>松动羊毛剪 [O]</td>
+<td>36.29%</td>
+<td>63.71%</td>
+<td></td>
+</tr>
+<tr>
+<td>华美发束 [O]</td>
+<td>68.04%</td>
+<td>31.96%</td>
+<td></td>
+</tr>
+<tr>
+<td>白银熔炉 [O]</td>
+<td>12.98%</td>
+<td>67.89%</td>
+<td>19.13%</td>
+</tr>
+</tbody>
+</table>
+<p>（若出现松动羊毛剪——你可能用它移除了两张打击——则特兹第一选项有 88.75% 是营养汤。这特别好笑：我往 Discord 狂倒 CRNG 发现时，两个人发了悲伤截图，说移除了 2+ 张打击却看到营养汤。你猜怎么着，遗物栏里都有松动羊毛剪。我打破幻想时只有一点点愧疚。）</p>
+<p><strong>欧洛巴斯</strong>呢？它会先为毒液玻璃roll颜色、再在棱彩宝石和毒液玻璃之间选择，然后才选第一选项，因此我们实际上需要某个 RNG 的<strong>第三次</strong> roll。最容易拿到的是<strong>第一场战斗奖励</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>第一场战斗奖励</th>
+<th>放电异虾</th>
+<th>玻璃眼珠</th>
+<th>沙堡</th>
+<th>宝石或玻璃</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>普通药水</td>
+<td>15.65%</td>
+<td>23.77%</td>
+<td>37.93%</td>
+<td>22.65%</td>
+</tr>
+<tr>
+<td>罕见药水</td>
+<td>39.99%</td>
+<td>28.81%</td>
+<td>1.63%</td>
+<td>29.58%</td>
+</tr>
+<tr>
+<td>稀有药水</td>
+<td>46.57%</td>
+<td>23.14%</td>
+<td></td>
+<td>30.29%</td>
+</tr>
+<tr>
+<td>普通卡牌</td>
+<td>16.52%</td>
+<td>23.65%</td>
+<td>37.47%</td>
+<td>22.36%</td>
+</tr>
+<tr>
+<td>罕见卡牌</td>
+<td>42.19%</td>
+<td>27.85%</td>
+<td></td>
+<td>29.95%</td>
+</tr>
+</tbody>
+</table>
+<p>如果你拿到了药水，那是第三次 RNG roll；否则是第一张卡牌。还要注意：选择任何会给你卡牌或遗物的涅奥选项都会破坏这种相关性并引入新的相关性，此处不再展开。</p>
+<p>这里可操作的或许是<strong>放电异虾</strong>的不均匀分布，可能影响你是否想选一张好的<strong>注能</strong>牌。</p>
+<p>至于<strong>达弗</strong>和第三幕先古之民，它们都会洗较长的列表，调用 RNG 次数太多，难以干净地预测。</p>
+<h2 id="还有更多">还有更多……</h2>
+<p>在杀戮尖塔一代，要从若干选项中选取时，大多数 RNG 会roll一个 0 到极大整数，再对选项数量取余。这意味着只有当被选取数量共享大量公因子时才能利用相关性，而这种情况并不常见。</p>
+<p>在杀戮尖塔二代，选取时大多数 RNG 会roll一个 0 到 1 的小数，再按比例缩放。这意味着基本上<strong>每一个</strong> RNG 输出都会给其他<strong>每一个</strong> RNG 输出提供信息。</p>
+<p>上文已经描述了许多具体的相关实例。但实际上，每一次第一次 roll 都可以与其他每一次第一次 roll 关联，第二次对第二次，以此类推。</p>
+<p>为此，原文有一份很长但仍不完整的「第一次 roll」列表。记住，<strong>所有这些</strong>都会给<strong>所有其他</strong> roll 提供<strong>某种</strong>信息：</p>
+<ul>
+<li>第一幕变体</li>
+<li>涅奥诅咒池遗物</li>
+<li>第一家商店见到的第一件普通遗物</li>
+<li>第一场战斗你抽到的最后一张牌</li>
+<li>第一个？房间的内容</li>
+<li>战斗中生成的第一张牌（例如攻击药水）</li>
+<li>战斗中随机选中的第一张牌（例如干瘪之手）</li>
+<li>第一次随机能量费用（例如蛇行）</li>
+<li>第一次随机敌人选择（例如闪电充能球）</li>
+<li>第一次随机怪物 AI</li>
+<li>第一次「niche RNG」结果（例如磨刀石）</li>
+<li>化废为宝或混沌生成的第一个充能球</li>
+<li>第一场战斗是否掉落药水</li>
+<li>第一家商店打折的是哪张牌</li>
+<li>佩尔或特兹卡塔拉第一选项</li>
+<li>树叶药膏的第一次变化</li>
+<li>有多首曲目幕别的音乐版本</li>
+<li>异鸟宝宝或佩尔的士兵的外观皮肤</li>
+<li>以下遭遇的行为：无尽传送带（初始提供食物）、直飞产卵虫（蛋的外观皮肤<sup id="fnref:6"><a class="footnote-ref" href="#fn:6">6</a></sup>）、重拳出击（拳击构装体起始生命）、三只/四只史莱姆（两只小史莱姆顺序），以及任何随机起始意图的遭遇（例如双尾鼠）、任何随机敌人的遭遇（例如扼杀者的同伴）</li>
+<li>以下事件的随机性：混沌芳香（变化）、色彩哲学家（提供的颜色）、水晶球（金币费用）、茂密的植被（金币数量）、玩偶室（任意按钮结果）、丛林迷宫奇遇（第一次金币数量）、冷光合唱团（金币费用）、变形灵林谷（第一次变化）、长者兰伟德（要求的药水）、镜中倒影（第一次降级牌）、永恒之石（要求的药水）、滑脚木桥（初始提供的牌）、淹水金库（第一次金币奖励）、共生体（变化）、真理石板（第一次升级）、药水的未来？（第一种卡牌类型）、迷失鬼火（金币数量）、沉没雕像（金币数量）、审判（哪种审判）、这个还是那个？（金币数量）、打造时间（缺失的卡牌类型）、垃圾堆（牌或遗物）、欢迎来到旺购百货（降级牌）、低语空谷（金币费用）</li>
+</ul>
+<p>第二次 roll 的较短列表：</p>
+<ul>
+<li>所有以「第一次」开头的条目，换成「第二次」</li>
+<li>第一场战斗的金币奖励</li>
+<li>第一家商店左上角那张牌</li>
+<li>佩尔或特兹卡塔拉第二选项</li>
+<li>你扮演的角色（若选择了「随机角色」<sup id="fnref:7"><a class="footnote-ref" href="#fn:7">7</a></sup>）</li>
+<li>以下事件的随机性：水晶球（遗物箱位置）、玩偶室（第二或第三按钮结果）、无尽传送带（变化/升级/下一份食物）、丛林迷宫奇遇（第二次金币数量）、变形灵林谷（第二次变化）、长者兰伟德（要求的遗物）、镜中倒影（第二张降级牌）、滑脚木桥（下一张牌）、淹水金库（第二次金币奖励）、真理石板（第二次升级）、药水的未来？（第二种卡牌类型）、审判（第一次变化）、打造时间（提供卡牌类型的顺序）、低语空谷（变化）</li>
+</ul>
+<p>还能继续列，但希望我已经说明问题了。</p>
+<h2 id="致开发者">致开发者</h2>
+<p>这个标题主要是对 Forgotten Arbiter 关于一代 CRNG 那篇文章的致敬。当然，我认为二代 CRNG 是一个 bug，应该修复；如果不修，对游戏会很糟糕。</p>
+<p>不过我相信 Mega Crit 会处理这个问题。一方面，二代仍在抢先体验阶段，比一代发现 CRNG 时早得多。</p>
+<p>而且与一代相比，CRNG 对不知道也不关心的玩家的影响要直接得多。例如，如果因为永远看不到<strong>弹回</strong>而无法完成游戏内<strong>百科大全</strong>，那就很不合理。其他相关性，例如涅奥的骨骰的诅咒分布，对平衡有显著影响，在一款刻意设计的策略游戏中没有理由放任存在。</p>
+<p>幸运的是，<strong>修复这个问题非常简单</strong>。例如，用我随手写的这个 50 行即插即用替代品替换 <code>System.Random</code>，在杀戮尖塔2代码里改三行就能立刻消除所有相关性。（我不指望 Mega Crit 字面意义上照搬这段代码，他们全盘复制我也完全没问题；重点只是说明有多容易。）</p>
+<p>若你对成因的技术细节和其他修复方案好奇，请阅读下方附录。</p>
+<p>否则，几句收尾：我写这篇文章花了很多功夫，基本上完全是因为觉得有趣。文章长度与这个 bug 的严重性和规模完全不成比例。但希望你读得也开心！:)</p>
+<hr />
+<h2 id="附录怎么发现的">附录：怎么发现的？</h2>
+<p>你可能会好奇：既然代码看起来明确是为了防止 CRNG 而写的，我是怎么意识到二代有 CRNG 的？事实上，如果对 C# 中 <code>System.Random</code> 的实现做一些非常合理的假设，杀戮尖塔的随机性本来会是完全没问题的。</p>
+<p>我希望我能说我是读了代码、从第一性原理想到了这个缺陷——那会很酷。可惜，我没那么聪明。这完全是意外：在 jmac 最近通宵用<strong>王国资产</strong> + <strong>光谱偏移</strong>刷 200 万金币<sup id="fnref:8"><a class="footnote-ref" href="#fn:8">8</a></sup> 期间，我受到启发写了一个种子搜索程序，寻找能在涅奥变化出<strong>巨镰</strong> + <strong>虚空之唤</strong>、并在第一场战斗拖住敌人、用<strong>重构</strong>无限次变化巨镰、把伤害叠到任意高度的种子。<sup id="fnref:9"><a class="footnote-ref" href="#fn:9">9</a></sup></p>
+<p>种子搜索跑通了，我逐个添加条件。它成功找到了很多涅奥提供树叶药膏、且两次变化是巨镰和虚空之唤（某种顺序）的种子。但我还想让幕别是密林——密林有更多可拖时间的简单池，还有密林专属的「变化 2」事件，能在第三层再拿 2 把巨镰。</p>
+<p>可我一加上密林条件，突然一个种子都找不到。我懵了，以为代码有 bug，但它仍然能大量生成暗港种子。</p>
+<p>最后我让它检查其他条件，并打印用于决定幕别的 RNG 原始输出（小于 0.5 是暗港，否则是密林）。令我困惑的是，值不仅总是小于 0.5，而且总是非常接近 0.1。</p>
+<p>除非确实存在某种相关性，否则这完全讲不通。为了确认相关性是否存在，我做了散点图：X 轴是变化 roll，Y 轴是幕别 roll。结果嘛，相当震撼。</p>
+<p><img alt="变化 roll 与幕别 roll 的散点图" src="images/transform_vs_act.png" /></p>
+<p>于是意外开始了对游戏中每一个其他 roll 的关联深挖。为留纪念，<a href="https://youtu.be/kIBOvKzeNO0?t=8850">我保存了这整段冒险的视频</a>（链接大致指向我注意到不对劲的时刻）。</p>
+<p>顺便说一句，我的虚空之唤 + 巨镰种子之所以不可能，是因为在密林且提供树叶药膏时，这两张牌都不可能成为第一次变化（<a href="#树叶药膏与沉重石板">见树叶药膏表格</a>）。</p>
+<h2 id="附录为什么">附录：为什么？</h2>
+<p>如承诺，现在真正展示 C# 实现为何会导致这一切。</p>
+<p>一句话总结：「输出与 abs(seed) 线性相关」——如果你懂这些词的意思。若不懂，或想要更具体的细节，下面是更完整的解释。</p>
+<p><code>System.Random</code> 的实际代码，直接摘自 .NET 参考源码：</p>
+<pre><code class="language-csharp">// ==++==
+//
+//   Copyright (c) Microsoft Corporation.  All rights reserved.
+//
+// ==--==
+
+[...]
+
+private int inext;
+private int inextp;
+private int[] SeedArray = new int[56];
+
+[...]
+
+public Random(int Seed) {
+  int ii;
+  int mj, mk;
+
+  //Initialize our Seed array.
+  //This algorithm comes from Numerical Recipes in C (2nd Ed.)
+  int subtraction = (Seed == Int32.MinValue) ? Int32.MaxValue : Math.Abs(Seed);
+  mj = MSEED - subtraction;
+  SeedArray[55]=mj;
+  mk=1;
+  for (int i=1; i&lt;55; i++) {  //Apparently the range [1..55] is special (Knuth) and so we're wasting the 0'th position.
+    ii = (21*i)%55;
+    SeedArray[ii]=mk;
+    mk = mj - mk;
+    if (mk&lt;0) mk+=MBIG;
+    mj=SeedArray[ii];
+  }
+  for (int k=1; k&lt;5; k++) {
+    for (int i=1; i&lt;56; i++) {
+  SeedArray[i] -= SeedArray[1+(i+30)%55];
+  if (SeedArray[i]&lt;0) SeedArray[i]+=MBIG;
+    }
+  }
+  inext=0;
+  inextp = 21;
+  Seed = 1;
+}
+
+[...]
+
+private int InternalSample() {
+    int retVal;
+    int locINext = inext;
+    int locINextp = inextp;
+
+    if (++locINext &gt;=56) locINext=1;
+    if (++locINextp&gt;= 56) locINextp = 1;
+
+    retVal = SeedArray[locINext]-SeedArray[locINextp];
+
+    if (retVal == MBIG) retVal--;
+    if (retVal&lt;0) retVal+=MBIG;
+
+    SeedArray[locINext]=retVal;
+
+    inext = locINext;
+    inextp = locINextp;
+
+    return retVal;
+}
+</code></pre>
+<p>有两部分——构造函数（<code>public Random</code>）和最终生成随机数的函数（<code>int InternalSample</code>）。</p>
+<p>首先，构造函数的大部分工作是用内部 <code>SeedArray</code> 状态初始化，最终将用于产生输出。最后一项设为某个常数减去种子的绝对值，然后以看似随机的顺序跳转设置其他项（乘 21 mod 55 就是在干这个）。下一项的值由前两项相减得到。</p>
+<p>之后，再做 4 轮「从随机看似的项中互相相减」。这一切都在 mod 2^31-1 下进行（<code>MBIG</code> 行就是在处理这个，<code>MBIG</code> 设为 <code>Int32.MaxValue</code>）。</p>
+<p>最后，当我们真正要一个随机数时，得到的值是 <code>SeedArray[1] - SeedArray[22]</code>。每次要新数字，这些索引递增（下一个是 <code>SeedArray[2] - SeedArray[23]</code>），必要时回绕。输出也会写回 <code>SeedArray</code>，替换某个旧值。</p>
+<p>问题的根源是：这整个过程的唯一输入是种子的<strong>绝对值</strong>——记为 <em>S</em>——而 <code>SeedArray</code> 的每一项都是 <strong>S 的线性函数</strong>。意思是你可以把它们写成 x·<em>S</em> + y，其中 x、y 是某些整数。<sup id="fnref:10"><a class="footnote-ref" href="#fn:10">10</a></sup></p>
+<p>为什么成立？<code>SeedArray</code> 里第一项是常数减 <em>S</em>，是线性的。构造函数里其他项都是已有两项之差。但<strong>两个线性量之差仍是线性的</strong>——(x₁·<em>S</em> + y₁) - (x₂·<em>S</em> + y₂) = (x₁-x₂)·<em>S</em> + (y₁-y₂)。所以无论做多少看似随机的减法，这个性质都保持。</p>
+<p><code>InternalSample</code> 也只包含减法。因此若用某个 <em>S</em> 建 RNG，第一次输出恰好是 x·<em>S</em> + y，x、y 是已知常数。但若用 <em>S</em>+1 建新 RNG，第一次输出会比另一个<strong>恰好大 x</strong>！一般地，<em>S</em> 相差 <em>d</em> 的两个 RNG，第一次输出相差恰好 x·<em>d</em>。</p>
+<p>由于游戏中各 RNG 的种子相差已知固定量，这立刻给出我们想要的相关性。有一个小波折：<em>S</em> 是输入种子的<strong>绝对值</strong>。若 RNG 之间的固定偏移跨过 0，其中一个会多一次取负。这就是为什么上文散点图里既有正斜率也有负斜率的线。</p>
+<p>顺便，网上也有关于 C# 默认随机生成器这一性质及其如何产生此类相关性的进一步讨论。</p>
+<h2 id="附录怎么修">附录：怎么修？</h2>
+<p>具体怎么修？从最简单的方案说起。</p>
+<p>朴素的一阶修复是用非线性运算生成不同 RNG 的种子，比如乘法。若对每个 RNG 把种子乘固定常数，而不是相加，线性带来的极易预测性就消失了。（或者，你也可以在选定运算之后对产出值再做 hash。）</p>
+<p>但这仍不是很好的方案。它确实能解决弹回、涅奥的骨骰这类明显问题，但仍留下可 exploit 的细微空间。即使事先不知道精确偏移，只要对两个 RNG 流各取足够多样本，知道它们相差常数偏移仍可被利用。</p>
+<p>最容易的「真正」修复，就是<strong>实现一个非线性伪随机数生成器</strong>。具有理想随机外观性质的 PRNG 是研究得很充分的领域，许多合适选项算法极其简单。我在主文示例实现里选的是 PCG32，但这相当随意，基本上任何现代算法都行。</p>
+<p>在代码库内实现 PRNG、而非调用 C# 标准库，还有额外好处：<strong>种子在所有平台上保证一致</strong>。在一代中，桌面版与移动版的种子不同，因为各平台标准库 PRNG 实现不同。标准库实现也可能随时间变化，从而破坏所有历史种子。</p>
+<p>额外提一个稍复杂的选项。杀戮尖塔保存并恢复一局的方式，是存储每个 RNG 被调用的总次数，加载存档时对每个 RNG 调用那么多次（丢弃结果）。这完全可行，但有点傻。另一种方案<sup id="fnref:11"><a class="footnote-ref" href="#fn:11">11</a></sup>是<strong>基于计数器的随机数生成器</strong>，不存储内部状态。要第 <em>n</em> 个随机数，传入参数 <em>n</em>（也可以把内部状态想成每次调用加 1 的整数）。用这类 PRNG 并稍作修改游戏内部的 <code>Rng</code> 类，就不再需要「推进」过程。</p>
+<hr />
+<hr />
+<p><em>翻译说明：卡牌与遗物中文名均参照仓库内《杀戮尖塔2》中英对照表 v1.3。原文中未展开的交互图表（如新叶/奥术卷轴的 14 种组合）在原文中亦未列出；噬尸蛞蝓充能球目标的完整表同理。其余可提取的数据表与交互部件均已收录。</em></p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>本文标题和几个章节标题是对那篇文章的有意致敬。另外，Arbiter 你好，我相信你迟早会读到这篇 :)&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>实际上，涅奥的骨骰刚加入时，大家老是拿到愧疚——我猜测那个补丁的相关性不同，后来涅奥选项增多后变了，但我没去翻旧补丁源码核实。另外，Reddit 上那个贴了 9 张截图的楼主（顺便说全是暗港）完全不知道，他们关于疑虑和债务「字母上够接近」的玩笑其实完全正确——因为诅咒在内部是按字母排序的。&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>多人模式为何不同？因为事件 RNG 的偏移不仅包含对应事件的常数，还包含你的 Steam ID（多人模式下避免所有人得到相同结果）。单人模式默认为 1，以保证所有人的单人种子一致。这也意味着，若你 Steam ID 不幸，可能在多人模式也<strong>永远</strong>看不到弹回。真惨。&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:4">
+<p>为可见性我把所有条形拉满，但这扭曲了表观总概率——沉重石板和巨大扭蛋在暗港都极为罕见，因此抢占先机实际上比看起来少见得多。&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:5">
+<p>第一次调用决定第一个事件选项的随机生成金币价格。&#160;<a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:6">
+<p>蛋有两种不同皮肤，不知为何！单场战斗中所有蛋皮肤相同，但不同局之间会看到不同皮肤。&#160;<a class="footnote-backref" href="#fnref:6" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+<li id="fn:7">
+<p>若你好奇：<strong>静默猎手</strong>是最「富」的角色（第一场战斗平均 13.4 金币），<strong>亡灵契约师</strong>最「穷」（平均 8.3 金币）。&#160;<a class="footnote-backref" href="#fnref:7" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+</li>
+<li id="fn:8">
+<p>我说的「期间」是字面意思——整个发现过程发生在他还在「打」那一局的时候。（我是在他还在睡觉、8 小时王国资产动画播到一半时开始的。）&#160;<a class="footnote-backref" href="#fnref:8" title="Jump back to footnote 8 in the text">&#8617;</a></p>
+</li>
+<li id="fn:9">
+<p>即使敌人先死，伤害也会按完整次数叠加，这可能也是个 bug。希望 CRNG 修之前我还能做到。（或者希望别修，因为真执行起来可能很可怕。）&#160;<a class="footnote-backref" href="#fnref:9" title="Jump back to footnote 9 in the text">&#8617;</a></p>
+</li>
+<li id="fn:10">
+<p>再次说明，一切都在 mod 2^31-1 下，下文默认如此。&#160;<a class="footnote-backref" href="#fnref:10" title="Jump back to footnote 10 in the text">&#8617;</a></p>
+</li>
+<li id="fn:11">
+<p>其实还有另一种选择：实现支持高效「推进」函数的 PRNG。PCG32 就可以，但示例代码里我没实现，因为会显著增加复杂度、收益很小。&#160;<a class="footnote-backref" href="#fnref:11" title="Jump back to footnote 11 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>译文仅供学习交流。原文作者 Andy Tockman · <a href="https://tck.mn/blog/correlated-randomness-sts2/">英文原文</a></p>
+  </footer>
+
+  <script>
+    const links = [...document.querySelectorAll('.toc a')];
+    const sections = links
+      .map((link) => document.querySelector(link.getAttribute('href')))
+      .filter(Boolean);
+
+    const onScroll = () => {
+      let current = sections[0];
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top <= 120) current = section;
+      }
+      links.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === '#' + current.id));
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Editor
+.vscode/
+
+# Local game assets (not for publication)
+杀戮尖塔2/card_portraits/
+杀戮尖塔2/events/
+杀戮尖塔2/images/
+杀戮尖塔2/*.zip
+杀戮尖塔2/后续更新加入原画/
+杀戮尖塔2/模板/
+杀戮尖塔2/角色选择页面-游戏主页高清原画/
+
+# Scratch scripts
+explore_html.py
