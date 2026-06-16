@@ -82,13 +82,22 @@ def extract_details(html: str, summary: str) -> str:
     return m.group(1) if m else ""
 
 
+def extract_hefty_block(source_html: str) -> str:
+    if "Similarly," not in source_html:
+        return ""
+    start = source_html.index("Similarly,")
+    m = re.search(r"<h2[^>]*>\s*New Leaf", source_html[start:], re.IGNORECASE)
+    end = start + m.start() if m else len(source_html)
+    return source_html[start:end]
+
+
 def split_acts(block: str) -> tuple[str, str]:
     under = ""
     over = ""
     um = re.search(r"<p>Underdocks:</p>(.*?)(<p>Overgrowth:</p>|$)", block, re.DOTALL | re.IGNORECASE)
     if um:
         under = um.group(1)
-    om = re.search(r"<p>Overgrowth:</p>(.*)$", block, re.DOTALL | re.IGNORECASE)
+    om = re.search(r"<p>Overgrowth:</p>(.*?)(?=<h2|$)", block, re.DOTALL | re.IGNORECASE)
     if om:
         over = om.group(1)
     return under, over
@@ -120,7 +129,7 @@ def render_act_barchart(rows: list[dict], btn_id: str, act_label: str) -> str:
 def render_leafy_hefty_section(source_html: str | None = None) -> str:
     source_html = source_html or fetch_html()
     leafy = extract_details(source_html, "Leafy Poultice")
-    hefty_block = source_html.split("Similarly,")[1].split("## New Leaf")[0] if "Similarly," in source_html else ""
+    hefty_block = extract_hefty_block(source_html)
     leafy_under, leafy_over = split_acts(leafy)
     hefty_under, hefty_over = split_acts(hefty_block)
 
