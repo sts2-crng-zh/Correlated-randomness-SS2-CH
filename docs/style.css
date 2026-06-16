@@ -411,6 +411,10 @@ a:hover {
   border-radius: 3px;
 }
 
+.barchartlgnd.zh .bc0 { background: #8d9299; }
+.barchartlgnd.zh .bc1 { background: #4a8fd4; }
+.barchartlgnd.zh .bc2 { background: #d4a832; }
+
 .barchart.zh {
   display: grid;
   grid-template-columns: minmax(150px, 240px) 1fr;
@@ -442,9 +446,9 @@ a:hover {
   white-space: nowrap;
 }
 
-.barchart.zh .bc0 { background: #7d79cb; }
-.barchart.zh .bc1 { background: #3fb950; }
-.barchart.zh .bc2 { background: #f1416c; }
+.barchart.zh .bc0 { background: #8d9299; }
+.barchart.zh .bc1 { background: #4a8fd4; }
+.barchart.zh .bc2 { background: #d4a832; color: #1f1f1f; }
 
 .barchartbtns {
   display: flex;
