@@ -114,7 +114,13 @@ def render_legend(items: list[tuple[str, str]], chart_class: str = "") -> str:
     return "\n".join(parts)
 
 
-def render_bar(segments: list[tuple[float, str, str]], row_scale: float) -> str:
+def render_bar(
+    segments: list[tuple[float, str, str]],
+    row_scale: float,
+    *,
+    hover: bool = False,
+    ral_threshold: float = 15.0,
+) -> str:
     if not segments:
         return '<div class="bar"></div>'
     chunks: list[str] = []
@@ -124,8 +130,13 @@ def render_bar(segments: list[tuple[float, str, str]], row_scale: float) -> str:
         width = value * row_scale
         if width <= 0:
             continue
+        extra = ""
+        if hover:
+            extra = " hover"
+            if value < ral_threshold:
+                extra += " ral"
         chunks.append(
-            f'<div style="width:{width:.4f}%" class="{cls}">'
+            f'<div style="width:{width:.4f}%" class="{cls}{extra}">'
             f"<span>{html.escape(label)}</span></div>"
         )
     if not chunks:
@@ -221,7 +232,7 @@ def convert_junk_base(headers: list[str], rows: list[list[str]]) -> str:
 
 def convert_junk_conditioned(headers: list[str], rows: list[list[str]]) -> str:
     legend = junk_legend()
-    parts = [legend, '<div class="barchart zh junk">']
+    parts = [legend, '<div class="barchart zh junk junk-conditioned">']
 
     for row in rows:
         relic = row[0]
@@ -233,7 +244,7 @@ def convert_junk_conditioned(headers: list[str], rows: list[list[str]]) -> str:
         total = sum(v for v, _, _ in segments)
         row_scale = 100.0 / total if total > 0 else 0.0
         parts.append(f'<div class="key">{html.escape(relic)}</div>')
-        parts.append(render_bar(segments, row_scale))
+        parts.append(render_bar(segments, row_scale, hover=True))
 
     parts.append("</div>")
     return "\n".join(parts)

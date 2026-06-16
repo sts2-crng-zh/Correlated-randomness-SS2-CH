@@ -503,6 +503,37 @@ a:hover {
 .barchartlgnd.zh.junk .bc8 { background: #76b7b2; }
 .barchartlgnd.zh.junk .bc9 { background: #af7aa1; }
 
+.barchart.zh.junk-conditioned .bar {
+  overflow: visible;
+}
+
+.barchart.zh.junk-conditioned .bar > div {
+  min-width: 0;
+  position: relative;
+  padding: 0 0.15rem;
+}
+
+.barchart.zh.junk-conditioned .bar > div.hover > span {
+  display: none;
+  pointer-events: none;
+  white-space: nowrap;
+  text-shadow: 0 0 1px #000, 0 0 2px #000;
+}
+
+.barchart.zh.junk-conditioned .bar > div.hover:hover {
+  box-shadow: inset 0 0 10px 1px rgba(0, 0, 0, 0.35);
+  z-index: 2;
+}
+
+.barchart.zh.junk-conditioned .bar > div.hover:hover > span {
+  display: inline;
+  z-index: 99;
+}
+
+.barchart.zh.junk-conditioned .bar > div.ral {
+  justify-content: flex-end;
+}
+
 .barchartbtns {
   display: flex;
   flex-wrap: wrap;
