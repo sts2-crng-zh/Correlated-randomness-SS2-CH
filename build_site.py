@@ -92,8 +92,7 @@ def main() -> None:
 
     text = SOURCE.read_text(encoding="utf-8")
     text = render_details_blocks(text)
-    md = markdown.Markdown(extensions=markdown_extensions())
-    content_html = md.convert(text)
+    content_html = make_markdown().convert(text)
     content_html, toc_html = build_toc(content_html)
 
     title = "杀戮尖塔2中的相关随机数"
