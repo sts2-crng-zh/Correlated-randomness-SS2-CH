@@ -155,22 +155,27 @@ Rng TreasureRoomRelics = new Rng(seed + hash("treasure_room_relics"));
 
 （\[U\] = 暗港，\[O\] = 密林。巨大扭蛋不会出现，因为有硬编码限制：两种扭蛋不能同时出现。）
 
-| 诅咒池遗物 | 普通 | 罕见 | 稀有 |
-|-----------|------|------|------|
-| 诅咒珍珠 \[U\] | 4.58% | 0.92% | 1.33% |
-| 沉重石板 \[U\] | 0.56% | | 0.20% |
-| 树叶药膏 \[U\] | 5.81% | 0.48% | 0.95% |
-| 涅奥的骨骰 \[U\] | 7.42% | | |
-| 松动羊毛剪 \[U\] | | 13.56% | |
-| 华美发束 \[U\] | | 13.28% | |
-| 白银熔炉 \[U\] | 7.08% | | |
-| 诅咒珍珠 \[O\] | 5.70% | 1.72% | |
-| 沉重石板 \[O\] | 10.96% | | 2.62% |
-| 树叶药膏 \[O\] | 4.61% | 2.48% | |
-| 涅奥的骨骰 \[O\] | 2.23% | 1.14% | 3.45% |
-| 松动羊毛剪 \[O\] | 0.77% | | |
-| 华美发束 \[O\] | 0.94% | | |
-| 白银熔炉 \[O\] | 1.42% | 3.65% | 2.14% |
+<div class="barchartlgnd zh">
+  <div><div class="bc0"></div>常见</div>
+  <div><div class="bc1"></div>罕见</div>
+  <div><div class="bc2"></div>稀有</div>
+</div>
+<div class="barchart zh">
+  <div class="key">诅咒珍珠 [暗港]</div><div class="bar"><div style="width:33.74%" class="bc0"><span>4.58%</span></div><div style="width:6.75%" class="bc1"><span>0.92%</span></div><div style="width:9.76%" class="bc2"><span>1.33%</span></div></div>
+  <div class="key">沉重石板 [暗港]</div><div class="bar"><div style="width:4.12%" class="bc0"><span>0.56%</span></div><div style="width:1.46%" class="bc2"><span>0.20%</span></div></div>
+  <div class="key">树叶药膏 [暗港]</div><div class="bar"><div style="width:42.77%" class="bc0"><span>5.81%</span></div><div style="width:3.54%" class="bc1"><span>0.48%</span></div><div style="width:7.03%" class="bc2"><span>0.95%</span></div></div>
+  <div class="key">涅奥的骨骰 [暗港]</div><div class="bar"><div style="width:54.64%" class="bc0"><span>7.42%</span></div></div>
+  <div class="key">松动羊毛剪 [暗港]</div><div class="bar"><div style="width:99.81%" class="bc1"><span>13.56%</span></div></div>
+  <div class="key">华美发束 [暗港]</div><div class="bar"><div style="width:97.80%" class="bc1"><span>13.28%</span></div></div>
+  <div class="key">白银熔炉 [暗港]</div><div class="bar"><div style="width:52.14%" class="bc0"><span>7.08%</span></div></div>
+  <div class="key">诅咒珍珠 [密林]</div><div class="bar"><div style="width:41.99%" class="bc0"><span>5.70%</span></div><div style="width:12.64%" class="bc2"><span>1.72%</span></div></div>
+  <div class="key">沉重石板 [密林]</div><div class="bar"><div style="width:80.70%" class="bc1"><span>10.96%</span></div><div style="width:19.30%" class="bc2"><span>2.62%</span></div></div>
+  <div class="key">树叶药膏 [密林]</div><div class="bar"><div style="width:33.95%" class="bc0"><span>4.61%</span></div><div style="width:18.27%" class="bc1"><span>2.48%</span></div></div>
+  <div class="key">涅奥的骨骰 [密林]</div><div class="bar"><div style="width:16.43%" class="bc0"><span>2.23%</span></div><div style="width:8.38%" class="bc1"><span>1.14%</span></div><div style="width:25.41%" class="bc2"><span>3.45%</span></div></div>
+  <div class="key">松动羊毛剪 [密林]</div><div class="bar"><div style="width:5.67%" class="bc0"><span>0.77%</span></div></div>
+  <div class="key">华美发束 [密林]</div><div class="bar"><div style="width:6.92%" class="bc0"><span>0.94%</span></div></div>
+  <div class="key">白银熔炉 [密林]</div><div class="bar"><div style="width:10.47%" class="bc0"><span>1.42%</span></div><div style="width:26.90%" class="bc1"><span>3.65%</span></div><div style="width:15.77%" class="bc2"><span>2.14%</span></div></div>
+</div>
 
 （条形图比例与上一节两张图相同——每行总宽度与该诅咒池遗物在本幕中的实际出现频率成正比。）
 
@@ -186,9 +191,10 @@ Rng TreasureRoomRelics = new Rng(seed + hash("treasure_room_relics"));
 
 结果是：**树叶药膏的第一次变化只有 22 种可能**（每个角色 80 张牌池中的子集），其中一些明显更常见。
 
-（原文将这些图表做成可折叠区块；以下按角色列出完整数据。）
+以下图表按原文做成可折叠区块。
 
-### 树叶药膏
+<details class="chart-details" open>
+<summary>树叶药膏</summary>
 
 #### 暗港
 
@@ -466,7 +472,10 @@ Rng TreasureRoomRelics = new Rng(seed + hash("treasure_room_relics"));
 
 类似地，**沉重石板在密林的第一次选项只有 11 种可能，在暗港只有 3 种**！正如上文所示，沉重石板在暗港本身大约只出现 1.3%，因此看到它本身就是极强的信息。
 
-### 沉重石板
+</details>
+
+<details class="chart-details">
+<summary>沉重石板</summary>
 
 #### 暗港
 
@@ -591,6 +600,8 @@ Rng TreasureRoomRelics = new Rng(seed + hash("treasure_room_relics"));
 | 旋转工艺 | 9.04% |
 | 超临界态 | 5.61% |
 | 化废为宝 | 0.45% |
+
+</details>
 
 ## 新叶与奥术卷轴
 

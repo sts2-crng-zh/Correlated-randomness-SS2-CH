@@ -346,3 +346,87 @@ a:hover {
   z-index: 2;
   pointer-events: none;
 }
+
+.chart-details {
+  margin: 1rem 0 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--surface) 92%, var(--bg));
+  overflow: hidden;
+}
+
+.chart-details > summary {
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  background: color-mix(in srgb, var(--accent-soft) 65%, transparent);
+}
+
+.chart-details > summary:hover {
+  background: color-mix(in srgb, var(--accent-soft) 85%, transparent);
+}
+
+.chart-details[open] > summary {
+  border-bottom: 1px solid var(--border);
+}
+
+.chart-details > :not(summary) {
+  padding: 0.75rem 1rem 1rem;
+}
+
+.barchartlgnd.zh {
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
+  margin: 0.5rem 0 0.65rem;
+  font-size: 0.95rem;
+}
+
+.barchartlgnd.zh > div {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.barchartlgnd.zh .bc0,
+.barchartlgnd.zh .bc1,
+.barchartlgnd.zh .bc2 {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 3px;
+}
+
+.barchart.zh {
+  display: grid;
+  grid-template-columns: minmax(150px, 240px) 1fr;
+  gap: 0.4rem 0.75rem;
+  align-items: center;
+  margin: 0.75rem 0 1rem;
+}
+
+.barchart.zh .key {
+  font-size: 0.96rem;
+}
+
+.barchart.zh .bar {
+  min-height: 1.5rem;
+  display: flex;
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.barchart.zh .bar > div {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.65rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.barchart.zh .bc0 { background: #7d79cb; }
+.barchart.zh .bc1 { background: #3fb950; }
+.barchart.zh .bc2 { background: #f1416c; }
